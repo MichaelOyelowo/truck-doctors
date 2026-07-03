@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Globe, Radio, Truck } from "lucide-react"; // Added Truck icon
+import { X, Globe, Radio, Truck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const notifications = [
