@@ -4,6 +4,7 @@ import { Truck, Search, User, Headset } from "lucide-react";
 import { navLinks } from "./navData"; 
 import SearchOverlay from "./SearchOverlay";
 import MobileDrawer from "./MobileDrawer";
+import logo from "../../assets/truck-do2.png";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,25 +21,25 @@ function Navbar() {
   return (
     <>
       <header className={`sticky top-0 z-40 w-full transition-all duration-500 border-b 
-        ${scrolled ? "bg-white/80 backdrop-blur-xl border-black/5 py-3 shadow-sm" : "bg-white border-transparent py-5"}`}>
+        ${scrolled ? "bg-[#fdfdfd]/80 backdrop-blur-xl border-black/5 py-3 shadow-sm" 
+    : "bg-[#fdfdfd] border-transparent py-5"}`}>
         
         <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* LOGO */}
           <Link to="/" className="flex items-center gap-3 shrink-0">
-             <div className="w-10 h-10 bg-primary rounded-sm flex items-center justify-center shadow-lg shadow-primary/20 transition-transform hover:rotate-3">
-                <Truck size={22} className="text-white" />
-             </div>
-             <div className="hidden sm:flex flex-col">
-                <span className="text-primary font-black text-xl tracking-tighter leading-none uppercase">Truck <span className="text-accent">Doctors</span></span>
-                <span className="text-[10px] font-bold text-muted tracking-[0.3em] uppercase mt-1">Premium Logistics</span>
-             </div>
+            <img 
+              src={logo} 
+              alt="Truck Doctors Logo" 
+               className="h-12 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
+            />
+            
           </Link>
 
           {/* DESKTOP LINKS */}
           <ul className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.path}>
-                <Link to={link.path} className={`px-5 py-2 text-[14px] font-medium rounded-md transition-all ${location.pathname === link.path ? "bg-black/5 text-primary" : "text-primary/70 hover:text-primary"}`}>
+                <Link to={link.path} className={`px-5 py-2 text-[14px] font-bold rounded-md transition-all ${location.pathname === link.path ? "bg-black/5 text-primary" : "text-primary/70 hover:text-primary"}`}>
                   {link.label}
                 </Link>
               </li>

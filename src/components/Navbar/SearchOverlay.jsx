@@ -1,35 +1,40 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Globe, ChevronRight, MapPin } from "lucide-react";
 import { truckTypes, popularSearches, featuredRoutes } from "./navData";
 
 export default function SearchOverlay({ isOpen, onClose }) {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [query, setQuery] = useState(""); // Track what the user is typing
+  const inputRef = useRef(null);
 
   // Rotating Placeholder Logic
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || query.length > 0) return; // Stop rotating if user starts typing
     const interval = setInterval(() => {
       setPlaceholderIndex((prev) => (prev + 1) % truckTypes.length);
     }, 3000);
     return () => clearInterval(interval);
+  }, [isOpen, query]);
+
+  // Reset query when closed
+  useEffect(() => {
+    if (!isOpen) setQuery("");
   }, [isOpen]);
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm flex flex-col items-center pt-16 px-4"
           onClick={(e) => e.target === e.currentTarget && onClose()}
         >
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.25, ease: "easeOut" }}
             className="w-full max-w-3xl bg-white rounded-2xl overflow-hidden shadow-2xl"
           >
             {/* 1. THE SEARCH INPUT ROW */}
@@ -37,31 +42,39 @@ export default function SearchOverlay({ isOpen, onClose }) {
               {/* Category Dropdown */}
               <div className="hidden sm:flex items-center border-r border-border px-5 py-4 gap-2 cursor-pointer hover:bg-surface transition-colors shrink-0">
                 <Globe size={15} className="text-muted" />
-                <span className="text-sm font-semibold text-primary whitespace-nowrap">All Categories</span>
+                <span className="text-sm font-semibold text-[#171a20]">All Categories</span>
                 <ChevronRight size={14} className="text-muted rotate-90" />
               </div>
 
-              {/* Input with animated placeholder */}
+              {/* Input Area */}
               <div className="flex-1 relative flex items-center px-5">
                 <Search size={18} className="text-muted shrink-0 mr-3" />
-                <div className="relative flex-1 h-14 flex items-center overflow-hidden">
+                
+                <div className="relative flex-1 h-14 flex items-center">
                   <input
+                    ref={inputRef}
                     autoFocus
                     type="text"
-                    className="absolute inset-0 w-full bg-transparent text-base font-medium text-primary outline-none peer"
-                    placeholder="" // Keep empty so peer works
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="absolute inset-0 w-full bg-transparent text-lg font-medium text-[#171a20] outline-none z-10"
+                    placeholder="" 
                   />
+                  
+                  {/* ROTATING GHOST TEXT - Only shows if query is empty */}
                   <AnimatePresence mode="wait">
-                    <motion.span
-                      key={placeholderIndex}
-                      initial={{ y: 12, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -12, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute left-0 text-base text-black/25 font-medium pointer-events-none peer-focus:opacity-0 transition-opacity"
-                    >
-                      Search <span className="text-accent font-semibold">{truckTypes[placeholderIndex]}</span>...
-                    </motion.span>
+                    {query === "" && (
+                      <motion.span
+                        key={placeholderIndex}
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -10, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute left-0 text-lg text-black/20 font-medium pointer-events-none"
+                      >
+                        Search <span className="text-accent font-semibold">{truckTypes[placeholderIndex]}</span>...
+                      </motion.span>
+                    )}
                   </AnimatePresence>
                 </div>
               </div>
@@ -78,7 +91,11 @@ export default function SearchOverlay({ isOpen, onClose }) {
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-4">Popular Searches</p>
               <div className="flex flex-wrap gap-2">
                 {popularSearches.map((tag) => (
-                  <button key={tag} className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-accent-light hover:text-accent border border-border hover:border-accent/30 rounded-full text-xs font-semibold text-primary transition-all cursor-pointer">
+                  <button 
+                    key={tag} 
+                    onClick={() => setQuery(tag)} // Clicking a tag fills the search
+                    className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-accent-light hover:text-accent border border-border hover:border-accent/30 rounded-full text-xs font-semibold text-[#171a20] transition-all cursor-pointer"
+                  >
                     <Search size={10} className="text-muted" /> {tag}
                   </button>
                 ))}
@@ -95,7 +112,7 @@ export default function SearchOverlay({ isOpen, onClose }) {
                       <MapPin size={16} className="text-accent" />
                     </div>
                     <div className="flex flex-col min-w-0">
-                      <span className="text-xs font-bold text-primary truncate">{route.from} → {route.to}</span>
+                      <span className="text-xs font-bold text-[#171a20] truncate">{route.from} → {route.to}</span>
                       <span className="text-[11px] text-muted">{route.time} transit</span>
                     </div>
                     <ChevronRight size={14} className="text-muted ml-auto shrink-0 group-hover:text-accent transition-transform group-hover:translate-x-1" />

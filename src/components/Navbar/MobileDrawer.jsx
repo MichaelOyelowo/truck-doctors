@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Truck, X, ChevronRight, Globe, User, Headset } from "lucide-react";
 import { navLinks, mobileTools } from "./navData";
+import logo from "../../assets/truck-do2.png";
 
 export default function MobileDrawer({ isOpen, onClose, location }) {
   return (
@@ -15,9 +16,12 @@ export default function MobileDrawer({ isOpen, onClose, location }) {
             className="fixed top-0 right-0 bottom-0 z-70 w-full max-w-xs bg-white flex flex-col xl:hidden"
           >
             <div className="p-6 flex items-center justify-between border-b border-black/5">
-              <Link to="/" onClick={onClose} className="flex items-center gap-2">
-                <Truck size={20} className="text-accent" />
-                <span className="font-black uppercase text-sm">Truck Doctors</span>
+              <Link to="/" onClick={onClose} className="flex items-center">
+                <img 
+                  src={logo} 
+                  alt="Truck Doctors Logo" 
+                  className="h-9 w-auto object-contain" 
+                />
               </Link>
               <button onClick={onClose} className="p-2 cursor-pointer"><X size={24} /></button>
             </div>
