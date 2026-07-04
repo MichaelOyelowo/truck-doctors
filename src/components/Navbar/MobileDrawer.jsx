@@ -20,7 +20,7 @@ export default function MobileDrawer({ isOpen, onClose, location }) {
                 <img 
                   src={logo} 
                   alt="Truck Doctors Logo" 
-                  className="h-9 w-auto object-contain" 
+                  className="h-7 w-auto object-contain" 
                 />
               </Link>
               <button onClick={onClose} className="p-2 cursor-pointer"><X size={24} /></button>
