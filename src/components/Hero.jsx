@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, MapPin, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import slide1 from "../assets/homepage-images/hero-truck1.avif";
+import slide1 from "../assets/homepage-images/hero-truck11.avif";
 import slide2 from "../assets/homepage-images/hero-truck2.avif";
 import slide3 from "../assets/homepage-images/hero-truck3.avif";
-import mini1 from "../assets/homepage-images/hero-truck1.avif";
+import mini1 from "../assets/homepage-images/hero-truck11.avif";
 
 const SLIDES = [
   {
@@ -150,7 +150,7 @@ export default function Hero() {
             to="/quote"
             className="group w-full sm:w-auto bg-accent hover:bg-accent-dark text-white px-10 py-4 rounded-sm font-bold flex items-center justify-center gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-sm uppercase tracking-widest"
           >
-            Get a Quote
+            Learn More
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
