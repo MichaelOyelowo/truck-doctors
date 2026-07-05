@@ -1,130 +1,276 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronRight, Play, ShieldCheck, Globe, Zap } from "lucide-react";
-import heroTruck from "../assets/homepage-images/truck1.avif"; // Use a high-res side-view or 3/4 view truck
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Star, MapPin, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import heroBg from "../assets/homepage-images/truck1.avif";
+import mini1 from "../assets/homepage-images/truck1.avif";
+import mini2 from "../assets/homepage-images/truck1.avif";
+
+const WORDS = ["Precision.", "Speed.", "Reliability.", "Trust."];
 
 export default function Hero() {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Typewriter effect
+  useEffect(() => {
+    const currentWord = WORDS[wordIndex];
+
+    if (isPaused) {
+      const t = setTimeout(() => { setIsPaused(false); setIsDeleting(true); }, 1800);
+      return () => clearTimeout(t);
+    }
+    if (!isDeleting && displayText === currentWord) { setIsPaused(true); return; }
+    if (isDeleting && displayText === "") { setIsDeleting(false); setWordIndex((p) => (p + 1) % WORDS.length); return; }
+
+    const t = setTimeout(() => {
+      setDisplayText((prev) =>
+        isDeleting ? prev.slice(0, -1) : currentWord.slice(0, prev.length + 1)
+      );
+    }, isDeleting ? 60 : 100);
+
+    return () => clearTimeout(t);
+  }, [displayText, isDeleting, isPaused, wordIndex]);
+
   return (
-    <section className="relative min-h-[90vh] w-full bg-[#fdfdfd] overflow-hidden flex items-center">
-      
-      {/* 1. THE DATA GRID BACKGROUND (Subtle) */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-           style={{ backgroundImage: `linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)`, backgroundSize: '50px 50px' }}>
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-6">
+
+      {/* BACKGROUND */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={heroBg}
+          alt="Freight truck on highway"
+          className="w-full h-full object-cover"
+        />
+        {/* Multi-layer overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20" />
       </div>
 
-      <div className="container mx-auto px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
-        
-        {/* LEFT: TEXT CONTENT */}
-        <motion.div 
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+      {/* SUBTLE GRID OVERLAY */}
+      <div
+        className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)`,
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      {/* MAIN CONTENT */}
+      <div className="relative z-10 max-w-5xl w-full text-center text-white">
+
+        {/* Eyebrow Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 px-4 py-2 rounded-full mb-8"
         >
-          <div className="flex items-center gap-2 mb-6">
-            <span className="h-1px w-8 bg-accent"></span>
-            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">Next-Gen Logistics</span>
+          <div className="bg-accent/80 p-1 rounded-full">
+            <Star size={11} className="fill-white text-white" />
           </div>
-          
-          <h1 className="text-primary leading-[0.95] mb-8">
-            The Science of <br />
-            <span className="text-accent italic">Global Transit.</span>
-          </h1>
-          
-          <p className="max-w-lg text-lg text-[#171a20]/70 font-medium leading-relaxed mb-10">
-            Specialized heavy-duty inventory and surgical shipping corridors from Korea to Ghana. We don't just move freight; we engineer the journey.
-          </p>
-
-          <div className="flex flex-wrap gap-4">
-            <button className="bg-primary text-white px-10 py-5 rounded-sm font-black uppercase tracking-widest text-xs hover:bg-accent transition-all shadow-2xl shadow-primary/20 active:scale-95 flex items-center gap-3">
-              Explore Inventory <ChevronRight size={16} />
-            </button>
-            <button className="border border-black/10 px-10 py-5 rounded-sm font-black uppercase tracking-widest text-xs hover:bg-black/5 transition-all flex items-center gap-3">
-              <Play size={14} fill="currentColor" /> Watch Mission
-            </button>
-          </div>
-
-          {/* TRUST STATS */}
-          <div className="mt-16 grid grid-cols-3 gap-8 border-t border-black/5 pt-10">
-            <div>
-              <p className="text-2xl font-black text-primary">500+</p>
-              <p className="text-[10px] font-bold text-muted uppercase tracking-widest">Successful Transits</p>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-primary">22d</p>
-              <p className="text-[10px] font-bold text-muted uppercase tracking-widest">Avg. Busan → Tema</p>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-primary">100%</p>
-              <p className="text-[10px] font-bold text-muted uppercase tracking-widest">Secure Delivery</p>
-            </div>
-          </div>
+          <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.25em] text-white/90">
+            Premium Freight · Korea → Ghana
+          </span>
+          {/* Live pulse */}
+          <span className="relative flex h-2 w-2 ml-1">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+          </span>
         </motion.div>
 
-        {/* RIGHT: THE INTERACTIVE TRUCK HUB */}
-        <div className="relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="relative z-10"
+        {/* HEADLINE with inline image */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="font-black leading-[1.08] tracking-tighter mb-6 text-white"
+        >
+          Freight That Moves
+          <br className="hidden sm:block" />
+          <span className="inline-flex flex-wrap items-center justify-center gap-3 mt-2">
+            the
+            {/* Inline tilted image */}
+            <span className="inline-flex items-center align-middle w-20 md:w-28 h-12 md:h-16 rounded-xl overflow-hidden border-2 border-white/20 rotate-[-3deg] shadow-2xl">
+              <img src={mini2} className="w-full h-full object-cover scale-110" alt="truck" />
+            </span>
+            World
+          </span>
+          <br />
+          <span className="text-accent relative">
+            {displayText}
+            <span className="inline-block w-[3px] h-[0.75em] bg-accent ml-1 align-middle animate-pulse" />
+          </span>
+        </motion.h1>
+
+        {/* Subheading */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-white/50 text-base md:text-lg font-medium max-w-xl mx-auto mb-10 leading-relaxed"
+        >
+          Truck Doctors handles end-to-end truck shipping from South Korea
+          to Ghana — port pickup, customs clearance, final delivery.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <Link
+            to="/quote"
+            className="group w-full sm:w-auto bg-accent hover:bg-accent-dark text-white px-8 py-4 rounded-sm font-bold flex items-center justify-center gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-sm uppercase tracking-widest"
           >
-            <img 
-              src={heroTruck} 
-              alt="Premium Freight Truck" 
-              className="w-full h-auto drop-shadow-[0_50px_50px_rgba(0,0,0,0.1)]"
+            Get a Quote
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
+          <Link
+            to="/track"
+            className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 text-white px-8 py-4 rounded-sm font-bold transition-all duration-200 text-sm uppercase tracking-widest"
+          >
+            Track Shipment
+          </Link>
+        </motion.div>
+
+        {/* Route indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="mt-10 flex items-center justify-center gap-3 text-white/30"
+        >
+          <div className="flex items-center gap-1.5">
+            <MapPin size={11} className="text-accent" />
+            <span className="text-[11px] font-bold uppercase tracking-widest">Busan, KR</span>
+          </div>
+          <div className="flex items-center gap-1">
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-1.5 h-px bg-accent/50 rounded-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9 + i * 0.08 }}
+              />
+            ))}
+            <motion.div
+              className="w-2 h-2 rounded-full bg-accent"
+              animate={{ x: [0, 40, 0] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 1.5 }}
             />
-          </motion.div>
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-1.5 h-px bg-accent/50 rounded-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.4 + i * 0.08 }}
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-1.5">
+            <MapPin size={11} className="text-accent" />
+            <span className="text-[11px] font-bold uppercase tracking-widest">Tema, GH</span>
+          </div>
+        </motion.div>
+      </div>
 
-          {/* FLOATING DATA CARDS (The Creative Spark) */}
-          <FloatingCard 
-            icon={<Globe className="text-accent" size={18} />}
-            label="Current Route"
-            value="KR-BUS ➔ GH-TEM"
-            position="top-0 -right-4"
-            delay={0.5}
-          />
-          <FloatingCard 
-            icon={<Zap className="text-yellow-500" size={18} />}
-            label="System Health"
-            value="Optimal"
-            position="bottom-10 -left-10"
-            delay={0.8}
-          />
-          <FloatingCard 
-            icon={<ShieldCheck className="text-green-500" size={18} />}
-            label="Cargo Status"
-            value="Insured & Tracked"
-            position="top-1/2 -right-12"
-            delay={1.1}
-          />
+      {/* FLOATING WIDGET — Bottom Left: Client Stack */}
+      <motion.div
+        initial={{ opacity: 0, x: -40, y: 20 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ delay: 0.9, type: "spring", stiffness: 200 }}
+        className="absolute bottom-12 left-8 hidden lg:flex items-center gap-4 bg-white/95 backdrop-blur-md p-3 pr-6 rounded-2xl shadow-2xl border border-white/20"
+      >
+        <div className="flex -space-x-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-slate-200">
+              <img src={`https://i.pravatar.cc/150?u=truck${i}`} alt="client" />
+            </div>
+          ))}
+          <div className="w-10 h-10 rounded-full border-2 border-white bg-primary text-white flex items-center justify-center text-[9px] font-black">
+            500+
+          </div>
         </div>
-      </div>
+        <div className="flex flex-col">
+          <span className="text-xs font-black text-primary">Business Clients</span>
+          <span className="text-[10px] text-muted font-medium">Across West Africa</span>
+        </div>
+      </motion.div>
 
-      {/* BACKGROUND ACCENT GRADIENT */}
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-125 h-125 bg-accent/5 blur-[120px] rounded-full pointer-events-none"></div>
+      {/* FLOATING WIDGET — Bottom Right: Shipment Card */}
+      <motion.div
+        initial={{ opacity: 0, x: 40, y: 20 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ delay: 1, type: "spring", stiffness: 200 }}
+        className="absolute bottom-12 right-8 hidden lg:flex flex-col gap-3 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-white/20 w-60"
+      >
+        {/* Mini image */}
+        <div className="w-full h-28 rounded-xl overflow-hidden">
+          <img src={mini1} className="w-full h-full object-cover" alt="shipment" />
+        </div>
+        {/* Dispatch status */}
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+          </span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-green-600">Dispatch Active</span>
+        </div>
+        <div>
+          <h4 className="text-2xl font-black text-primary tracking-tighter leading-none">10,000+</h4>
+          <p className="text-[10px] font-bold text-muted uppercase tracking-widest mt-1">Successful Shipments</p>
+        </div>
+        {/* Transit time */}
+        <div className="flex items-center gap-2 pt-2 border-t border-border">
+          <Clock size={12} className="text-accent" />
+          <span className="text-[11px] font-bold text-muted">18–22 days · Korea → Ghana</span>
+        </div>
+      </motion.div>
+
+      {/* MOBILE BOTTOM STATS */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        className="lg:hidden relative z-10 mt-12 flex gap-3 w-full max-w-md"
+      >
+        <div className="flex-1 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col gap-1">
+          <span className="text-white font-black text-xl">10k+</span>
+          <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest">Shipments</span>
+        </div>
+        <div className="flex-1 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col gap-1">
+          <span className="text-accent font-black text-xl">18–22</span>
+          <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest">Days Transit</span>
+        </div>
+        <div className="flex-1 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col gap-1">
+          <span className="text-white font-black text-xl">500+</span>
+          <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest">Clients</span>
+        </div>
+      </motion.div>
+
+      {/* SCROLL HINT */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden lg:flex flex-col items-center gap-2"
+      >
+        <span className="text-[9px] uppercase tracking-[0.3em] text-white/25 font-black">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          className="w-px h-8 bg-gradient-to-b from-white/25 to-transparent"
+        />
+      </motion.div>
+
     </section>
-  );
-}
-
-function FloatingCard({ icon, label, value, position, delay }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        delay, 
-        duration: 0.8,
-        repeat: Infinity,
-        repeatType: "reverse",
-        repeatDelay: 0.5,
-        duration: 3
-      }}
-      className={`absolute ${position} hidden md:flex items-center gap-4 bg-white/80 backdrop-blur-md border border-black/5 p-4 rounded-xl shadow-xl z-20`}
-    >
-      <div className="bg-slate-50 p-2 rounded-lg">{icon}</div>
-      <div>
-        <p className="text-[9px] font-black uppercase text-muted tracking-widest leading-none mb-1">{label}</p>
-        <p className="text-xs font-bold text-primary">{value}</p>
-      </div>
-    </motion.div>
   );
 }
