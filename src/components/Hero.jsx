@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Star, MapPin, Clock } from "lucide-react";
+import { ArrowRight, MapPin, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// 🔁 3 slides — swap image imports for your real truck photos
 import slide1 from "../assets/homepage-images/truck1.avif";
 import slide2 from "../assets/homepage-images/truck1.avif";
 import slide3 from "../assets/homepage-images/truck1.avif";
@@ -14,16 +13,14 @@ const SLIDES = [
     id: 1,
     image: slide1,
     word: "Precision.",
-    headline: "Freight That Moves",
-    inline: slide1,
+    headline: "Freight Built on",
     sub: "Truck Doctors delivers end-to-end truck shipping from South Korea to Ghana — port pickup, customs clearance, final delivery.",
   },
   {
     id: 2,
     image: slide2,
     word: "Speed.",
-    headline: "Logistics Built on",
-    inline: slide2,
+    headline: "Logistics Driven by",
     sub: "18 to 22 days from Busan Port to Tema. Fast clearance, no delays, no surprises — just your cargo, on time.",
   },
   {
@@ -31,19 +28,17 @@ const SLIDES = [
     image: slide3,
     word: "Trust.",
     headline: "Your Cargo, Our",
-    inline: slide3,
     sub: "Every shipment is fully insured and tracked. 500+ businesses across West Africa trust Truck Doctors to deliver.",
   },
 ];
+
+const DURATION = 5000;
+const INTERVAL = 50;
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  const DURATION = 5000; // 5s per slide
-  const INTERVAL = 50;   // progress tick
-
-  // Auto-advance slides
   useEffect(() => {
     setProgress(0);
     const tick = setInterval(() => {
@@ -64,27 +59,28 @@ export default function Hero() {
   return (
     <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-6">
 
-      {/* BACKGROUND IMAGE — crossfade */}
+      {/* BACKGROUND — clean crossfade, NO scale/zoom */}
       <AnimatePresence mode="sync">
         <motion.div
           key={slide.id}
           className="absolute inset-0 z-0"
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 1.2, ease: "easeInOut" }}
         >
           <img
             src={slide.image}
-            alt="Freight background"
-            className="w-full h-full object-cover"
+            alt="Freight truck"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20" />
+          {/* Dark gradient overlays for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/10" />
         </motion.div>
       </AnimatePresence>
 
-      {/* GRID OVERLAY */}
+      {/* SUBTLE GRID OVERLAY */}
       <div
         className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none"
         style={{
@@ -97,27 +93,8 @@ export default function Hero() {
       {/* MAIN CONTENT */}
       <div className="relative z-10 max-w-5xl w-full text-center text-white">
 
-        {/* Eyebrow Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 px-4 py-2 rounded-full mb-8"
-        >
-          <div className="bg-accent/80 p-1 rounded-full">
-            <Star size={11} className="fill-white text-white" />
-          </div>
-          <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.25em] text-white/90">
-            Premium Freight · Korea → Ghana
-          </span>
-          <span className="relative flex h-2 w-2 ml-1">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-          </span>
-        </motion.div>
-
-        {/* HEADLINE — synced with slide */}
-        <div className="mb-6 min-h-[7rem] sm:min-h-[9rem] lg:min-h-[11rem] flex items-center justify-center">
+        {/* HEADLINE */}
+        <div className="mb-6 min-h-[8rem] sm:min-h-[10rem] lg:min-h-[13rem] flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.h1
               key={slide.id}
@@ -128,26 +105,7 @@ export default function Hero() {
               className="font-black leading-[1.08] tracking-tighter text-white"
             >
               {slide.headline}
-              <br className="hidden sm:block" />
-              <span className="inline-flex flex-wrap items-center justify-center gap-3 mt-2">
-                the
-                {/* Inline truck image — also changes */}
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={`img-${slide.id}`}
-                    initial={{ opacity: 0, rotate: -6, scale: 0.85 }}
-                    animate={{ opacity: 1, rotate: -3, scale: 1 }}
-                    exit={{ opacity: 0, rotate: 0, scale: 0.9 }}
-                    transition={{ duration: 0.5 }}
-                    className="inline-flex items-center align-middle w-20 md:w-28 h-12 md:h-16 rounded-xl overflow-hidden border-2 border-white/20 shadow-2xl"
-                  >
-                    <img src={slide.inline} className="w-full h-full object-cover scale-110" alt="truck" />
-                  </motion.span>
-                </AnimatePresence>
-                World
-              </span>
               <br />
-              {/* Changing word — accent colored */}
               <AnimatePresence mode="wait">
                 <motion.span
                   key={`word-${slide.id}`}
@@ -164,7 +122,7 @@ export default function Hero() {
           </AnimatePresence>
         </div>
 
-        {/* Subheading — also changes */}
+        {/* SUBHEADING */}
         <div className="min-h-[3.5rem] flex items-center justify-center mb-10">
           <AnimatePresence mode="wait">
             <motion.p
@@ -173,7 +131,7 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="text-white/50 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed"
+              className="text-white/55 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed"
             >
               {slide.sub}
             </motion.p>
@@ -185,29 +143,29 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
         >
           <Link
             to="/quote"
-            className="group w-full sm:w-auto bg-accent hover:bg-accent-dark text-white px-8 py-4 rounded-sm font-bold flex items-center justify-center gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-sm uppercase tracking-widest"
+            className="group w-full sm:w-auto bg-accent hover:bg-accent-dark text-white px-10 py-4 rounded-sm font-bold flex items-center justify-center gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-sm uppercase tracking-widest"
           >
             Get a Quote
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
             to="/track"
-            className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 text-white px-8 py-4 rounded-sm font-bold transition-all duration-200 text-sm uppercase tracking-widest"
+            className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/25 hover:bg-white/20 hover:border-white/40 text-white px-10 py-4 rounded-sm font-bold transition-all duration-200 text-sm uppercase tracking-widest"
           >
             Track Shipment
           </Link>
         </motion.div>
 
-        {/* Route indicator */}
+        {/* ROUTE INDICATOR */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="flex items-center justify-center gap-3 text-white/30"
+          className="flex items-center justify-center gap-3 text-white/30 mb-10"
         >
           <div className="flex items-center gap-1.5">
             <MapPin size={11} className="text-accent" />
@@ -231,28 +189,28 @@ export default function Hero() {
             <span className="text-[11px] font-bold uppercase tracking-widest">Tema, GH</span>
           </div>
         </motion.div>
-      </div>
 
-      {/* SLIDE PROGRESS INDICATORS */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3">
-        {SLIDES.map((s, i) => (
-          <button
-            key={s.id}
-            onClick={() => setCurrent(i)}
-            className="relative h-[3px] rounded-full overflow-hidden bg-white/20 transition-all duration-300 cursor-pointer"
-            style={{ width: i === current ? "48px" : "20px" }}
-          >
-            {i === current && (
-              <motion.div
-                className="absolute inset-y-0 left-0 bg-accent rounded-full"
-                style={{ width: `${progress}%` }}
-              />
-            )}
-            {i !== current && (
-              <div className="absolute inset-0 bg-white/30 rounded-full" />
-            )}
-          </button>
-        ))}
+        {/* SLIDE PROGRESS INDICATORS */}
+        <div className="flex items-center justify-center gap-3">
+          {SLIDES.map((s, i) => (
+            <button
+              key={s.id}
+              onClick={() => setCurrent(i)}
+              className="relative h-[3px] rounded-full overflow-hidden bg-white/20 transition-all duration-300 cursor-pointer"
+              style={{ width: i === current ? "48px" : "20px" }}
+            >
+              {i === current && (
+                <motion.div
+                  className="absolute inset-y-0 left-0 bg-accent rounded-full"
+                  style={{ width: `${progress}%` }}
+                />
+              )}
+              {i !== current && (
+                <div className="absolute inset-0 bg-white/30 rounded-full" />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* FLOATING WIDGET — Bottom Left */}
