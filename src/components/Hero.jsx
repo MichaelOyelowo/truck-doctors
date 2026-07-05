@@ -3,32 +3,32 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, MapPin, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import slide1 from "../assets/homepage-images/truck1.avif";
-import slide2 from "../assets/homepage-images/truck1.avif";
-import slide3 from "../assets/homepage-images/truck1.avif";
-import mini1 from "../assets/homepage-images/truck1.avif";
+import slide1 from "../assets/homepage-images/hero-truck1.avif";
+import slide2 from "../assets/homepage-images/hero-truck2.avif";
+import slide3 from "../assets/homepage-images/hero-truck3.avif";
+import mini1 from "../assets/homepage-images/hero-truck1.avif";
 
 const SLIDES = [
   {
     id: 1,
     image: slide1,
     word: "Precision.",
-    headline: "Freight Built on",
-    sub: "Truck Doctors delivers end-to-end truck shipping from South Korea to Ghana — port pickup, customs clearance, final delivery.",
+    headline: "Buy Quality Trucks,",
+    sub: "We source and sell premium commercial trucks directly from South Korea — inspected, certified, and ready to work the moment they arrive in Ghana.",
   },
   {
     id: 2,
     image: slide2,
     word: "Speed.",
-    headline: "Logistics Driven by",
-    sub: "18 to 22 days from Busan Port to Tema. Fast clearance, no delays, no surprises — just your cargo, on time.",
+    headline: "We Ship Straight,",
+    sub: "From our yard in South Korea to Tema Port in 18 to 22 days. We handle export documentation, customs clearance, and port delivery — you just receive your truck.",
   },
   {
     id: 3,
     image: slide3,
     word: "Trust.",
-    headline: "Your Cargo, Our",
-    sub: "Every shipment is fully insured and tracked. 500+ businesses across West Africa trust Truck Doctors to deliver.",
+    headline: "Customer's First,",
+    sub: "From helping you choose the right truck to clearing customs and final delivery, Truck Doctors is your trusted partner every step of the journey.",
   },
 ];
 
@@ -57,7 +57,7 @@ export default function Hero() {
   const slide = SLIDES[current];
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-6">
+    <section className="relative w-full flex flex-col items-center justify-center overflow-hidden px-6">
 
       {/* BACKGROUND — clean crossfade, NO scale/zoom */}
       <AnimatePresence mode="sync">
@@ -113,7 +113,8 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-accent"
+                  className="font-serif italic font-medium lowercase tracking-normal text-white block mt-2"
+                  style={{ fontFamily: 'var(--font-serif)' }}
                 >
                   {slide.word}
                 </motion.span>
@@ -156,7 +157,7 @@ export default function Hero() {
             to="/track"
             className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/25 hover:bg-white/20 hover:border-white/40 text-white px-10 py-4 rounded-sm font-bold transition-all duration-200 text-sm uppercase tracking-widest"
           >
-            Track Shipment
+            View Inventory
           </Link>
         </motion.div>
 
@@ -280,21 +281,6 @@ export default function Hero() {
             <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest">{stat.label}</span>
           </div>
         ))}
-      </motion.div>
-
-      {/* SCROLL HINT */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden lg:flex flex-col items-center gap-2"
-      >
-        <span className="text-[9px] uppercase tracking-[0.3em] text-white/25 font-black">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-          className="w-px h-8 bg-gradient-to-b from-white/25 to-transparent"
-        />
       </motion.div>
 
     </section>

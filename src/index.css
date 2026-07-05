@@ -10,9 +10,12 @@
   --color-muted: #6B7280;
   --color-border: #E5E7EB;
   --color-surface: #F9FAFB;
+   --color-neon-yellow: #ccff00;
+  --color-electric-amber: #fbbf24;
 
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui;
+   --font-serif: 'Playfair Display', serif;
 
   /* Animations */
   --animate-marquee: marquee 25s linear infinite;

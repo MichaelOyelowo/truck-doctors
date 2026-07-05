@@ -22,7 +22,7 @@ function Navbar() {
     <>
       <header className={`sticky top-0 z-40 w-full transition-all duration-500 border-b 
         ${scrolled ? "bg-[#fdfdfd]/80 backdrop-blur-xl border-black/5 py-3 shadow-sm" 
-    : "bg-[#fdfdfd] border-transparent py-5"}`}>
+    : "bg-[#f7f4f4] border-transparent py-2"}`}>
         
         <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* LOGO */}
