@@ -1,59 +1,151 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
-import { Fuel, Weight, Gauge, Calendar, ArrowRight } from "lucide-react";
+import { Fuel, Weight, Gauge, Calendar, ArrowRight, Settings, Zap, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import truckFront from "../assets/homepage-images/hero-truck1.avif";
-import truckSide from "../assets/homepage-images/hero-truck2.avif";
-import truckBack from "../assets/homepage-images/hero-truck3.avif";
-import truckAngle from "../assets/homepage-images/hero-truck3.avif";
+import manFront from "../assets/homepage-images/man/man1.avif";
+import manSide from "../assets/homepage-images/man/man2.avif";
+import manBack from "../assets/homepage-images/man/man3.avif";
+import manAngle from "../assets/homepage-images/man/man4.avif";
 
-const views = [truckFront, truckSide, truckBack, truckAngle];
+import rhinoFront from "../assets/homepage-images/rhino/rhino1.avif";
+import rhinoSide from "../assets/homepage-images/rhino/rhino2.avif";
+import rhinoBack from "../assets/homepage-images/rhino/rhino3.avif";
+
+import kiaFront from "../assets/homepage-images/kia/kia1.avif";
+import kiaSide from "../assets/homepage-images/kia/kia2.avif";
+import kiaBack from "../assets/homepage-images/kia/kia3.avif";
+import kiaAngle from "../assets/homepage-images/kia/kia4.avif";
+
+import daewooFront from "../assets/homepage-images/daewoo/daewoo1.avif";
+import daewooSide from "../assets/homepage-images/daewoo/daewoo2.avif";
+import daewooBack from "../assets/homepage-images/daewoo/daewoo3.avif";
+import daewooAngle from "../assets/homepage-images/daewoo/daewoo4.avif";
 
 const TRUCKS = [
   {
     id: 1,
-    name: "Hyundai Xcient",
-    type: "Heavy Duty Semi-Truck",
-    year: "2021",
-    mileage: "84,000 km",
-    engine: "12.3L Diesel",
-    payload: "25 Tonnes",
-    price: "$28,500",
+    brand: "MAN",
+    name: "MAN TGX 18.510",
+    type: "Heavy-Duty Tractor Unit",
+
+    views: [
+      manFront,
+      manSide,
+      manBack,
+      manAngle,
+    ],
+
+    year: "2022",
+    mileage: "148,000 km",
+    engine: "12.4L MAN D26 Turbo Diesel",
+    horsepower: "510 HP",
+    transmission: "12-Speed TipMatic",
+    drivetrain: "6x4",
+    fuel: "Diesel",
+    payload: "44 Tonnes",
+    price: "$54,900",
     condition: "Excellent",
-    description: "A powerhouse built for long-haul freight. Fully inspected in Busan, cleared through Tema Port, and ready to earn from day one in Ghana.",
+    badge: "Best Seller",
+
+    description:
+      "Engineered for long-haul transportation, the MAN TGX 18.510 combines outstanding fuel efficiency, exceptional driver comfort, and reliable performance for demanding commercial operations.",
   },
+
   {
     id: 2,
-    name: "Kia Granbird",
-    type: "Long Haul Freight Truck",
-    year: "2022",
-    mileage: "61,000 km",
-    engine: "11.0L Turbo",
-    payload: "20 Tonnes",
-    price: "$32,000",
+    brand: "Rhino",
+    name: "Rhino Tractor Head",
+    type: "Heavy Cargo Truck",
+
+    views: [
+      rhinoFront,
+      rhinoSide,
+      rhinoBack,
+    ],
+
+    year: "2021",
+    mileage: "186,000 km",
+    engine: "11.5L Turbo Diesel",
+    horsepower: "420 HP",
+    transmission: "12-Speed Manual",
+    drivetrain: "6x4",
+    fuel: "Diesel",
+    payload: "30 Tonnes",
+    price: "$43,500",
     condition: "Very Good",
-    description: "Low mileage, high reliability. This Kia handles the Korea–Ghana corridor with zero compromises. Ships within 7 days of order confirmation.",
+    badge: "Fleet Choice",
+
+    description:
+      "Built to handle demanding transport operations with exceptional durability, reliable performance, and lower operating costs.",
   },
+
   {
     id: 3,
+    brand: "Kia",
+    name: "Kia Granbird Cargo",
+    type: "Medium Duty Distribution Truck",
+
+    views: [
+      kiaFront,
+      kiaSide,
+      kiaBack,
+      kiaAngle,
+    ],
+
+    year: "2023",
+    mileage: "72,000 km",
+    engine: "6.9L Turbo Diesel",
+    horsepower: "290 HP",
+    transmission: "Automatic",
+    drivetrain: "4x2",
+    fuel: "Diesel",
+    payload: "18 Tonnes",
+    price: "$39,500",
+    condition: "Like New",
+    badge: "Low Mileage",
+
+    description:
+      "Designed for urban logistics and regional deliveries with excellent fuel economy, maneuverability, and dependable daily performance.",
+  },
+
+  {
+    id: 4,
+    brand: "Daewoo",
     name: "Daewoo Novus",
-    type: "Medium Duty Cargo Truck",
+    type: "Heavy Duty Cargo Truck",
+
+    views: [
+      daewooFront,
+      daewooSide,
+      daewooBack,
+      daewooAngle,
+    ],
+
     year: "2020",
-    mileage: "102,000 km",
-    engine: "9.2L Diesel",
-    payload: "15 Tonnes",
-    price: "$19,800",
-    condition: "Good",
-    description: "The smart entry point into commercial trucking. Road-ready on arrival, budget-friendly, and backed by our full after-sale support team.",
+    mileage: "134,000 km",
+    engine: "10.9L Diesel",
+    horsepower: "430 HP",
+    transmission: "Manual",
+    drivetrain: "6x4",
+    fuel: "Diesel",
+    payload: "25 Tonnes",
+    price: "$35,900",
+    condition: "Excellent",
+    badge: "Ready to Work",
+
+    description:
+      "A dependable heavy-duty truck engineered for commercial transport, offering excellent reliability, strong performance, and cost-effective operation.",
   },
 ];
 
 const SPECS = [
-  { icon: Calendar, key: "year", label: "Year" },
-  { icon: Gauge, key: "mileage", label: "Mileage" },
-  { icon: Fuel, key: "engine", label: "Engine" },
-  { icon: Weight, key: "payload", label: "Payload" },
+  { icon: Calendar, key: "year", label: "Year", },
+  { icon: Gauge, key: "mileage", label: "Mileage", },
+  { icon: Fuel, key: "engine", label: "Engine", },
+  { icon: Zap, key: "horsepower", label: "Power", },
+  { icon: Settings, key: "transmission", label: "Transmission", },
+  { icon: Truck, key: "payload", label: "Payload", },
 ];
 
 function SteeringWheel({ rotation, isRunning }) {
@@ -171,7 +263,14 @@ export default function InteractiveInventory() {
         if (dragState.current.dragging) return;
         const next = rotation.get() + 1.4;
         rotation.set(next);
-        const viewIndex = Math.floor(((next % 360) + 360) % 360 / 90) % 4;
+        const totalViews = truck.views.length;
+        const viewIndex =
+          Math.floor(
+            (((next % 360) + 360) % 360) /
+              (360 / totalViews)
+          ) % totalViews;
+
+        setActiveView(viewIndex);
         setActiveView(viewIndex);
       }, 1000 / 60);
     }
@@ -207,7 +306,14 @@ export default function InteractiveInventory() {
 
     const next = rotation.get() + delta;
     rotation.set(next);
-    const viewIndex = Math.floor(((next % 360) + 360) % 360 / 90) % 4;
+    const totalViews = truck.views.length;
+    const viewIndex =
+      Math.floor(
+        (((next % 360) + 360) % 360) /
+          (360 / totalViews)
+      ) % totalViews;
+
+    setActiveView(viewIndex);
     setActiveView(viewIndex);
   };
 
@@ -227,7 +333,7 @@ export default function InteractiveInventory() {
       {/* Subtle top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-border" />
 
-      <div className="w-full max-w-6xl bg-white border border-primary/15 rounded-[2rem] shadow-sm px-6 sm:px-10 lg:px-14 py-14">
+      <div className="w-full max-w-6xl bg-white border border-primary/15 rounded-4xl shadow-sm px-6 sm:px-10 lg:px-14 py-14">
 
         {/* SECTION HEADER */}
         <div className="flex flex-col mb-16">
@@ -239,13 +345,14 @@ export default function InteractiveInventory() {
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
             <h2 className="text-primary tracking-tighter leading-none">
-              Examine the
+              Explore Our
               <br />
-              <span className="text-accent">Specimen.</span>
+              <span className="text-accent"> Premium Fleet. </span>
             </h2>
             <p className="text-muted text-sm leading-relaxed max-w-sm">
-              Every truck is physically inspected in South Korea before shipping.
-              Spin the wheel below to see the full 360° view.
+              Every truck in our inventory undergoes a comprehensive inspection to ensure
+              maximum reliability, performance, and road readiness. Rotate the steering wheel
+              below to explore each vehicle from every angle.
             </p>
           </div>
         </div>
@@ -286,6 +393,9 @@ export default function InteractiveInventory() {
                   {truck.type}
                 </p>
                 <h3 className="text-primary font-black tracking-tight leading-none mb-3">
+                  <span className="inline-flex mb-4 px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest">
+                    {truck.badge}
+                  </span>
                   {truck.name}
                 </h3>
                 <p className="text-muted text-sm leading-relaxed max-w-md">
@@ -305,7 +415,7 @@ export default function InteractiveInventory() {
                       <p className="text-[9px] font-black uppercase tracking-widest text-muted leading-none">
                         {spec.label}
                       </p>
-                      <p className="text-sm font-black text-primary mt-0.5">
+                      <p className="text-sm font-black mt-0.5">
                         {truck[spec.key]}
                       </p>
                     </div>
@@ -324,18 +434,18 @@ export default function InteractiveInventory() {
                       {truck.price}
                     </p>
                     <p className="text-[10px] font-bold text-muted mt-1 uppercase tracking-widest">
-                      FOB Busan Port · Shipping included
+                      Available for Inspection • Nationwide Delivery
                     </p>
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-green-600 bg-green-50 px-3 py-1.5 rounded-full border border-green-200">
+                  {/* <span className="text-[10px] font-black uppercase tracking-widest text-green-600 bg-green-50 px-3 py-1.5 rounded-full border border-green-200">
                     ● Available Now
-                  </span>
+                  </span> */}
                 </div>
                 <Link
                   to={`/trucks/${truck.id}`}
                   className="group flex items-center justify-center gap-2 bg-accent hover:bg-accent-dark text-white font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-accent/25"
                 >
-                  View Full Details
+                  Explore This Truck
                   <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
@@ -344,11 +454,11 @@ export default function InteractiveInventory() {
 
           {/* ===== RIGHT — Truck Image ===== */}
           <div className="flex flex-col gap-3">
-            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-white border border-border shadow-sm">
+            <div className="relative w-full aspect-4/3 rounded-2xl overflow-hidden bg-white border border-border shadow-sm">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={`${truck.id}-${activeView}`}
-                  src={views[activeView]}
+                  src={truck.views[activeView]}
                   alt={truck.name}
                   initial={{ opacity: 0, scale: 1.03 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -363,7 +473,7 @@ export default function InteractiveInventory() {
                 <motion.div
                   animate={{ y: ["0%", "100%", "0%"] }}
                   transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                  className="absolute left-0 right-0 h-[2px] bg-accent/40 shadow-[0_0_12px_#2563EB] z-20 pointer-events-none"
+                  className="absolute left-0 right-0 h-0.5 bg-accent/40 shadow-[0_0_12px_#2563EB] z-20 pointer-events-none"
                 />
               )}
 
@@ -428,7 +538,7 @@ export default function InteractiveInventory() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-[-16px] rounded-full border border-accent/20 pointer-events-none"
+                    className="absolute -inset-4 rounded-full border border-accent/20 pointer-events-none"
                     style={{ boxShadow: "0 0 40px rgba(37,99,235,0.12)" }}
                   />
                 )}
@@ -436,7 +546,7 @@ export default function InteractiveInventory() {
             </div>
 
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted text-center">
-              {isRunning ? "Tap to stop · drag to look around" : "Tap to start · drag to look around"}
+              {isRunning ? "Tap to stop • Drag to rotate" : "Tap to activate • Drag to rotate" }
             </span>
           </div>
         </div>
