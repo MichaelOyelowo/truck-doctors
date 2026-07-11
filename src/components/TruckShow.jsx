@@ -26,7 +26,7 @@ const TRUCKS = [
   {
     id: 1,
     brand: "MAN",
-    name: "MAN TGX 18.510",
+    name: "MAN Truck",
     type: "Heavy-Duty Tractor Unit",
 
     views: [
@@ -45,7 +45,6 @@ const TRUCKS = [
     fuel: "Diesel",
     payload: "44 Tonnes",
     price: "$54,900",
-    condition: "Excellent",
     badge: "Best Seller",
 
     description:
@@ -54,65 +53,8 @@ const TRUCKS = [
 
   {
     id: 2,
-    brand: "Rhino",
-    name: "Rhino Tractor Head",
-    type: "Heavy Cargo Truck",
-
-    views: [
-      rhinoFront,
-      rhinoSide,
-      rhinoBack,
-    ],
-
-    year: "2021",
-    mileage: "186,000 km",
-    engine: "11.5L Turbo Diesel",
-    horsepower: "420 HP",
-    transmission: "12-Speed Manual",
-    drivetrain: "6x4",
-    fuel: "Diesel",
-    payload: "30 Tonnes",
-    price: "$43,500",
-    condition: "Very Good",
-    badge: "Fleet Choice",
-
-    description:
-      "Built to handle demanding transport operations with exceptional durability, reliable performance, and lower operating costs.",
-  },
-
-  {
-    id: 3,
-    brand: "Kia",
-    name: "Kia Granbird Cargo",
-    type: "Medium Duty Distribution Truck",
-
-    views: [
-      kiaFront,
-      kiaSide,
-      kiaBack,
-      kiaAngle,
-    ],
-
-    year: "2023",
-    mileage: "72,000 km",
-    engine: "6.9L Turbo Diesel",
-    horsepower: "290 HP",
-    transmission: "Automatic",
-    drivetrain: "4x2",
-    fuel: "Diesel",
-    payload: "18 Tonnes",
-    price: "$39,500",
-    condition: "Like New",
-    badge: "Low Mileage",
-
-    description:
-      "Designed for urban logistics and regional deliveries with excellent fuel economy, maneuverability, and dependable daily performance.",
-  },
-
-  {
-    id: 4,
     brand: "Daewoo",
-    name: "Daewoo Novus",
+    name: "Daewoo",
     type: "Heavy Duty Cargo Truck",
 
     views: [
@@ -131,11 +73,65 @@ const TRUCKS = [
     fuel: "Diesel",
     payload: "25 Tonnes",
     price: "$35,900",
-    condition: "Excellent",
     badge: "Ready to Work",
 
     description:
       "A dependable heavy-duty truck engineered for commercial transport, offering excellent reliability, strong performance, and cost-effective operation.",
+  },
+
+  {
+    id: 3,
+    brand: "Rhino",
+    name: "Rhino Truck",
+    type: "Heavy Cargo Truck",
+
+    views: [
+      rhinoFront,
+      rhinoSide,
+      rhinoBack,
+    ],
+
+    year: "2021",
+    mileage: "186,000 km",
+    engine: "11.5L Turbo Diesel",
+    horsepower: "420 HP",
+    transmission: "12-Speed Manual",
+    drivetrain: "6x4",
+    fuel: "Diesel",
+    payload: "30 Tonnes",
+    price: "$43,500",
+    badge: "Fleet Choice",
+
+    description:
+      "Built to handle demanding transport operations with exceptional durability, reliable performance, and lower operating costs.",
+  },
+
+  {
+    id: 4,
+    brand: "Kia",
+    name: "Kia Cargo",
+    type: "Medium Duty Distribution Truck",
+
+    views: [
+      kiaFront,
+      kiaSide,
+      kiaBack,
+      kiaAngle,
+    ],
+
+    year: "2023",
+    mileage: "72,000 km",
+    engine: "6.9L Turbo Diesel",
+    horsepower: "290 HP",
+    transmission: "Automatic",
+    drivetrain: "4x2",
+    fuel: "Diesel",
+    payload: "18 Tonnes",
+    price: "$39,500",
+    badge: "Low Mileage",
+
+    description:
+      "Designed for urban logistics and regional deliveries with excellent fuel economy, maneuverability, and dependable daily performance.",
   },
 ];
 
@@ -495,11 +491,11 @@ export default function InteractiveInventory() {
               </AnimatePresence>
 
               {/* Condition badge */}
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-border px-3 py-1.5 rounded-full shadow-sm">
+              {/* <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-border px-3 py-1.5 rounded-full shadow-sm">
                 <span className="text-[10px] font-black uppercase tracking-widest text-primary">
                   {truck.condition} Condition
                 </span>
-              </div>
+              </div> */}
 
               {/* View dots */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -519,37 +515,92 @@ export default function InteractiveInventory() {
         </div>
 
         {/* ===== BOTTOM — Steering Wheel only (WHITE BACKGROUND) ===== */}
-        <div className="w-full bg-white border border-border rounded-3xl p-10 shadow-sm">
-          <div className="flex flex-col items-center justify-center gap-4">
+        {/* ===== BOTTOM — Steering Wheel only ===== */}
+<div className="relative w-full bg-white border border-border rounded-3xl p-10 shadow-sm overflow-hidden">
 
-            {/* Steering Wheel — tap to start/stop, drag to look around */}
-            <div
-              ref={wheelRef}
-              onPointerDown={handlePointerDown}
-              className="relative w-56 h-56 sm:w-64 sm:h-64 cursor-grab active:cursor-grabbing touch-none select-none"
-              style={{ touchAction: "none" }}
-            >
-              <SteeringWheel rotation={rotation} isRunning={isRunning} />
+  {/* TOP LEFT CORNER */}
+  <div className="absolute top-0 left-0 w-48 h-48 pointer-events-none">
+    <div className="absolute top-0 left-0 w-full h-full bg-accent/5 rounded-br-full blur-2xl" />
+    <div className="absolute top-0 left-0 w-24 h-24 bg-accent/8 rounded-br-full blur-xl" />
+    <div className="absolute top-0 left-6 w-12 h-px bg-gradient-to-r from-accent/60 to-transparent" />
+    <div className="absolute top-0 left-6 w-px h-12 bg-gradient-to-b from-accent/60 to-transparent" />
+  </div>
 
-              {/* Glow ring when running */}
-              <AnimatePresence>
-                {isRunning && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute -inset-4 rounded-full border border-accent/20 pointer-events-none"
-                    style={{ boxShadow: "0 0 40px rgba(37,99,235,0.12)" }}
-                  />
-                )}
-              </AnimatePresence>
-            </div>
+  {/* TOP RIGHT CORNER */}
+  <div className="absolute top-0 right-0 w-48 h-48 pointer-events-none">
+    <div className="absolute top-0 right-0 w-full h-full bg-accent/5 rounded-bl-full blur-2xl" />
+    <div className="absolute top-0 right-0 w-24 h-24 bg-accent/8 rounded-bl-full blur-xl" />
+    <div className="absolute top-0 right-6 w-12 h-px bg-gradient-to-l from-accent/60 to-transparent" />
+    <div className="absolute top-0 right-6 w-px h-12 bg-gradient-to-b from-accent/60 to-transparent" />
+  </div>
 
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted text-center">
-              {isRunning ? "Tap to stop • Drag to rotate" : "Tap to activate • Drag to rotate" }
-            </span>
-          </div>
-        </div>
+  {/* BOTTOM LEFT CORNER */}
+  <div className="absolute bottom-0 left-0 w-48 h-48 pointer-events-none">
+    <div className="absolute bottom-0 left-0 w-full h-full bg-accent/4 rounded-tr-full blur-2xl" />
+    <div className="absolute bottom-0 left-6 w-12 h-px bg-gradient-to-r from-accent/40 to-transparent" />
+    <div className="absolute bottom-0 left-6 w-px h-12 bg-gradient-to-t from-accent/40 to-transparent" />
+  </div>
+
+  {/* BOTTOM RIGHT CORNER */}
+  <div className="absolute bottom-0 right-0 w-48 h-48 pointer-events-none">
+    <div className="absolute bottom-0 right-0 w-full h-full bg-accent/4 rounded-tl-full blur-2xl" />
+    <div className="absolute bottom-0 right-6 w-12 h-px bg-gradient-to-l from-accent/40 to-transparent" />
+    <div className="absolute bottom-0 right-6 w-px h-12 bg-gradient-to-t from-accent/40 to-transparent" />
+  </div>
+
+  {/* ANIMATED BORDER SWEEP — top */}
+  <motion.div
+    className="absolute top-0 left-0 w-full h-px pointer-events-none"
+    style={{
+      background: "linear-gradient(90deg, transparent, rgba(37,99,235,0.5), transparent)",
+    }}
+    animate={{ x: ["-100%", "100%"] }}
+    transition={{ repeat: Infinity, duration: 4, ease: "linear", repeatDelay: 3 }}
+  />
+
+  {/* ANIMATED BORDER SWEEP — bottom */}
+  <motion.div
+    className="absolute bottom-0 left-0 w-full h-px pointer-events-none"
+    style={{
+      background: "linear-gradient(90deg, transparent, rgba(37,99,235,0.3), transparent)",
+    }}
+    animate={{ x: ["100%", "-100%"] }}
+    transition={{ repeat: Infinity, duration: 4, ease: "linear", repeatDelay: 3, delay: 2 }}
+  />
+
+  {/* CONTENT */}
+  <div className="relative z-10 flex flex-col items-center justify-center gap-4">
+
+    {/* Steering Wheel */}
+    <div
+      ref={wheelRef}
+      onPointerDown={handlePointerDown}
+      className="relative w-56 h-56 sm:w-64 sm:h-64 cursor-grab active:cursor-grabbing touch-none select-none"
+      style={{ touchAction: "none" }}
+    >
+      <SteeringWheel rotation={rotation} isRunning={isRunning} />
+
+      {/* Glow ring when running */}
+      <AnimatePresence>
+        {isRunning && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute -inset-4 rounded-full border border-accent/20 pointer-events-none"
+            style={{ boxShadow: "0 0 40px rgba(37,99,235,0.12)" }}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+
+    {/* Status text */}
+    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted text-center">
+      {isRunning ? "Tap to stop • Drag to rotate" : "Tap to activate • Drag to rotate"}
+    </span>
+
+  </div>
+</div>
 
       </div>
     </section>
