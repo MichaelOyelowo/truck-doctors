@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
-import { Key, Activity, MoveUp, Fuel, Weight, Gauge, Calendar, ArrowRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import { Fuel, Weight, Gauge, Calendar, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import truckFront from "../assets/homepage-images/hero-truck1.avif";
@@ -61,51 +61,72 @@ function SteeringWheel({ rotation, isRunning }) {
     <motion.svg
       style={{ rotate: rotation }}
       viewBox="0 0 200 200"
-      className="w-full h-full"
+      className="w-full h-full pointer-events-none"
     >
+      <defs>
+        {/* Radial gradient for the hub — gives it a lit, pressable feel */}
+        <radialGradient id="hubGradient" cx="35%" cy="30%" r="75%">
+          <stop offset="0%" stopColor={isRunning ? "#4F8CFF" : "#FFFFFF"} />
+          <stop offset="55%" stopColor={isRunning ? "#2563EB" : "#F3F4F6"} />
+          <stop offset="100%" stopColor={isRunning ? "#1D4ED8" : "#E5E7EB"} />
+        </radialGradient>
+
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
       {/* Outer rim */}
       <circle
         cx="100" cy="100" r="88"
         fill="none"
-        stroke={isRunning ? "#2563EB" : "#D1D5DB"}
+        stroke={isRunning ? "#e0e0b9" : "#D1D5DB"}
         strokeWidth="14"
         style={{ transition: "stroke 0.5s" }}
       />
+
       {/* Inner rim */}
       <circle
         cx="100" cy="100" r="65"
         fill="none"
-        stroke={isRunning ? "#2563EB" : "#E5E7EB"}
+        stroke={isRunning ? "#93B6FF" : "#E5E7EB"}
         strokeWidth="3"
         strokeDasharray="8 6"
         style={{ transition: "stroke 0.5s" }}
       />
-      {/* 3 spokes */}
-      <line x1="100" y1="78" x2="100" y2="14"
-        stroke={isRunning ? "#2563EB" : "#9CA3AF"}
+
+      {/* 3 spokes — equal length, 120° apart */}
+      <line x1="100" y1="76" x2="100" y2="12"
+        stroke={isRunning ? "#4c5c66" : "#9CA3AF"}
         strokeWidth="13" strokeLinecap="round"
         style={{ transition: "stroke 0.5s" }}
       />
-      <line x1="81" y1="113" x2="22" y2="170"
-        stroke={isRunning ? "#2563EB" : "#9CA3AF"}
+      <line x1="79" y1="112" x2="24" y2="144"
+        stroke={isRunning ? "#b8a67c" : "#9CA3AF"}
         strokeWidth="13" strokeLinecap="round"
         style={{ transition: "stroke 0.5s" }}
       />
-      <line x1="119" y1="113" x2="178" y2="170"
-        stroke={isRunning ? "#2563EB" : "#9CA3AF"}
+      <line x1="121" y1="112" x2="176" y2="144"
+        stroke={isRunning ? "#beb8a9" : "#9CA3AF"}
         strokeWidth="13" strokeLinecap="round"
         style={{ transition: "stroke 0.5s" }}
       />
-      {/* Center hub */}
+
+      {/* Center hub — gradient lives here */}
       <circle
         cx="100" cy="100" r="24"
-        fill={isRunning ? "#2563EB" : "#F3F4F6"}
+        fill="url(#hubGradient)"
         style={{ transition: "fill 0.5s" }}
       />
       <circle cx="100" cy="100" r="10"
-        fill={isRunning ? "#1D4ED8" : "#E5E7EB"}
+        fill={isRunning ? "#4d5f91" : "#E5E7EB"}
         style={{ transition: "fill 0.5s" }}
       />
+
       {/* Horn dots */}
       <circle cx="84" cy="100" r="3.5"
         fill={isRunning ? "white" : "#9CA3AF"}
@@ -115,6 +136,7 @@ function SteeringWheel({ rotation, isRunning }) {
         fill={isRunning ? "white" : "#9CA3AF"}
         style={{ transition: "fill 0.5s" }}
       />
+
       {/* Glow ring when running */}
       {isRunning && (
         <circle
@@ -126,15 +148,6 @@ function SteeringWheel({ rotation, isRunning }) {
           filter="url(#glow)"
         />
       )}
-      <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="5" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
     </motion.svg>
   );
 }
@@ -144,38 +157,77 @@ export default function InteractiveInventory() {
   const [activeView, setActiveView] = useState(0);
   const [activeTruck, setActiveTruck] = useState(0);
   const rotation = useMotionValue(0);
-  const dragY = useMotionValue(0);
+
+  const wheelRef = useRef(null);
+  const dragState = useRef({ dragging: false, moved: false, lastAngle: 0 });
 
   const truck = TRUCKS[activeTruck];
 
-  // Spin loop
+  // Idle spin only while "running" and not actively being dragged
   useEffect(() => {
     let interval;
     if (isRunning) {
       interval = setInterval(() => {
-        const next = rotation.get() + 2;
+        if (dragState.current.dragging) return;
+        const next = rotation.get() + 1.4;
         rotation.set(next);
-        const viewIndex = Math.floor((next % 360) / 90) % 4;
+        const viewIndex = Math.floor(((next % 360) + 360) % 360 / 90) % 4;
         setActiveView(viewIndex);
       }, 1000 / 60);
     }
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  const handleSwipe = () => {
-    if (dragY.get() < -50) {
+  const angleFromCenter = (clientX, clientY) => {
+    const rect = wheelRef.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    return (Math.atan2(clientY - cy, clientX - cx) * 180) / Math.PI;
+  };
+
+  const handlePointerDown = (e) => {
+    if (!wheelRef.current) return;
+    dragState.current = {
+      dragging: true,
+      moved: false,
+      lastAngle: angleFromCenter(e.clientX, e.clientY),
+    };
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!dragState.current.dragging) return;
+    const angle = angleFromCenter(e.clientX, e.clientY);
+    let delta = angle - dragState.current.lastAngle;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+    if (Math.abs(delta) > 0.5) dragState.current.moved = true;
+    dragState.current.lastAngle = angle;
+
+    const next = rotation.get() + delta;
+    rotation.set(next);
+    const viewIndex = Math.floor(((next % 360) + 360) % 360 / 90) % 4;
+    setActiveView(viewIndex);
+  };
+
+  const handlePointerUp = () => {
+    // A tap (no real drag movement) toggles the engine state
+    if (!dragState.current.moved) {
       setIsRunning((prev) => !prev);
     }
-    dragY.set(0);
+    dragState.current.dragging = false;
+    window.removeEventListener("pointermove", handlePointerMove);
+    window.removeEventListener("pointerup", handlePointerUp);
   };
 
   return (
-    <section className="relative w-full bg-surface py-28 px-6 overflow-hidden">
+    <section className="relative w-full bg-[#f4f4f4] py-24 px-6 overflow-hidden flex justify-center">
 
       {/* Subtle top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-border" />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full max-w-6xl bg-white border border-primary/15 rounded-[2rem] shadow-sm px-6 sm:px-10 lg:px-14 py-14">
 
         {/* SECTION HEADER */}
         <div className="flex flex-col mb-16">
@@ -193,7 +245,7 @@ export default function InteractiveInventory() {
             </h2>
             <p className="text-muted text-sm leading-relaxed max-w-sm">
               Every truck is physically inspected in South Korea before shipping.
-              Start the engine below to see the full 360° view.
+              Spin the wheel below to see the full 360° view.
             </p>
           </div>
         </div>
@@ -353,86 +405,21 @@ export default function InteractiveInventory() {
                 ))}
               </div>
             </div>
-
-            {/* Thumbnails */}
-            <div className="grid grid-cols-4 gap-2">
-              {views.map((view, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveView(i)}
-                  className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all duration-200 cursor-pointer
-                    ${activeView === i ? "border-accent" : "border-border hover:border-primary/30"}`}
-                >
-                  <img src={view} alt={`View ${i + 1}`} className="w-full h-full object-cover" />
-                  {activeView === i && (
-                    <div className="absolute inset-0 bg-accent/10" />
-                  )}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* ===== BOTTOM — Steering Wheel + Key (WHITE BACKGROUND) ===== */}
+        {/* ===== BOTTOM — Steering Wheel only (WHITE BACKGROUND) ===== */}
         <div className="w-full bg-white border border-border rounded-3xl p-10 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-12 lg:gap-20">
+          <div className="flex flex-col items-center justify-center gap-4">
 
-            {/* Key ignition slot */}
-            <div className="flex flex-col items-center gap-3">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted">
-                {isRunning ? "Drag up to stop" : "Drag up to start"}
-              </span>
-
-              {/* Slot */}
-              <div className="relative w-16 h-36 bg-surface border border-border rounded-full flex flex-col items-center justify-end pb-3 shadow-inner">
-                
-                {/* Track */}
-                <div className="absolute top-6 bottom-16 left-1/2 -translate-x-1/2 w-px bg-border" />
-
-                {/* Target zone */}
-                <div className={`absolute top-3 w-10 h-10 rounded-full border-2 border-dashed flex items-center justify-center transition-all duration-300
-                  ${isRunning ? "border-accent bg-accent/5" : "border-border"}`}
-                >
-                  <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${isRunning ? "bg-accent" : "bg-border"}`} />
-                </div>
-
-                {/* MoveUp hint */}
-                <div className="absolute top-14 text-muted/40">
-                  <MoveUp size={14} className="animate-bounce" />
-                </div>
-
-                {/* Draggable key */}
-                <motion.div
-                  drag="y"
-                  dragConstraints={{ top: -90, bottom: 0 }}
-                  dragElastic={0.1}
-                  style={{ y: dragY }}
-                  onDragEnd={handleSwipe}
-                  whileTap={{ scale: 0.92 }}
-                  className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing shadow-md transition-all duration-300
-                    ${isRunning
-                      ? "bg-accent shadow-accent/30 shadow-lg"
-                      : "bg-primary shadow-primary/20"
-                    }`}
-                >
-                  <Key size={16} className="text-white" />
-                </motion.div>
-              </div>
-
-              {/* Engine status */}
-              <div className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest transition-colors duration-300
-                ${isRunning ? "text-accent" : "text-muted"}`}
-              >
-                <span className={`w-1.5 h-1.5 rounded-full ${isRunning ? "bg-accent animate-pulse" : "bg-border"}`} />
-                {isRunning ? "Engine On" : "Engine Off"}
-              </div>
-            </div>
-
-            {/* Steering Wheel — large and prominent */}
-            <div className="relative">
-              <div className="relative w-56 h-56 sm:w-64 sm:h-64">
-                <SteeringWheel rotation={rotation} isRunning={isRunning} />
-              </div>
+            {/* Steering Wheel — tap to start/stop, drag to look around */}
+            <div
+              ref={wheelRef}
+              onPointerDown={handlePointerDown}
+              className="relative w-56 h-56 sm:w-64 sm:h-64 cursor-grab active:cursor-grabbing touch-none select-none"
+              style={{ touchAction: "none" }}
+            >
+              <SteeringWheel rotation={rotation} isRunning={isRunning} />
 
               {/* Glow ring when running */}
               <AnimatePresence>
@@ -448,23 +435,9 @@ export default function InteractiveInventory() {
               </AnimatePresence>
             </div>
 
-            {/* How it works */}
-            <div className="flex flex-col gap-4 max-w-[180px]">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted">
-                How it works
-              </p>
-              {[
-                { step: "01", text: "Drag the key upward to start" },
-                { step: "02", text: "Wheel spins, images rotate 360°" },
-                { step: "03", text: "Drag key up again to stop" },
-              ].map((item) => (
-                <div key={item.step} className="flex items-start gap-3">
-                  <span className="text-[10px] font-black text-accent shrink-0 mt-0.5">{item.step}</span>
-                  <span className="text-[11px] text-muted font-medium leading-snug">{item.text}</span>
-                </div>
-              ))}
-            </div>
-
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted text-center">
+              {isRunning ? "Tap to stop · drag to look around" : "Tap to start · drag to look around"}
+            </span>
           </div>
         </div>
 
