@@ -66,13 +66,13 @@ function SteeringWheel({ rotation, isRunning }) {
       <defs>
         {/* Radial gradient for the hub — gives it a lit, pressable feel */}
         <radialGradient id="hubGradient" cx="35%" cy="30%" r="75%">
-          <stop offset="0%" stopColor={isRunning ? "#4F8CFF" : "#FFFFFF"} />
-          <stop offset="55%" stopColor={isRunning ? "#2563EB" : "#F3F4F6"} />
-          <stop offset="100%" stopColor={isRunning ? "#1D4ED8" : "#E5E7EB"} />
+          <stop offset="0%" stopColor={isRunning ? "#3B82F6" : "#FFFFFF"} />
+          <stop offset="60%" stopColor={isRunning ? "#1D4ED8" : "#F3F4F6"} />
+          <stop offset="100%" stopColor={isRunning ? "#1E3A8A" : "#E5E7EB"} />
         </radialGradient>
 
         <filter id="glow">
-          <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+          <feGaussianBlur stdDeviation="4" result="coloredBlur" />
           <feMerge>
             <feMergeNode in="coloredBlur" />
             <feMergeNode in="SourceGraphic" />
@@ -84,57 +84,57 @@ function SteeringWheel({ rotation, isRunning }) {
       <circle
         cx="100" cy="100" r="88"
         fill="none"
-        stroke={isRunning ? "#e0e0b9" : "#D1D5DB"}
+        stroke={isRunning ? "#1E293B" : "#D1D5DB"}
         strokeWidth="14"
-        style={{ transition: "stroke 0.5s" }}
+        style={{ transition: "stroke 0.4s ease" }}
       />
 
-      {/* Inner rim */}
+      {/* Inner dash rim */}
       <circle
         cx="100" cy="100" r="65"
         fill="none"
-        stroke={isRunning ? "#93B6FF" : "#E5E7EB"}
-        strokeWidth="3"
-        strokeDasharray="8 6"
-        style={{ transition: "stroke 0.5s" }}
+        stroke={isRunning ? "#60A5FA" : "#E5E7EB"}
+        strokeWidth="2.5"
+        strokeDasharray="6 5"
+        style={{ transition: "stroke 0.4s ease" }}
       />
 
-      {/* 3 spokes — equal length, 120° apart */}
+      {/* 3 spokes — uniform color for clean rotation */}
       <line x1="100" y1="76" x2="100" y2="12"
-        stroke={isRunning ? "#4c5c66" : "#9CA3AF"}
+        stroke={isRunning ? "#475569" : "#9CA3AF"}
         strokeWidth="13" strokeLinecap="round"
-        style={{ transition: "stroke 0.5s" }}
+        style={{ transition: "stroke 0.4s ease" }}
       />
       <line x1="79" y1="112" x2="24" y2="144"
-        stroke={isRunning ? "#b8a67c" : "#9CA3AF"}
+        stroke={isRunning ? "#475569" : "#9CA3AF"}
         strokeWidth="13" strokeLinecap="round"
-        style={{ transition: "stroke 0.5s" }}
+        style={{ transition: "stroke 0.4s ease" }}
       />
       <line x1="121" y1="112" x2="176" y2="144"
-        stroke={isRunning ? "#beb8a9" : "#9CA3AF"}
+        stroke={isRunning ? "#475569" : "#9CA3AF"}
         strokeWidth="13" strokeLinecap="round"
-        style={{ transition: "stroke 0.5s" }}
+        style={{ transition: "stroke 0.4s ease" }}
       />
 
-      {/* Center hub — gradient lives here */}
+      {/* Center hub */}
       <circle
         cx="100" cy="100" r="24"
         fill="url(#hubGradient)"
-        style={{ transition: "fill 0.5s" }}
+        style={{ transition: "fill 0.4s ease" }}
       />
       <circle cx="100" cy="100" r="10"
-        fill={isRunning ? "#4d5f91" : "#E5E7EB"}
-        style={{ transition: "fill 0.5s" }}
+        fill={isRunning ? "#1E3A8A" : "#E5E7EB"}
+        style={{ transition: "fill 0.4s ease" }}
       />
 
       {/* Horn dots */}
       <circle cx="84" cy="100" r="3.5"
-        fill={isRunning ? "white" : "#9CA3AF"}
-        style={{ transition: "fill 0.5s" }}
+        fill={isRunning ? "#93C5FD" : "#9CA3AF"}
+        style={{ transition: "fill 0.4s ease" }}
       />
       <circle cx="116" cy="100" r="3.5"
-        fill={isRunning ? "white" : "#9CA3AF"}
-        style={{ transition: "fill 0.5s" }}
+        fill={isRunning ? "#93C5FD" : "#9CA3AF"}
+        style={{ transition: "fill 0.4s ease" }}
       />
 
       {/* Glow ring when running */}
@@ -142,9 +142,9 @@ function SteeringWheel({ rotation, isRunning }) {
         <circle
           cx="100" cy="100" r="88"
           fill="none"
-          stroke="#2563EB"
-          strokeWidth="2"
-          opacity="0.25"
+          stroke="#3B82F6"
+          strokeWidth="3"
+          opacity="0.4"
           filter="url(#glow)"
         />
       )}
