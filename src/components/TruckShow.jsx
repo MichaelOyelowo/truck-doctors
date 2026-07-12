@@ -510,167 +510,109 @@ export default function InteractiveInventory() {
         </div>
 
 
-{/* ===== BOTTOM — Steering Wheel ===== */}
-<div className="relative w-full max-w-5xl mx-auto">
+{/* ===== BOTTOM — Steering Wheel (MOBILE OPTIMIZED) ===== */}
+<div className="relative w-full max-w-5xl mx-auto px-2 sm:px-0">
 
-  {/* AMBIENT GLOW BEHIND CARD — outside so it bleeds properly */}
-  <div
-    className="absolute -top-20 -left-20 w-80 h-80 rounded-full pointer-events-none z-0"
-    style={{
-      background: "radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)",
-      filter: "blur(40px)",
-    }}
-  />
-  <div
-    className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full pointer-events-none z-0"
-    style={{
-      background: "radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)",
-      filter: "blur(40px)",
-    }}
-  />
-  <div
-    className="absolute -top-10 -right-10 w-48 h-48 rounded-full pointer-events-none z-0"
-    style={{
-      background: "radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%)",
-      filter: "blur(30px)",
-    }}
-  />
+  {/* AMBIENT GLOWS — Reduced blur for mobile performance */}
+  <div className="absolute -top-10 -left-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-blue-500/10 blur-[60px]" />
+  <div className="absolute -bottom-10 -right-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-purple-500/10 blur-[60px]" />
 
-  {/* CHASING BORDER LIGHT */}
+  {/* CHASING BORDER LIGHT — Optimized Insets */}
   <div className="absolute -inset-[1px] rounded-3xl pointer-events-none overflow-hidden z-10">
     <AnimatePresence>
-      {isRunning ? (
+      <motion.div
+        key={isRunning ? "running" : "idle"}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0"
+      >
         <motion.div
-          key="running"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-            className="absolute -inset-[200%]"
-            style={{
-              background: "conic-gradient(from 0deg, transparent 0%, transparent 38%, rgba(6,182,212,0.8) 45%, rgba(37,99,235,1) 50%, rgba(124,58,237,0.8) 55%, transparent 62%, transparent 100%)",
-            }}
-          />
-          <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
-        </motion.div>
-      ) : (
-        <motion.div
-          key="idle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="absolute inset-0"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-            className="absolute -inset-[200%]"
-            style={{
-              background: "conic-gradient(from 0deg, transparent 0%, transparent 44%, rgba(37,99,235,0.3) 50%, transparent 56%, transparent 100%)",
-            }}
-          />
-          <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
-        </motion.div>
-      )}
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: isRunning ? 4 : 12, ease: "linear" }}
+          className="absolute -inset-[150%] md:-inset-[200%]"
+          style={{
+            background: isRunning 
+              ? "conic-gradient(from 0deg, transparent 0%, #06B6D4 45%, #2563EB 50%, #7C3AED 55%, transparent 100%)"
+              : "conic-gradient(from 0deg, transparent 45%, rgba(37,99,235,0.2) 50%, transparent 55%)",
+          }}
+        />
+        <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
+      </motion.div>
     </AnimatePresence>
   </div>
 
-  {/* MAIN CARD */}
+  {/* MAIN CARD — Adjusted padding for mobile */}
   <div
-    className={`relative z-10 w-full rounded-3xl p-10 transition-all duration-700 border overflow-hidden
-      ${isRunning
-        ? "border-accent/20 shadow-[0_16px_60px_rgba(37,99,235,0.12)]"
-        : "border-accent/10 shadow-sm"
-      }`}
-    style={isRunning ? {
-      background: `
-        radial-gradient(ellipse at 15% 0%, rgba(6,182,212,0.07) 0%, transparent 55%),
-        radial-gradient(ellipse at 85% 0%, rgba(124,58,237,0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at 20% 100%, rgba(124,58,237,0.06) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 100%, rgba(37,99,235,0.07) 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 50%, rgba(37,99,235,0.03) 0%, transparent 70%),
-        #ffffff
-      `,
-    } : {
-      background: `
-        radial-gradient(ellipse at 15% 0%, rgba(6,182,212,0.03) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 100%, rgba(124,58,237,0.03) 0%, transparent 50%),
-        #ffffff
-      `,
+    className={`relative z-10 w-full rounded-3xl p-6 sm:p-10 transition-all duration-700 border overflow-hidden
+      ${isRunning ? "border-accent/20 shadow-xl" : "border-accent/10 shadow-sm"}`}
+    style={{
+      background: isRunning 
+        ? "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.03) 0%, #ffffff 100%)" 
+        : "#ffffff"
     }}
   >
-    <div className="flex flex-col items-center justify-center gap-8 relative z-10">
+    <div className="flex flex-col items-center justify-center gap-6 sm:gap-8 relative z-10">
 
-      {/* Steering Wheel */}
+      {/* Steering Wheel — Scaled for mobile */}
       <div
         ref={wheelRef}
         onPointerDown={handlePointerDown}
-        className="relative w-56 h-56 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing touch-none select-none"
+        className="relative w-48 h-48 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing touch-none select-none"
         style={{ touchAction: "none" }}
       >
         <SteeringWheel rotation={rotation} isRunning={isRunning} />
 
-        {/* Wheel aura */}
+        {/* Interior Aura */}
         <AnimatePresence>
           {isRunning && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}
-              transition={{ duration: 0.6 }}
-              className="absolute -inset-8 rounded-full pointer-events-none"
-              style={{
-                background: "radial-gradient(circle, rgba(37,99,235,0.08) 0%, rgba(124,58,237,0.04) 50%, transparent 70%)",
-                boxShadow: "0 0 80px rgba(37,99,235,0.10)",
-              }}
+              exit={{ opacity: 0 }}
+              className="absolute -inset-4 sm:-inset-8 rounded-full pointer-events-none bg-accent/[0.05] blur-2xl -z-10"
             />
           )}
         </AnimatePresence>
       </div>
 
-      {/* Instruction + equalizer */}
-      <div className="flex flex-col items-center gap-2">
+      {/* Instruction + Fixed Wave */}
+      <div className="flex flex-col items-center gap-4">
         <motion.span
           animate={{ color: isRunning ? "#2563EB" : "#94A3B8" }}
-          transition={{ duration: 0.5 }}
-          className="text-[11px] font-black uppercase tracking-[0.35em] text-center"
+          className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-center"
         >
-          {isRunning ? "Engine On • Drag to Rotate Wheel" : "Tap to Ignite • Drag to rotate"}
+          {isRunning ? "Engine Live • Drag to Rotate" : "Tap Hub to Ignite"}
         </motion.span>
 
-        {/* Multicolor equalizer bars */}
-        <div className="flex gap-1 items-end h-5">
+        {/* EQUALIZER — FIXED: Uses scaleY for zero layout shift */}
+        <div className="flex gap-1.5 items-end justify-center h-6 w-32">
           {[
-            { h: 3, color: isRunning ? "#06B6D4" : "#E5E7EB" },
-            { h: 5, color: isRunning ? "#3B82F6" : "#E5E7EB" },
-            { h: 4, color: isRunning ? "#2563EB" : "#E5E7EB" },
-            { h: 6, color: isRunning ? "#7C3AED" : "#E5E7EB" },
-            { h: 4, color: isRunning ? "#2563EB" : "#E5E7EB" },
-            { h: 5, color: isRunning ? "#06B6D4" : "#E5E7EB" },
-            { h: 3, color: isRunning ? "#7C3AED" : "#E5E7EB" },
+            { color: "#06B6D4", delay: 0.0 },
+            { color: "#3B82F6", delay: 0.1 },
+            { color: "#2563EB", delay: 0.2 },
+            { color: "#7C3AED", delay: 0.3 },
+            { color: "#2563EB", delay: 0.4 },
+            { color: "#3B82F6", delay: 0.5 },
+            { color: "#06B6D4", delay: 0.6 },
           ].map((bar, i) => (
             <motion.div
               key={i}
-              animate={isRunning
-                ? { height: ["4px", `${bar.h * 3}px`, "4px"] }
-                : { height: "4px" }
-              }
+              initial={{ scaleY: 0.2 }}
+              animate={isRunning ? { scaleY: [0.2, 1, 0.4, 0.8, 0.2] } : { scaleY: 0.2 }}
               transition={{
                 repeat: Infinity,
-                duration: 0.7,
-                delay: i * 0.1,
+                duration: 1,
+                delay: bar.delay,
                 ease: "easeInOut",
               }}
               style={{
-                backgroundColor: bar.color,
-                width: "2.5px",
-                borderRadius: "9999px",
-                transition: "background-color 0.5s",
+                backgroundColor: isRunning ? bar.color : "#E5E7EB",
+                width: "3px",
+                height: "100%", // Fixed height
+                originY: 1, // Animates from bottom up
+                borderRadius: "2px",
+                willChange: "transform", // Performance optimization
               }}
             />
           ))}
