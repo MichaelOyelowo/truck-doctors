@@ -513,33 +513,90 @@ export default function InteractiveInventory() {
 {/* ===== BOTTOM — Steering Wheel ===== */}
 <div className="relative w-full max-w-5xl mx-auto">
 
-  {/* ALWAYS-ON AMBIENT GLOW BEHIND CARD — catches attention on scroll */}
-  {/* Top left — blue */}
+  {/* AMBIENT GLOW BEHIND CARD — outside so it bleeds properly */}
   <div
-    className="absolute -top-20 -left-20 w-80 h-80 rounded-full pointer-events-none"
+    className="absolute -top-20 -left-20 w-80 h-80 rounded-full pointer-events-none z-0"
     style={{
       background: "radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)",
       filter: "blur(40px)",
     }}
   />
-  {/* Bottom right — purple */}
   <div
-    className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full pointer-events-none"
+    className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full pointer-events-none z-0"
     style={{
       background: "radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)",
       filter: "blur(40px)",
     }}
   />
-  {/* Top right — cyan */}
   <div
-    className="absolute -top-10 -right-10 w-48 h-48 rounded-full pointer-events-none"
+    className="absolute -top-10 -right-10 w-48 h-48 rounded-full pointer-events-none z-0"
     style={{
       background: "radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%)",
       filter: "blur(30px)",
     }}
   />
 
-  {/* CHASING BORDER LIGHT — multicolor when running, subtle when off */}
+  {/* CORNER BRACKETS — inside a non-scaling wrapper, opacity only */}
+  <div className="absolute inset-0 z-20 pointer-events-none rounded-3xl overflow-hidden">
+
+    {/* Top Left — Blue */}
+    <motion.div
+      animate={{ opacity: [0.5, 1, 0.5] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+      className="absolute top-0 left-0 w-12 h-12 border-t-[2.5px] border-l-[2.5px] rounded-tl-3xl"
+      style={{
+        borderColor: isRunning ? "#2563EB" : "rgba(37,99,235,0.4)",
+        boxShadow: isRunning
+          ? "-4px -4px 16px rgba(37,99,235,0.5), -8px -8px 30px rgba(37,99,235,0.2)"
+          : "-3px -3px 10px rgba(37,99,235,0.2)",
+        transition: "border-color 0.7s, box-shadow 0.7s",
+      }}
+    />
+
+    {/* Top Right — Cyan */}
+    <motion.div
+      animate={{ opacity: [0.5, 1, 0.5] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 0.75 }}
+      className="absolute top-0 right-0 w-12 h-12 border-t-[2.5px] border-r-[2.5px] rounded-tr-3xl"
+      style={{
+        borderColor: isRunning ? "#06B6D4" : "rgba(6,182,212,0.35)",
+        boxShadow: isRunning
+          ? "4px -4px 16px rgba(6,182,212,0.5), 8px -8px 30px rgba(6,182,212,0.2)"
+          : "3px -3px 10px rgba(6,182,212,0.15)",
+        transition: "border-color 0.7s, box-shadow 0.7s",
+      }}
+    />
+
+    {/* Bottom Left — Purple */}
+    <motion.div
+      animate={{ opacity: [0.5, 1, 0.5] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 1.5 }}
+      className="absolute bottom-0 left-0 w-12 h-12 border-b-[2.5px] border-l-[2.5px] rounded-bl-3xl"
+      style={{
+        borderColor: isRunning ? "#7C3AED" : "rgba(124,58,237,0.35)",
+        boxShadow: isRunning
+          ? "-4px 4px 16px rgba(124,58,237,0.5), -8px 8px 30px rgba(124,58,237,0.2)"
+          : "-3px 3px 10px rgba(124,58,237,0.15)",
+        transition: "border-color 0.7s, box-shadow 0.7s",
+      }}
+    />
+
+    {/* Bottom Right — Blue */}
+    <motion.div
+      animate={{ opacity: [0.5, 1, 0.5] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 2.25 }}
+      className="absolute bottom-0 right-0 w-12 h-12 border-b-[2.5px] border-r-[2.5px] rounded-br-3xl"
+      style={{
+        borderColor: isRunning ? "#2563EB" : "rgba(37,99,235,0.4)",
+        boxShadow: isRunning
+          ? "4px 4px 16px rgba(37,99,235,0.5), 8px 8px 30px rgba(37,99,235,0.2)"
+          : "3px 3px 10px rgba(37,99,235,0.2)",
+        transition: "border-color 0.7s, box-shadow 0.7s",
+      }}
+    />
+  </div>
+
+  {/* CHASING BORDER LIGHT */}
   <div className="absolute -inset-[1px] rounded-3xl pointer-events-none overflow-hidden z-10">
     <AnimatePresence>
       {isRunning ? (
@@ -569,7 +626,6 @@ export default function InteractiveInventory() {
           exit={{ opacity: 0 }}
           className="absolute inset-0"
         >
-          {/* Subtle slow pulse border when idle */}
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
@@ -610,7 +666,6 @@ export default function InteractiveInventory() {
   >
     <div className="flex flex-col items-center justify-center gap-8 relative z-10">
 
-      
       {/* Steering Wheel */}
       <div
         ref={wheelRef}
@@ -620,7 +675,7 @@ export default function InteractiveInventory() {
       >
         <SteeringWheel rotation={rotation} isRunning={isRunning} />
 
-        {/* Wheel aura — multicolor when running */}
+        {/* Wheel aura */}
         <AnimatePresence>
           {isRunning && (
             <motion.div
@@ -638,16 +693,14 @@ export default function InteractiveInventory() {
         </AnimatePresence>
       </div>
 
-      {/* Instruction + equalizer bars */}
+      {/* Instruction + equalizer */}
       <div className="flex flex-col items-center gap-2">
         <motion.span
-          animate={{
-            color: isRunning ? "#2563EB" : "#94A3B8",
-          }}
+          animate={{ color: isRunning ? "#2563EB" : "#94A3B8" }}
           transition={{ duration: 0.5 }}
           className="text-[11px] font-black uppercase tracking-[0.35em] text-center"
         >
-          {isRunning ? "Engine On • Drag to rotate" : "Tap to ignite • Drag to rotate"}
+          {isRunning ? "Engine On • Drag to Rotate Wheel" : "Tap to Ignite • Drag to rotate"}
         </motion.span>
 
         {/* Multicolor equalizer bars */}
@@ -673,7 +726,12 @@ export default function InteractiveInventory() {
                 delay: i * 0.1,
                 ease: "easeInOut",
               }}
-              style={{ backgroundColor: bar.color, width: "2.5px", borderRadius: "9999px", transition: "background-color 0.5s" }}
+              style={{
+                backgroundColor: bar.color,
+                width: "2.5px",
+                borderRadius: "9999px",
+                transition: "background-color 0.5s",
+              }}
             />
           ))}
         </div>
