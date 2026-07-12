@@ -490,12 +490,7 @@ export default function InteractiveInventory() {
                 )}
               </AnimatePresence>
 
-              {/* Condition badge */}
-              {/* <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-border px-3 py-1.5 rounded-full shadow-sm">
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
-                  {truck.condition} Condition
-                </span>
-              </div> */}
+              
 
               {/* View dots */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -514,91 +509,251 @@ export default function InteractiveInventory() {
           </div>
         </div>
 
-       {/* ===== BOTTOM — Steering Wheel only (PREMIUM LIGHT EFFECTS) ===== */}
-<div className="relative group w-full max-w-5xl mx-auto">
-  
-  {/* 1. THE DYNAMIC CORNER LIGHTS (Pulse when running) */}
+
+{/* ===== BOTTOM — Steering Wheel ===== */}
+<div className="relative w-full max-w-5xl mx-auto">
+
+  {/* ALWAYS-ON AMBIENT GLOW BEHIND CARD — catches attention on scroll */}
+  {/* Top left — blue */}
+  <div
+    className="absolute -top-20 -left-20 w-80 h-80 rounded-full pointer-events-none"
+    style={{
+      background: "radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)",
+      filter: "blur(40px)",
+    }}
+  />
+  {/* Bottom right — purple */}
+  <div
+    className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full pointer-events-none"
+    style={{
+      background: "radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)",
+      filter: "blur(40px)",
+    }}
+  />
+  {/* Top right — cyan */}
+  <div
+    className="absolute -top-10 -right-10 w-48 h-48 rounded-full pointer-events-none"
+    style={{
+      background: "radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%)",
+      filter: "blur(30px)",
+    }}
+  />
+
+  {/* ALWAYS-ON CORNER BRACKETS with spread glow */}
   <div className="absolute inset-0 z-20 pointer-events-none">
-    {/* Top Left */}
-    <motion.div 
-      animate={isRunning ? { opacity: [0.2, 1, 0.2], scale: [1, 1.05, 1] } : { opacity: 0.1 }}
-      transition={{ repeat: Infinity, duration: 2 }}
-      className={`absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 rounded-tl-3xl transition-colors duration-500 ${isRunning ? 'border-accent shadow-[0_0_15px_rgba(37,99,235,0.5)]' : 'border-border'}`} 
-    />
-    {/* Top Right */}
-    <motion.div 
-      animate={isRunning ? { opacity: [0.2, 1, 0.2], scale: [1, 1.05, 1] } : { opacity: 0.1 }}
-      transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
-      className={`absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 rounded-tr-3xl transition-colors duration-500 ${isRunning ? 'border-accent shadow-[0_0_15px_rgba(37,99,235,0.5)]' : 'border-border'}`} 
-    />
-    {/* Bottom Left */}
-    <motion.div 
-      animate={isRunning ? { opacity: [0.2, 1, 0.2], scale: [1, 1.05, 1] } : { opacity: 0.1 }}
-      transition={{ repeat: Infinity, duration: 2, delay: 1 }}
-      className={`absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 rounded-bl-3xl transition-colors duration-500 ${isRunning ? 'border-accent shadow-[0_0_15px_rgba(37,99,235,0.5)]' : 'border-border'}`} 
-    />
-    {/* Bottom Right */}
-    <motion.div 
-      animate={isRunning ? { opacity: [0.2, 1, 0.2], scale: [1, 1.05, 1] } : { opacity: 0.1 }}
-      transition={{ repeat: Infinity, duration: 2, delay: 1.5 }}
-      className={`absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 rounded-br-3xl transition-colors duration-500 ${isRunning ? 'border-accent shadow-[0_0_15px_rgba(37,99,235,0.5)]' : 'border-border'}`} 
-    />
+
+    {/* Top Left — Blue */}
+    <motion.div
+      animate={{ opacity: [0.6, 1, 0.6] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+      className="absolute top-0 left-0"
+    >
+      <div
+        className={`w-12 h-12 border-t-[2.5px] border-l-[2.5px] rounded-tl-3xl transition-all duration-700
+          ${isRunning ? "border-accent" : "border-accent/50"}`}
+        style={{
+          boxShadow: isRunning
+            ? "-4px -4px 16px rgba(37,99,235,0.5), -8px -8px 30px rgba(37,99,235,0.2), 0 0 40px rgba(37,99,235,0.1)"
+            : "-3px -3px 10px rgba(37,99,235,0.25), -6px -6px 20px rgba(37,99,235,0.1)",
+        }}
+      />
+    </motion.div>
+
+    {/* Top Right — Cyan */}
+    <motion.div
+      animate={{ opacity: [0.6, 1, 0.6] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 0.75 }}
+      className="absolute top-0 right-0"
+    >
+      <div
+        className={`w-12 h-12 border-t-[2.5px] border-r-[2.5px] rounded-tr-3xl transition-all duration-700
+          ${isRunning ? "border-cyan-400" : "border-cyan-400/40"}`}
+        style={{
+          boxShadow: isRunning
+            ? "4px -4px 16px rgba(6,182,212,0.5), 8px -8px 30px rgba(6,182,212,0.2)"
+            : "3px -3px 10px rgba(6,182,212,0.2), 6px -6px 20px rgba(6,182,212,0.08)",
+        }}
+      />
+    </motion.div>
+
+    {/* Bottom Left — Purple */}
+    <motion.div
+      animate={{ opacity: [0.6, 1, 0.6] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 1.5 }}
+      className="absolute bottom-0 left-0"
+    >
+      <div
+        className={`w-12 h-12 border-b-[2.5px] border-l-[2.5px] rounded-bl-3xl transition-all duration-700
+          ${isRunning ? "border-violet-500" : "border-violet-500/40"}`}
+        style={{
+          boxShadow: isRunning
+            ? "-4px 4px 16px rgba(124,58,237,0.5), -8px 8px 30px rgba(124,58,237,0.2)"
+            : "-3px 3px 10px rgba(124,58,237,0.2), -6px 6px 20px rgba(124,58,237,0.08)",
+        }}
+      />
+    </motion.div>
+
+    {/* Bottom Right — Blue */}
+    <motion.div
+      animate={{ opacity: [0.6, 1, 0.6] }}
+      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 2.25 }}
+      className="absolute bottom-0 right-0"
+    >
+      <div
+        className={`w-12 h-12 border-b-[2.5px] border-r-[2.5px] rounded-br-3xl transition-all duration-700
+          ${isRunning ? "border-accent" : "border-accent/50"}`}
+        style={{
+          boxShadow: isRunning
+            ? "4px 4px 16px rgba(37,99,235,0.5), 8px 8px 30px rgba(37,99,235,0.2)"
+            : "3px 3px 10px rgba(37,99,235,0.25), 6px 6px 20px rgba(37,99,235,0.1)",
+        }}
+      />
+    </motion.div>
   </div>
 
-  {/* 2. THE CHASING BORDER LIGHT (Hidden by default, spins when running) */}
-  <AnimatePresence>
-    {isRunning && (
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none"
-      >
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-          className="absolute -inset-[100%] bg-[conic-gradient(from_0deg,transparent_0%,#3B82F6_50%,transparent_100%)] opacity-20"
-        />
-      </motion.div>
-    )}
-  </AnimatePresence>
+  {/* CHASING BORDER LIGHT — multicolor when running, subtle when off */}
+  <div className="absolute -inset-[1px] rounded-3xl pointer-events-none overflow-hidden z-10">
+    <AnimatePresence>
+      {isRunning ? (
+        <motion.div
+          key="running"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+            className="absolute -inset-[200%]"
+            style={{
+              background: "conic-gradient(from 0deg, transparent 0%, transparent 38%, rgba(6,182,212,0.8) 45%, rgba(37,99,235,1) 50%, rgba(124,58,237,0.8) 55%, transparent 62%, transparent 100%)",
+            }}
+          />
+          <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
+        </motion.div>
+      ) : (
+        <motion.div
+          key="idle"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0"
+        >
+          {/* Subtle slow pulse border when idle */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+            className="absolute -inset-[200%]"
+            style={{
+              background: "conic-gradient(from 0deg, transparent 0%, transparent 44%, rgba(37,99,235,0.3) 50%, transparent 56%, transparent 100%)",
+            }}
+          />
+          <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
 
-  {/* 3. THE MAIN WHITE CONTAINER */}
-  <div className={`relative z-10 w-full bg-white border transition-all duration-700 rounded-3xl p-10 shadow-sm
-    ${isRunning ? 'border-accent/30 shadow-[0_0_40px_rgba(37,99,235,0.1)]' : 'border-border'}`}>
-    
-    <div className="flex flex-col items-center justify-center gap-4">
-      {/* Steering Wheel — tap to start/stop, drag to look around */}
+  {/* MAIN CARD */}
+  <div
+    className={`relative z-10 w-full rounded-3xl p-10 transition-all duration-700 border overflow-hidden
+      ${isRunning
+        ? "border-accent/20 shadow-[0_16px_60px_rgba(37,99,235,0.12)]"
+        : "border-accent/10 shadow-sm"
+      }`}
+    style={isRunning ? {
+      background: `
+        radial-gradient(ellipse at 15% 0%, rgba(6,182,212,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 0%, rgba(124,58,237,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 100%, rgba(124,58,237,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 100%, rgba(37,99,235,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(37,99,235,0.03) 0%, transparent 70%),
+        #ffffff
+      `,
+    } : {
+      background: `
+        radial-gradient(ellipse at 15% 0%, rgba(6,182,212,0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 100%, rgba(124,58,237,0.03) 0%, transparent 50%),
+        #ffffff
+      `,
+    }}
+  >
+    <div className="flex flex-col items-center justify-center gap-8 relative z-10">
+
+      
+      {/* Steering Wheel */}
       <div
         ref={wheelRef}
         onPointerDown={handlePointerDown}
-        className="relative w-56 h-56 sm:w-64 sm:h-64 cursor-grab active:cursor-grabbing touch-none select-none"
+        className="relative w-56 h-56 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing touch-none select-none"
         style={{ touchAction: "none" }}
       >
         <SteeringWheel rotation={rotation} isRunning={isRunning} />
 
-        {/* Interior Glow ring when running */}
+        {/* Wheel aura — multicolor when running */}
         <AnimatePresence>
           {isRunning && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute -inset-4 rounded-full border border-accent/20 pointer-events-none"
-              style={{ boxShadow: "0 0 40px rgba(37,99,235,0.12)" }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.6 }}
+              className="absolute -inset-8 rounded-full pointer-events-none"
+              style={{
+                background: "radial-gradient(circle, rgba(37,99,235,0.08) 0%, rgba(124,58,237,0.04) 50%, transparent 70%)",
+                boxShadow: "0 0 80px rgba(37,99,235,0.10)",
+              }}
             />
           )}
         </AnimatePresence>
       </div>
 
-      <span className={`text-[10px] font-black uppercase tracking-[0.3em] transition-colors duration-500 text-center
-        ${isRunning ? 'text-accent' : 'text-muted'}`}>
-        {isRunning ? "Engine Live • Drag to rotate" : "Tap to ignite • Drag to rotate" }
-      </span>
+      {/* Instruction + equalizer bars */}
+      <div className="flex flex-col items-center gap-2">
+        <motion.span
+          animate={{
+            color: isRunning ? "#2563EB" : "#94A3B8",
+          }}
+          transition={{ duration: 0.5 }}
+          className="text-[11px] font-black uppercase tracking-[0.35em] text-center"
+        >
+          {isRunning ? "Engine On • Drag to rotate" : "Tap to ignite • Drag to rotate"}
+        </motion.span>
+
+        {/* Multicolor equalizer bars */}
+        <div className="flex gap-1 items-end h-5">
+          {[
+            { h: 3, color: isRunning ? "#06B6D4" : "#E5E7EB" },
+            { h: 5, color: isRunning ? "#3B82F6" : "#E5E7EB" },
+            { h: 4, color: isRunning ? "#2563EB" : "#E5E7EB" },
+            { h: 6, color: isRunning ? "#7C3AED" : "#E5E7EB" },
+            { h: 4, color: isRunning ? "#2563EB" : "#E5E7EB" },
+            { h: 5, color: isRunning ? "#06B6D4" : "#E5E7EB" },
+            { h: 3, color: isRunning ? "#7C3AED" : "#E5E7EB" },
+          ].map((bar, i) => (
+            <motion.div
+              key={i}
+              animate={isRunning
+                ? { height: ["4px", `${bar.h * 3}px`, "4px"] }
+                : { height: "4px" }
+              }
+              transition={{
+                repeat: Infinity,
+                duration: 0.7,
+                delay: i * 0.1,
+                ease: "easeInOut",
+              }}
+              style={{ backgroundColor: bar.color, width: "2.5px", borderRadius: "9999px", transition: "background-color 0.5s" }}
+            />
+          ))}
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
-
       </div>
     </section>
   );
