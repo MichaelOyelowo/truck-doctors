@@ -388,11 +388,11 @@ export default function InteractiveInventory() {
                 <p className="text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-2">
                   {truck.type}
                 </p>
-                <h3 className="text-primary font-black tracking-tight leading-none mb-3">
-                  <span className="inline-flex mb-4 px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest">
+                <h3 className="text-primary font-black tracking-tight leading-none mb-3 flex flex-row flex-nowrap items-center gap-3">
+                  {truck.name}
+                  <span className="inline-flex px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest">
                     {truck.badge}
                   </span>
-                  {truck.name}
                 </h3>
                 <p className="text-muted text-sm leading-relaxed max-w-md">
                   {truck.description}
@@ -582,7 +582,7 @@ export default function InteractiveInventory() {
           animate={{ color: isRunning ? "#2563EB" : "#94A3B8" }}
           className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-center"
         >
-          {isRunning ? "Engine Live • Drag to Rotate" : "Tap Hub to Ignite"}
+          {isRunning ? "Engine On • Drag to Rotate" : "Tap to Ignite • Drag to rotate"}
         </motion.span>
 
         {/* EQUALIZER — FIXED: Uses scaleY for zero layout shift */}
