@@ -3,10 +3,10 @@ import { motion, AnimatePresence, useMotionValue } from "framer-motion";
 import { Fuel, Weight, Gauge, Calendar, ArrowRight, Settings, Zap, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import manFront from "../assets/homepage-images/man/man1.avif";
-import manSide from "../assets/homepage-images/man/man2.avif";
-import manBack from "../assets/homepage-images/man/man3.avif";
-import manAngle from "../assets/homepage-images/man/man4.avif";
+import manFront from "../assets/homepage-images/man/man11.avif";
+import manSide from "../assets/homepage-images/man/man12.avif";
+import manBack from "../assets/homepage-images/man/man13.avif";
+import manAngle from "../assets/homepage-images/man/man14.avif";
 
 import rhinoFront from "../assets/homepage-images/rhino/rhino1.avif";
 import rhinoSide from "../assets/homepage-images/rhino/rhino2.avif";
