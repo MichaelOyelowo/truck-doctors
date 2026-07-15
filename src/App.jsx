@@ -3,6 +3,8 @@ import TopNotification from "./components/TopNotification";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero";
 import TruckShowroom from "./components/TruckShow";
+import InventoryGrid from "./components/InventoryGrid"
+import Journey from "./components/TheJourney"
 
 function App() {
   
@@ -12,9 +14,9 @@ function App() {
         <Navbar/>
         <Hero/>
         <TruckShowroom/>
-        <Routes>
-        {/* Add your routes here later */}
-      </Routes>
+        <Journey/>
+        <InventoryGrid/>
+
       </>
     
   )

@@ -345,7 +345,7 @@ export default function InteractiveInventory() {
               <br />
               <span className="text-accent"> Premium Fleet. </span>
             </h2>
-            <p className="text-muted text-sm leading-relaxed max-w-sm">
+            <p className="text-muted text-base md:text-lg leading-relaxed max-w-sm">
               Every truck in our inventory undergoes a comprehensive inspection to ensure
               maximum reliability, performance, and road readiness. Rotate the steering wheel
               below to explore each vehicle from every angle.
@@ -394,7 +394,7 @@ export default function InteractiveInventory() {
                     {truck.badge}
                   </span>
                 </h3>
-                <p className="text-muted text-sm leading-relaxed max-w-md">
+                <p className="text-muted text-base leading-relaxed max-w-md">
                   {truck.description}
                 </p>
               </div>
@@ -510,118 +510,118 @@ export default function InteractiveInventory() {
         </div>
 
 
-{/* ===== BOTTOM — Steering Wheel (MOBILE OPTIMIZED) ===== */}
-<div className="relative w-full max-w-5xl mx-auto px-2 sm:px-0">
+      {/* ===== BOTTOM — Steering Wheel (MOBILE OPTIMIZED) ===== */}
+      <div className="relative w-full max-w-5xl mx-auto px-2 sm:px-0">
 
-  {/* AMBIENT GLOWS — Reduced blur for mobile performance */}
-  <div className="absolute -top-10 -left-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-blue-500/10 blur-[60px]" />
-  <div className="absolute -bottom-10 -right-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-purple-500/10 blur-[60px]" />
+        {/* AMBIENT GLOWS — Reduced blur for mobile performance */}
+        <div className="absolute -top-10 -left-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-blue-500/10 blur-[60px]" />
+        <div className="absolute -bottom-10 -right-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-purple-500/10 blur-[60px]" />
 
-  {/* CHASING BORDER LIGHT — Optimized Insets */}
-  <div className="absolute -inset-[1px] rounded-3xl pointer-events-none overflow-hidden z-10">
-    <AnimatePresence>
-      <motion.div
-        key={isRunning ? "running" : "idle"}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="absolute inset-0"
-      >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: isRunning ? 4 : 12, ease: "linear" }}
-          className="absolute -inset-[150%] md:-inset-[200%]"
+        {/* CHASING BORDER LIGHT — Optimized Insets */}
+        <div className="absolute -inset-1px rounded-3xl pointer-events-none overflow-hidden z-10">
+          <AnimatePresence>
+            <motion.div
+              key={isRunning ? "running" : "idle"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0"
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: isRunning ? 4 : 12, ease: "linear" }}
+                className="absolute inset-[-150%] md:inset-[-200%]"
+                style={{
+                  background: isRunning 
+                    ? "conic-gradient(from 0deg, transparent 0%, #06B6D4 45%, #2563EB 50%, #7C3AED 55%, transparent 100%)"
+                    : "conic-gradient(from 0deg, transparent 45%, rgba(37,99,235,0.2) 50%, transparent 55%)",
+                }}
+              />
+              <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* MAIN CARD — Adjusted padding for mobile */}
+        <div
+          className={`relative z-10 w-full rounded-3xl p-6 sm:p-10 transition-all duration-700 border overflow-hidden
+            ${isRunning ? "border-accent/20 shadow-xl" : "border-accent/10 shadow-sm"}`}
           style={{
             background: isRunning 
-              ? "conic-gradient(from 0deg, transparent 0%, #06B6D4 45%, #2563EB 50%, #7C3AED 55%, transparent 100%)"
-              : "conic-gradient(from 0deg, transparent 45%, rgba(37,99,235,0.2) 50%, transparent 55%)",
+              ? "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.03) 0%, #ffffff 100%)" 
+              : "#ffffff"
           }}
-        />
-        <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
-      </motion.div>
-    </AnimatePresence>
-  </div>
-
-  {/* MAIN CARD — Adjusted padding for mobile */}
-  <div
-    className={`relative z-10 w-full rounded-3xl p-6 sm:p-10 transition-all duration-700 border overflow-hidden
-      ${isRunning ? "border-accent/20 shadow-xl" : "border-accent/10 shadow-sm"}`}
-    style={{
-      background: isRunning 
-        ? "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.03) 0%, #ffffff 100%)" 
-        : "#ffffff"
-    }}
-  >
-    <div className="flex flex-col items-center justify-center gap-6 sm:gap-8 relative z-10">
-
-      {/* Steering Wheel — Scaled for mobile */}
-      <div
-        ref={wheelRef}
-        onPointerDown={handlePointerDown}
-        className="relative w-48 h-48 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing touch-none select-none"
-        style={{ touchAction: "none" }}
-      >
-        <SteeringWheel rotation={rotation} isRunning={isRunning} />
-
-        {/* Interior Aura */}
-        <AnimatePresence>
-          {isRunning && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute -inset-4 sm:-inset-8 rounded-full pointer-events-none bg-accent/[0.05] blur-2xl -z-10"
-            />
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Instruction + Fixed Wave */}
-      <div className="flex flex-col items-center gap-4">
-        <motion.span
-          animate={{ color: isRunning ? "#2563EB" : "#94A3B8" }}
-          className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-center"
         >
-          {isRunning ? "Engine On • Drag to Rotate" : "Tap to Ignite • Drag to rotate"}
-        </motion.span>
+          <div className="flex flex-col items-center justify-center gap-6 sm:gap-8 relative z-10">
 
-        {/* EQUALIZER — FIXED: Uses scaleY for zero layout shift */}
-        <div className="flex gap-1.5 items-end justify-center h-6 w-32">
-          {[
-            { color: "#06B6D4", delay: 0.0 },
-            { color: "#3B82F6", delay: 0.1 },
-            { color: "#2563EB", delay: 0.2 },
-            { color: "#7C3AED", delay: 0.3 },
-            { color: "#2563EB", delay: 0.4 },
-            { color: "#3B82F6", delay: 0.5 },
-            { color: "#06B6D4", delay: 0.6 },
-          ].map((bar, i) => (
-            <motion.div
-              key={i}
-              initial={{ scaleY: 0.2 }}
-              animate={isRunning ? { scaleY: [0.2, 1, 0.4, 0.8, 0.2] } : { scaleY: 0.2 }}
-              transition={{
-                repeat: Infinity,
-                duration: 1,
-                delay: bar.delay,
-                ease: "easeInOut",
-              }}
-              style={{
-                backgroundColor: isRunning ? bar.color : "#E5E7EB",
-                width: "3px",
-                height: "100%", // Fixed height
-                originY: 1, // Animates from bottom up
-                borderRadius: "2px",
-                willChange: "transform", // Performance optimization
-              }}
-            />
-          ))}
+            {/* Steering Wheel — Scaled for mobile */}
+            <div
+              ref={wheelRef}
+              onPointerDown={handlePointerDown}
+              className="relative w-48 h-48 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing touch-none select-none"
+              style={{ touchAction: "none" }}
+            >
+              <SteeringWheel rotation={rotation} isRunning={isRunning} />
+
+              {/* Interior Aura */}
+              <AnimatePresence>
+                {isRunning && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute -inset-4 sm:-inset-8 rounded-full pointer-events-none bg-accent/5 blur-2xl -z-10"
+                  />
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Instruction + Fixed Wave */}
+            <div className="flex flex-col items-center gap-4">
+              <motion.span
+                animate={{ color: isRunning ? "#2563EB" : "#94A3B8" }}
+                className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-center"
+              >
+                {isRunning ? "Engine On • Drag to Rotate" : "Tap to Ignite • Drag to rotate"}
+              </motion.span>
+
+              {/* EQUALIZER — FIXED: Uses scaleY for zero layout shift */}
+              <div className="flex gap-1.5 items-end justify-center h-6 w-32">
+                {[
+                  { color: "#06B6D4", delay: 0.0 },
+                  { color: "#3B82F6", delay: 0.1 },
+                  { color: "#2563EB", delay: 0.2 },
+                  { color: "#7C3AED", delay: 0.3 },
+                  { color: "#2563EB", delay: 0.4 },
+                  { color: "#3B82F6", delay: 0.5 },
+                  { color: "#06B6D4", delay: 0.6 },
+                ].map((bar, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scaleY: 0.2 }}
+                    animate={isRunning ? { scaleY: [0.2, 1, 0.4, 0.8, 0.2] } : { scaleY: 0.2 }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1,
+                      delay: bar.delay,
+                      ease: "easeInOut",
+                    }}
+                    style={{
+                      backgroundColor: isRunning ? bar.color : "#E5E7EB",
+                      width: "3px",
+                      height: "100%", // Fixed height
+                      originY: 1, // Animates from bottom up
+                      borderRadius: "2px",
+                      willChange: "transform", // Performance optimization
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-
-    </div>
-  </div>
-</div>
       </div>
     </section>
   );
