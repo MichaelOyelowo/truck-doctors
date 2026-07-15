@@ -51,130 +51,133 @@ export default function ActionShowcase() {
       className="relative h-[300vh] bg-white"
       aria-label="Fleet in motion showcase"
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6 py-10">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center px-6 py-10">
 
-        {/* SECTION HEADER — fills the gap between this section and the one above it */}
-        <div className="w-full max-w-6xl mb-8">
-          <div className="flex items-center gap-3 mb-5">
-            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">
-              On The Road
-            </span>
-          </div>
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-            <h2 className="text-primary tracking-tighter leading-none">
-              Built for the
-              <br />
-              <span className="text-accent">Long Haul.</span>
-            </h2>
-            <p className="text-muted text-sm leading-relaxed max-w-sm">
-              We capture our routes as they happen. No staging just real-time grit. Head over to our social channels to watch our latest raw footage straight from the asphalt.
-            </p>
-          </div>
-        </div>
+        {/* ONE UNIFIED CARD — soft gray background holds both the text and the media */}
+        <div className="relative w-full max-w-6xl rounded-[2.5rem] bg-surface border border-border overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.12)]">
+          <div className="grid lg:grid-cols-2 gap-0 items-center">
 
-        <div className="relative w-full max-w-6xl h-[60vh] rounded-4xl overflow-hidden bg-[#171a20] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)]">
-
-          {/* Background video — the main video, stays visible the entire time */}
-          <video
-            ref={(el) => (videoRefs.current[0] = el)}
-            src={video1}
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <track kind="captions" />
-          </video>
-          <button
-            type="button"
-            onClick={() => toggleVideo(0)}
-            aria-pressed={playingState[0]}
-            aria-label={playingState[0] ? "Pause background video" : "Play background video"}
-            className="absolute bottom-4 right-4 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-[#171a20] shadow-md hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          >
-            {playingState[0] ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
-          </button>
-
-          {/* Video 2 — TOP-LEFT quadrant, slides in from the LEFT, slides back out before section end */}
-          <motion.div
-            style={{ x: video2X }}
-            className="absolute left-0 top-0 w-full sm:w-1/2 h-1/2 z-10 p-4 lg:p-6"
-          >
-            <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)]">
-              <video
-                ref={(el) => (videoRefs.current[1] = el)}
-                src={video2}
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-hidden="true"
-                className="w-full h-full object-cover"
-              >
-                <track kind="captions" />
-              </video>
-              <button
-                type="button"
-                onClick={() => toggleVideo(1)}
-                aria-pressed={playingState[1]}
-                aria-label={playingState[1] ? "Pause top left video" : "Play top left video"}
-                className="absolute bottom-3 right-3 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-[#171a20] shadow-md hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-              >
-                {playingState[1] ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
-              </button>
+            {/* LEFT — text: first on mobile (top), left column on desktop */}
+            <div className="p-8 lg:p-14 order-1 lg:order-1">
+              <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-5 block">
+                On The Road
+              </span>
+              <h2 className="text-primary tracking-tighter leading-none mb-6">
+                Built for the
+                <br />
+                <span className="text-accent">Long Haul.</span>
+              </h2>
+              <p className="text-muted text-sm leading-relaxed max-w-sm mb-8">
+                We capture our routes as they happen. No staging just real-time grit. Head over to our social channels to watch our latest raw footage straight from the asphalt.
+              </p>
+              <div className="flex flex-row gap-3">
+                <button
+                  type="button"
+                  className="flex items-center justify-center gap-2 bg-primary text-white font-bold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl hover:bg-primary/90 transition-colors"
+                >
+                  Schedule a Call
+                </button>
+                <button
+                  type="button"
+                  className="flex items-center justify-center gap-2 bg-white text-primary font-bold text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl border border-border hover:border-primary/30 transition-colors"
+                >
+                  Learn More
+                  <ArrowRight size={15} />
+                </button>
+              </div>
             </div>
-          </motion.div>
 
-          {/* Video 3 — BOTTOM-RIGHT quadrant, slides in from the RIGHT, slides back out before section end */}
-          <motion.div
-            style={{ x: video3X }}
-            className="absolute right-0 bottom-0 w-full sm:w-1/2 h-1/2 z-10 p-4 lg:p-6"
-          >
-            <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)]">
-              <video
-                ref={(el) => (videoRefs.current[2] = el)}
-                src={video3}
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-hidden="true"
-                className="w-full h-full object-cover"
-              >
-                <track kind="captions" />
-              </video>
-              <button
-                type="button"
-                onClick={() => toggleVideo(2)}
-                aria-pressed={playingState[2]}
-                aria-label={playingState[2] ? "Pause bottom right video" : "Play bottom right video"}
-                className="absolute bottom-3 right-3 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-[#171a20] shadow-md hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-              >
-                {playingState[2] ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
-              </button>
+            {/* RIGHT — media: below the text on mobile, right column on desktop */}
+            <div className="relative w-full h-[45vh] lg:h-[70vh] order-2 lg:order-2 p-3 lg:p-4">
+              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-[#171a20]">
+
+                {/* Background video — the main video, stays visible the entire time */}
+                <video
+                  ref={(el) => (videoRefs.current[0] = el)}
+                  src={video1}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <track kind="captions" />
+                </video>
+                <button
+                  type="button"
+                  onClick={() => toggleVideo(0)}
+                  aria-pressed={playingState[0]}
+                  aria-label={playingState[0] ? "Pause background video" : "Play background video"}
+                  className="absolute bottom-4 right-4 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-[#171a20] shadow-md hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                >
+                  {playingState[0] ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
+                </button>
+
+                {/* Video 2 — TOP-LEFT quadrant, slides in from the LEFT — clean edge, no thick mat */}
+                <motion.div
+                  style={{ x: video2X }}
+                  className="absolute left-0 top-0 w-full sm:w-1/2 h-1/2 z-10 p-3 lg:p-4"
+                >
+                  <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/10">
+                    <video
+                      ref={(el) => (videoRefs.current[1] = el)}
+                      src={video2}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      aria-hidden="true"
+                      className="w-full h-full object-cover"
+                    >
+                      <track kind="captions" />
+                    </video>
+                    <button
+                      type="button"
+                      onClick={() => toggleVideo(1)}
+                      aria-pressed={playingState[1]}
+                      aria-label={playingState[1] ? "Pause top left video" : "Play top left video"}
+                      className="absolute bottom-3 right-3 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-[#171a20] shadow-md hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    >
+                      {playingState[1] ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
+                    </button>
+                  </div>
+                </motion.div>
+
+                {/* Video 3 — BOTTOM-RIGHT quadrant, slides in from the RIGHT — clean edge, no thick mat */}
+                <motion.div
+                  style={{ x: video3X }}
+                  className="absolute right-0 bottom-0 w-full sm:w-1/2 h-1/2 z-10 p-3 lg:p-4"
+                >
+                  <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/10">
+                    <video
+                      ref={(el) => (videoRefs.current[2] = el)}
+                      src={video3}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      aria-hidden="true"
+                      className="w-full h-full object-cover"
+                    >
+                      <track kind="captions" />
+                    </video>
+                    <button
+                      type="button"
+                      onClick={() => toggleVideo(2)}
+                      aria-pressed={playingState[2]}
+                      aria-label={playingState[2] ? "Pause bottom right video" : "Play bottom right video"}
+                      className="absolute bottom-3 right-3 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-[#171a20] shadow-md hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    >
+                      {playingState[2] ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
+                    </button>
+                  </div>
+                </motion.div>
+
+              </div>
             </div>
-          </motion.div>
 
-        </div>
-
-        {/* CTA ROW — side by side on every breakpoint, just smaller on mobile */}
-        <div className="w-full max-w-6xl mt-6 flex flex-row gap-2 sm:gap-3">
-          <button
-            type="button"
-            className="flex-1 sm:flex-none sm:min-w-[200px] flex items-center justify-center gap-1.5 sm:gap-2 bg-primary text-white font-bold text-xs sm:text-sm px-4 py-3 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl hover:bg-primary/90 transition-colors"
-          >
-            Schedule a Call
-          </button>
-          <button
-            type="button"
-            className="flex-1 sm:flex-none sm:min-w-[200px] flex items-center justify-center gap-1.5 sm:gap-2 bg-white text-primary font-bold text-xs sm:text-sm px-4 py-3 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl border border-border hover:border-primary/30 transition-colors"
-          >
-            Learn More
-            <ArrowRight size={13} className="sm:hidden" />
-            <ArrowRight size={15} className="hidden sm:block" />
-          </button>
+          </div>
         </div>
 
       </div>

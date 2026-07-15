@@ -324,12 +324,12 @@ export default function InteractiveInventory() {
   };
 
   return (
-    <section className="relative w-full bg-[#f4f4f4] py-24 px-6 overflow-hidden flex justify-center">
+    <section className="relative w-full bg-white py-24 px-6 overflow-hidden flex justify-center">
 
       {/* Subtle top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-border" />
 
-      <div className="w-full max-w-6xl bg-white border border-primary/15 rounded-4xl shadow-sm px-6 sm:px-10 lg:px-14 py-14">
+      <div className="w-full max-w-6xl bg-surface border border-primary/15 rounded-4xl shadow-sm px-6 sm:px-10 lg:px-14 py-14">
 
         {/* SECTION HEADER */}
         <div className="flex flex-col mb-16">
