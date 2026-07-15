@@ -75,14 +75,14 @@ export default function Hero() {
             className="w-full h-full object-cover object-center"
           />
           {/* Dark gradient overlays for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/10" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/45 to-black/20" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/50 via-transparent to-black/10" />
         </motion.div>
       </AnimatePresence>
 
       {/* SUBTLE GRID OVERLAY */}
       <div
-        className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 z-1 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
                             linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)`,
@@ -94,7 +94,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl w-full text-center text-white">
 
         {/* HEADLINE */}
-        <div className="mb-6 min-h-[8rem] sm:min-h-[10rem] lg:min-h-[13rem] flex items-center justify-center">
+        <div className="mb-6 min-h-32 sm:min-h-40 lg:min-h-52 flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.h1
               key={slide.id}
@@ -124,7 +124,7 @@ export default function Hero() {
         </div>
 
         {/* SUBHEADING */}
-        <div className="min-h-[3.5rem] flex items-center justify-center mb-10">
+        <div className="min-h-14 flex items-center justify-center mb-10">
           <AnimatePresence mode="wait">
             <motion.p
               key={`sub-${slide.id}`}
@@ -197,7 +197,7 @@ export default function Hero() {
             <button
               key={s.id}
               onClick={() => setCurrent(i)}
-              className="relative h-[3px] rounded-full overflow-hidden bg-white/20 transition-all duration-300 cursor-pointer"
+              className="relative h-0.75 rounded-full overflow-hidden bg-white/20 transition-all duration-300 cursor-pointer"
               style={{ width: i === current ? "48px" : "20px" }}
             >
               {i === current && (

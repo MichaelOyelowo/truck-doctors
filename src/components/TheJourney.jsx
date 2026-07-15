@@ -85,7 +85,7 @@ export default function ActionShowcase() {
                 <span className="text-accent">Long Haul.</span>
               </h2>
               <p className="text-muted text-sm leading-relaxed max-w-sm mb-8">
-                We capture our routes as they happen. No staging just real-time grit. Head over to our social channels to watch our latest raw footage straight from the asphalt.
+                At Truck Doctors, we treat vehicle sourcing like a science. Our certified specialists run comprehensive diagnostic, mechanical, and structural assessments on every unit before it joins our fleet. We eliminate the guesswork so you can deploy your assets to the road with absolute confidence.
               </p>
               <div className="flex flex-row gap-3">
                 <button
@@ -106,7 +106,7 @@ export default function ActionShowcase() {
 
             {/* -------------------- 2. MIDDLE VIDEO CONTAINER (Saves space, highly visible) -------------------- */}
             <div className="relative w-full h-[50vh] lg:h-[70vh] p-1 lg:p-4">
-              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-[#171a20]">
+              <div className="relative w-full h-full rounded-4xl overflow-hidden bg-[#171a20]">
 
                 {/* Background video — the main video, stays visible the entire time */}
                 <video
@@ -136,7 +136,7 @@ export default function ActionShowcase() {
                   style={{ x: video2X }}
                   className="absolute left-0 top-0 w-full sm:w-1/2 h-1/2 z-10 p-2 sm:p-3 lg:p-4"
                 >
-                  <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/10">
+                  <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/10">
                     <video
                       ref={(el) => (videoRefs.current[1] = el)}
                       src={video2}
@@ -166,7 +166,7 @@ export default function ActionShowcase() {
                   style={{ x: video3X }}
                   className="absolute right-0 bottom-0 w-full sm:w-1/2 h-1/2 z-10 p-2 sm:p-3 lg:p-4"
                 >
-                  <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/10">
+                  <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-[0_15px_40px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/10">
                     <video
                       ref={(el) => (videoRefs.current[2] = el)}
                       src={video3}
@@ -197,7 +197,7 @@ export default function ActionShowcase() {
             {/* -------------------- 3. MOBILE BOTTOM DESCRIPTION & CTA BLOCK -------------------- */}
             <div className="w-full lg:hidden mt-6 flex flex-col gap-6">
               <p className="text-muted text-sm leading-relaxed">
-                We capture our routes as they happen. No staging just real-time grit. Head over to our social channels to watch our latest raw footage straight from the asphalt.
+               At Truck Doctors, we treat vehicle sourcing like a science. Our certified specialists run comprehensive diagnostic, mechanical, and structural assessments on every unit before it joins our fleet. We eliminate the guesswork so you can deploy your assets to the road with absolute confidence.
               </p>
               <div className="grid grid-cols-2 gap-3 w-full">
                 <button
