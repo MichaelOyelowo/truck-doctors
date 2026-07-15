@@ -59,7 +59,7 @@ export default function ActionShowcase() {
               <span className="text-accent">Long Haul.</span>
             </h2>
             <p className="text-muted text-sm leading-relaxed max-w-sm">
-              We capture our routes as they happen. No staging—just real-time grit. Head over to our social channels to watch our latest raw footage straight from the asphalt.
+              We capture our routes as they happen. No staging just real-time grit. Head over to our social channels to watch our latest raw footage straight from the asphalt.
             </p>
           </div>
         </div>
