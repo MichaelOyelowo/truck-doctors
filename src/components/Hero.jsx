@@ -139,25 +139,25 @@ export default function Hero() {
           </AnimatePresence>
         </div>
 
-        {/* CTAs */}
+        {/* CTAs — Stacked side-by-side on mobile, scaled beautifully */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+          className="flex flex-row items-center justify-center gap-3 sm:gap-4 mb-12 w-full max-w-md mx-auto sm:max-w-none"
         >
           <Link
             to="/quote"
-            className="group w-full sm:w-auto bg-accent hover:bg-accent-dark text-white px-10 py-4 rounded-sm font-bold flex items-center justify-center gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-sm uppercase tracking-widest"
+            className="group w-[calc(50%-6px)] sm:w-auto bg-accent hover:bg-accent-dark text-white px-3 py-3.5 sm:px-10 sm:py-4 rounded-sm font-bold flex items-center justify-center gap-1.5 sm:gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-[11px] sm:text-sm uppercase tracking-wider sm:tracking-widest"
           >
-            Learn More
-            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            <span className="truncate">Learn More</span>
+            <ArrowRight size={14} className="transition-transform group-hover:translate-x-1 shrink-0" />
           </Link>
           <Link
             to="/track"
-            className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/25 hover:bg-white/20 hover:border-white/40 text-white px-10 py-4 rounded-sm font-bold transition-all duration-200 text-sm uppercase tracking-widest"
+            className="w-[calc(50%-6px)] sm:w-auto bg-white/10 backdrop-blur-md border border-white/25 hover:bg-white/20 hover:border-white/40 text-white px-3 py-3.5 sm:px-10 sm:py-4 rounded-sm font-bold flex items-center justify-center transition-all duration-200 text-[11px] sm:text-sm uppercase tracking-wider sm:tracking-widest truncate"
           >
-            View Inventory
+            Inventory
           </Link>
         </motion.div>
 

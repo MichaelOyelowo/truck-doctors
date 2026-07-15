@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
-import { Fuel, Weight, Gauge, Calendar, ArrowRight, Settings, Zap, Truck } from "lucide-react";
+import { Fuel, Calendar, Gauge, Zap, Settings, Truck, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import manFront from "../assets/homepage-images/man/man11.avif";
@@ -28,14 +28,7 @@ const TRUCKS = [
     brand: "MAN",
     name: "MAN Truck",
     type: "Heavy-Duty Tractor Unit",
-
-    views: [
-      manFront,
-      manSide,
-      manBack,
-      manAngle,
-    ],
-
+    views: [manFront, manSide, manBack, manAngle],
     year: "2022",
     mileage: "148,000 km",
     engine: "12.4L MAN D26 Turbo Diesel",
@@ -46,24 +39,15 @@ const TRUCKS = [
     payload: "44 Tonnes",
     price: "$54,900",
     badge: "Best Seller",
-
     description:
       "Engineered for long-haul transportation, the MAN TGX 18.510 combines outstanding fuel efficiency, exceptional driver comfort, and reliable performance for demanding commercial operations.",
   },
-
   {
     id: 2,
     brand: "Daewoo",
     name: "Daewoo",
     type: "Heavy Duty Cargo Truck",
-
-    views: [
-      daewooFront,
-      daewooSide,
-      daewooBack,
-      daewooAngle,
-    ],
-
+    views: [daewooFront, daewooSide, daewooBack, daewooAngle],
     year: "2020",
     mileage: "134,000 km",
     engine: "10.9L Diesel",
@@ -74,23 +58,15 @@ const TRUCKS = [
     payload: "25 Tonnes",
     price: "$35,900",
     badge: "Ready to Work",
-
     description:
       "A dependable heavy-duty truck engineered for commercial transport, offering excellent reliability, strong performance, and cost-effective operation.",
   },
-
   {
     id: 3,
     brand: "Rhino",
     name: "Rhino Truck",
     type: "Heavy Cargo Truck",
-
-    views: [
-      rhinoFront,
-      rhinoSide,
-      rhinoBack,
-    ],
-
+    views: [rhinoFront, rhinoSide, rhinoBack],
     year: "2021",
     mileage: "186,000 km",
     engine: "11.5L Turbo Diesel",
@@ -101,24 +77,15 @@ const TRUCKS = [
     payload: "30 Tonnes",
     price: "$43,500",
     badge: "Fleet Choice",
-
     description:
       "Built to handle demanding transport operations with exceptional durability, reliable performance, and lower operating costs.",
   },
-
   {
     id: 4,
     brand: "Kia",
     name: "Kia Cargo",
     type: "Medium Duty Distribution Truck",
-
-    views: [
-      kiaFront,
-      kiaSide,
-      kiaBack,
-      kiaAngle,
-    ],
-
+    views: [kiaFront, kiaSide, kiaBack, kiaAngle],
     year: "2023",
     mileage: "72,000 km",
     engine: "6.9L Turbo Diesel",
@@ -129,19 +96,18 @@ const TRUCKS = [
     payload: "18 Tonnes",
     price: "$39,500",
     badge: "Low Mileage",
-
     description:
       "Designed for urban logistics and regional deliveries with excellent fuel economy, maneuverability, and dependable daily performance.",
   },
 ];
 
 const SPECS = [
-  { icon: Calendar, key: "year", label: "Year", },
-  { icon: Gauge, key: "mileage", label: "Mileage", },
-  { icon: Fuel, key: "engine", label: "Engine", },
-  { icon: Zap, key: "horsepower", label: "Power", },
-  { icon: Settings, key: "transmission", label: "Transmission", },
-  { icon: Truck, key: "payload", label: "Payload", },
+  { icon: Calendar, key: "year", label: "Year" },
+  { icon: Gauge, key: "mileage", label: "Mileage" },
+  { icon: Fuel, key: "engine", label: "Engine" },
+  { icon: Zap, key: "horsepower", label: "Power" },
+  { icon: Settings, key: "transmission", label: "Transmission" },
+  { icon: Truck, key: "payload", label: "Payload" },
 ];
 
 function SteeringWheel({ rotation, isRunning }) {
@@ -152,7 +118,6 @@ function SteeringWheel({ rotation, isRunning }) {
       className="w-full h-full pointer-events-none"
     >
       <defs>
-        {/* Radial gradient for the hub — gives it a lit, pressable feel */}
         <radialGradient id="hubGradient" cx="35%" cy="30%" r="75%">
           <stop offset="0%" stopColor={isRunning ? "#3B82F6" : "#FFFFFF"} />
           <stop offset="60%" stopColor={isRunning ? "#1D4ED8" : "#F3F4F6"} />
@@ -168,7 +133,6 @@ function SteeringWheel({ rotation, isRunning }) {
         </filter>
       </defs>
 
-      {/* Outer rim */}
       <circle
         cx="100" cy="100" r="88"
         fill="none"
@@ -177,7 +141,6 @@ function SteeringWheel({ rotation, isRunning }) {
         style={{ transition: "stroke 0.4s ease" }}
       />
 
-      {/* Inner dash rim */}
       <circle
         cx="100" cy="100" r="65"
         fill="none"
@@ -187,7 +150,6 @@ function SteeringWheel({ rotation, isRunning }) {
         style={{ transition: "stroke 0.4s ease" }}
       />
 
-      {/* 3 spokes — uniform color for clean rotation */}
       <line x1="100" y1="76" x2="100" y2="12"
         stroke={isRunning ? "#475569" : "#9CA3AF"}
         strokeWidth="13" strokeLinecap="round"
@@ -204,7 +166,6 @@ function SteeringWheel({ rotation, isRunning }) {
         style={{ transition: "stroke 0.4s ease" }}
       />
 
-      {/* Center hub */}
       <circle
         cx="100" cy="100" r="24"
         fill="url(#hubGradient)"
@@ -215,7 +176,6 @@ function SteeringWheel({ rotation, isRunning }) {
         style={{ transition: "fill 0.4s ease" }}
       />
 
-      {/* Horn dots */}
       <circle cx="84" cy="100" r="3.5"
         fill={isRunning ? "#93C5FD" : "#9CA3AF"}
         style={{ transition: "fill 0.4s ease" }}
@@ -225,7 +185,6 @@ function SteeringWheel({ rotation, isRunning }) {
         style={{ transition: "fill 0.4s ease" }}
       />
 
-      {/* Glow ring when running */}
       {isRunning && (
         <circle
           cx="100" cy="100" r="88"
@@ -251,7 +210,6 @@ export default function InteractiveInventory() {
 
   const truck = TRUCKS[activeTruck];
 
-  // Idle spin only while "running" and not actively being dragged
   useEffect(() => {
     let interval;
     if (isRunning) {
@@ -267,11 +225,10 @@ export default function InteractiveInventory() {
           ) % totalViews;
 
         setActiveView(viewIndex);
-        setActiveView(viewIndex);
       }, 1000 / 60);
     }
     return () => clearInterval(interval);
-  }, [isRunning]);
+  }, [isRunning, truck.views.length]);
 
   const angleFromCenter = (clientX, clientY) => {
     const rect = wheelRef.current.getBoundingClientRect();
@@ -310,11 +267,9 @@ export default function InteractiveInventory() {
       ) % totalViews;
 
     setActiveView(viewIndex);
-    setActiveView(viewIndex);
   };
 
   const handlePointerUp = () => {
-    // A tap (no real drag movement) toggles the engine state
     if (!dragState.current.moved) {
       setIsRunning((prev) => !prev);
     }
@@ -324,304 +279,261 @@ export default function InteractiveInventory() {
   };
 
   return (
-    <section className="relative w-full bg-white py-24 px-6 overflow-hidden flex justify-center">
-
-      {/* Subtle top border */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-border" />
-
-      <div className="w-full max-w-6xl bg-surface border border-primary/15 rounded-4xl shadow-sm px-6 sm:px-10 lg:px-14 py-14">
-
-        {/* SECTION HEADER */}
-        <div className="flex flex-col mb-16">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="w-8 h-px bg-accent" />
-            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">
-              Live Showroom
-            </span>
-          </div>
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-            <h2 className="text-primary tracking-tighter leading-none">
-              Explore Our
-              <br />
-              <span className="text-accent"> Premium Fleet. </span>
-            </h2>
-            <p className="text-muted text-base md:text-lg leading-relaxed max-w-sm">
-              Every truck in our inventory undergoes a comprehensive inspection to ensure
-              maximum reliability, performance, and road readiness. Rotate the steering wheel
-              below to explore each vehicle from every angle.
-            </p>
-          </div>
-        </div>
-
-        {/* TRUCK SELECTOR TABS */}
-        <div className="flex gap-2 flex-wrap mb-10">
-          {TRUCKS.map((t, i) => (
-            <button
-              key={t.id}
-              onClick={() => { setActiveTruck(i); setActiveView(0); }}
-              className={`px-4 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-200 cursor-pointer
-                ${activeTruck === i
-                  ? "bg-primary text-white"
-                  : "bg-white text-muted hover:text-primary border border-border"
-                }`}
-            >
-              {t.name}
-            </button>
-          ))}
-        </div>
-
-        {/* MAIN LAYOUT — matches your sketch */}
-        <div className="grid lg:grid-cols-2 gap-10 items-start mb-16">
-
-          {/* ===== LEFT — Truck Details ===== */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={truck.id}
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 16 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col gap-6"
-            >
-              {/* Name + type */}
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-2">
-                  {truck.type}
+    <section 
+      /* Clean spacing matching the Hero to Action Showcase transitions precisely */
+      className="relative h-auto bg-white mt-8 lg:mt-0"
+    >
+      <div className="relative h-auto w-full flex flex-col items-center justify-center px-4 sm:px-6 py-6 lg:py-10">
+        
+        {/* ONE UNIFIED CARD (Matches ActionShowcase exactly in styling & shadows) */}
+        <div className="relative w-full max-w-6xl rounded-[2rem] lg:rounded-[2.5rem] bg-surface border border-border overflow-hidden shadow-xl">
+          
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 items-start p-5 sm:p-8 lg:p-14">
+            
+            {/* 1. SECTION HEADER */}
+            <div className="w-full col-span-2 flex flex-col mb-10">
+              <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-2 sm:mb-3 block">
+                Live Showroom
+              </span>
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+                <h2 className="text-primary text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-none">
+                  Explore Our <br />
+                  <span className="text-accent italic font-serif lowercase tracking-normal">Premium Fleet.</span>
+                </h2>
+                <p className="text-muted text-xs sm:text-sm leading-relaxed max-w-md font-medium">
+                  Every truck in our inventory undergoes structural assessments to ensure maximum reliability. Rotate the steering wheel below to explore each vehicle from every angle.
                 </p>
-                <h3 className="text-primary font-black tracking-tight leading-none mb-3 flex flex-row flex-nowrap items-center gap-3">
-                  {truck.name}
-                  <span className="inline-flex px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest">
-                    {truck.badge}
-                  </span>
-                </h3>
-                <p className="text-muted text-base leading-relaxed max-w-md">
-                  {truck.description}
-                </p>
-              </div>
-
-              {/* Specs */}
-              <div className="grid grid-cols-2 gap-3">
-                {SPECS.map((spec) => (
-                  <div
-                    key={spec.key}
-                    className="flex items-center gap-3 bg-white border border-border rounded-xl px-4 py-3 shadow-sm"
-                  >
-                    <spec.icon size={14} className="text-accent shrink-0" />
-                    <div>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-muted leading-none">
-                        {spec.label}
-                      </p>
-                      <p className="text-sm font-black mt-0.5">
-                        {truck[spec.key]}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Price + CTA */}
-              <div className="pt-5 border-t border-border flex flex-col gap-4">
-                <div className="flex items-end justify-between">
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted">
-                      Starting from
-                    </p>
-                    <p className="text-4xl font-black text-primary tracking-tighter leading-none">
-                      {truck.price}
-                    </p>
-                    <p className="text-[10px] font-bold text-muted mt-1 uppercase tracking-widest">
-                      Available for Inspection • Nationwide Delivery
-                    </p>
-                  </div>
-                  {/* <span className="text-[10px] font-black uppercase tracking-widest text-green-600 bg-green-50 px-3 py-1.5 rounded-full border border-green-200">
-                    ● Available Now
-                  </span> */}
-                </div>
-                <Link
-                  to={`/trucks/${truck.id}`}
-                  className="group flex items-center justify-center gap-2 bg-accent hover:bg-accent-dark text-white font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-accent/25"
-                >
-                  Explore This Truck
-                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* ===== RIGHT — Truck Image ===== */}
-          <div className="flex flex-col gap-3">
-            <div className="relative w-full aspect-4/3 rounded-2xl overflow-hidden bg-white border border-border shadow-sm">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={`${truck.id}-${activeView}`}
-                  src={truck.views[activeView]}
-                  alt={truck.name}
-                  initial={{ opacity: 0, scale: 1.03 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.97 }}
-                  transition={{ duration: 0.4 }}
-                  className="w-full h-full object-cover"
-                />
-              </AnimatePresence>
-
-              {/* Scan line when running */}
-              {isRunning && (
-                <motion.div
-                  animate={{ y: ["0%", "100%", "0%"] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                  className="absolute left-0 right-0 h-0.5 bg-accent/40 shadow-[0_0_12px_#2563EB] z-20 pointer-events-none"
-                />
-              )}
-
-              {/* 360 badge */}
-              <AnimatePresence>
-                {isRunning && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute top-4 right-4 flex items-center gap-2 bg-white/90 backdrop-blur-sm border border-accent/20 px-3 py-1.5 rounded-full shadow-sm"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-accent">
-                      360° Active
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              
-
-              {/* View dots */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                {[0, 1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className={`rounded-full transition-all duration-300 ${
-                      activeView === i
-                        ? "w-6 h-1.5 bg-accent"
-                        : "w-1.5 h-1.5 bg-black/20"
-                    }`}
-                  />
-                ))}
               </div>
             </div>
-          </div>
-        </div>
 
+            {/* TRUCK SELECTOR TABS */}
+            <div className="w-full col-span-2 flex gap-2 flex-wrap mb-8">
+              {TRUCKS.map((t, i) => (
+                <button
+                  key={t.id}
+                  onClick={() => { setActiveTruck(i); setActiveView(0); }}
+                  className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer
+                    ${activeTruck === i
+                      ? "bg-primary text-white"
+                      : "bg-white text-muted hover:text-primary border border-border"
+                    }`}
+                >
+                  {t.name}
+                </button>
+              ))}
+            </div>
 
-      {/* ===== BOTTOM — Steering Wheel (MOBILE OPTIMIZED) ===== */}
-      <div className="relative w-full max-w-5xl mx-auto px-2 sm:px-0">
+            {/* ===== LEFT — Truck Details (Preserved layout separation) ===== */}
+            <div className="w-full lg:pr-8 flex flex-col gap-6 mb-8 lg:mb-0">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={truck.id}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 12 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col gap-6"
+                >
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-2 block">
+                      {truck.type}
+                    </span>
+                    <h3 className="text-primary text-2xl sm:text-3xl font-black tracking-tighter leading-none mb-3 flex items-center gap-3">
+                      {truck.name}
+                      <span className="inline-flex px-3 py-1 rounded-full bg-accent/10 text-accent text-[9px] font-black uppercase tracking-widest">
+                        {truck.badge}
+                      </span>
+                    </h3>
+                    <p className="text-muted text-xs sm:text-sm leading-relaxed font-medium">
+                      {truck.description}
+                    </p>
+                  </div>
 
-        {/* AMBIENT GLOWS — Reduced blur for mobile performance */}
-        <div className="absolute -top-10 -left-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-blue-500/10 blur-[60px]" />
-        <div className="absolute -bottom-10 -right-10 w-64 h-64 rounded-full pointer-events-none z-0 bg-purple-500/10 blur-[60px]" />
+                  {/* Specs Grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {SPECS.map((spec) => (
+                      <div
+                        key={spec.key}
+                        className="flex items-center gap-3 bg-white border border-border rounded-xl px-4 py-3 shadow-sm"
+                      >
+                        <spec.icon size={14} className="text-accent shrink-0" />
+                        <div>
+                          <p className="text-[9px] font-black uppercase tracking-widest text-muted leading-none">
+                            {spec.label}
+                          </p>
+                          <p className="text-xs sm:text-sm font-black mt-0.5">
+                            {truck[spec.key]}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-        {/* CHASING BORDER LIGHT — Optimized Insets */}
-        <div className="absolute -inset-1px rounded-3xl pointer-events-none overflow-hidden z-10">
-          <AnimatePresence>
-            <motion.div
-              key={isRunning ? "running" : "idle"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0"
-            >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: isRunning ? 4 : 12, ease: "linear" }}
-                className="absolute inset-[-150%] md:inset-[-200%]"
+                  {/* Pricing & Call to Action */}
+                  <div className="pt-5 border-t border-border flex flex-col gap-4">
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-muted">
+                          Starting from
+                        </p>
+                        <p className="text-3xl sm:text-4xl font-black text-primary tracking-tighter leading-none">
+                          {truck.price}
+                        </p>
+                        <p className="text-[9px] font-bold text-muted mt-1 uppercase tracking-widest">
+                          Available for Inspection • Nationwide Delivery
+                        </p>
+                      </div>
+                    </div>
+                    <Link
+                      to={`/trucks/${truck.id}`}
+                      className="group flex items-center justify-center gap-2  bg-accent hover:bg-accent-dark text-white font-bold text-xs uppercase tracking-widest py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-lg"
+                    >
+                      Explore This Truck
+                      <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* ===== RIGHT — Truck Showcase & Steering Wheel Controls ===== */}
+            <div className="w-full lg:pl-8 flex flex-col gap-6">
+              
+              {/* Truck image container with same layout styles */}
+              <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden bg-[#171a20] border border-border shadow-sm">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={`${truck.id}-${activeView}`}
+                    src={truck.views[activeView]}
+                    alt={truck.name}
+                    initial={{ opacity: 0, scale: 1.02 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+
+                {/* Scan line active when engine running */}
+                {isRunning && (
+                  <motion.div
+                    animate={{ y: ["0%", "100%", "0%"] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                    className="absolute left-0 right-0 h-0.5 bg-accent/40 shadow-[0_0_12px_#2563EB] z-20 pointer-events-none"
+                  />
+                )}
+
+                {/* 360 badge overlay */}
+                <AnimatePresence>
+                  {isRunning && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute top-4 right-4 flex items-center gap-2 bg-white/95 backdrop-blur-sm border border-accent/20 px-3 py-1.5 rounded-full shadow-sm"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                        360° Active
+                      </span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* View Dots indicator */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                  {truck.views.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`rounded-full transition-all duration-300 ${
+                        activeView === i
+                          ? "w-6 h-1.5 bg-accent"
+                          : "w-1.5 h-1.5 bg-white/40"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Dynamic Steering Wheel Interface inside Content Frame */}
+              <div 
+                className={`relative w-full rounded-2xl p-6 transition-all duration-700 border overflow-hidden
+                  ${isRunning ? "border-accent/20 bg-surface shadow-lg" : "border-border bg-white shadow-sm"}`}
                 style={{
                   background: isRunning 
-                    ? "conic-gradient(from 0deg, transparent 0%, #06B6D4 45%, #2563EB 50%, #7C3AED 55%, transparent 100%)"
-                    : "conic-gradient(from 0deg, transparent 45%, rgba(37,99,235,0.2) 50%, transparent 55%)",
+                    ? "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.02) 0%, #ffffff 100%)" 
+                    : "#ffffff"
                 }}
-              />
-              <div className="absolute inset-[1.5px] rounded-3xl bg-white" />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* MAIN CARD — Adjusted padding for mobile */}
-        <div
-          className={`relative z-10 w-full rounded-3xl p-6 sm:p-10 transition-all duration-700 border overflow-hidden
-            ${isRunning ? "border-accent/20 shadow-xl" : "border-accent/10 shadow-sm"}`}
-          style={{
-            background: isRunning 
-              ? "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.03) 0%, #ffffff 100%)" 
-              : "#ffffff"
-          }}
-        >
-          <div className="flex flex-col items-center justify-center gap-6 sm:gap-8 relative z-10">
-
-            {/* Steering Wheel — Scaled for mobile */}
-            <div
-              ref={wheelRef}
-              onPointerDown={handlePointerDown}
-              className="relative w-48 h-48 sm:w-72 sm:h-72 cursor-grab active:cursor-grabbing touch-none select-none"
-              style={{ touchAction: "none" }}
-            >
-              <SteeringWheel rotation={rotation} isRunning={isRunning} />
-
-              {/* Interior Aura */}
-              <AnimatePresence>
-                {isRunning && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute -inset-4 sm:-inset-8 rounded-full pointer-events-none bg-accent/5 blur-2xl -z-10"
-                  />
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Instruction + Fixed Wave */}
-            <div className="flex flex-col items-center gap-4">
-              <motion.span
-                animate={{ color: isRunning ? "#2563EB" : "#94A3B8" }}
-                className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-center"
               >
-                {isRunning ? "Engine On • Drag to Rotate" : "Tap to Ignite • Drag to rotate"}
-              </motion.span>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10">
+                  <div
+                    ref={wheelRef}
+                    onPointerDown={handlePointerDown}
+                    className="relative w-36 h-36 sm:w-44 sm:h-44 cursor-grab active:cursor-grabbing touch-none select-none"
+                    style={{ touchAction: "none" }}
+                  >
+                    <SteeringWheel rotation={rotation} isRunning={isRunning} />
+                    <AnimatePresence>
+                      {isRunning && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="absolute -inset-4 rounded-full pointer-events-none bg-accent/5 blur-xl -z-10"
+                        />
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-              {/* EQUALIZER — FIXED: Uses scaleY for zero layout shift */}
-              <div className="flex gap-1.5 items-end justify-center h-6 w-32">
-                {[
-                  { color: "#06B6D4", delay: 0.0 },
-                  { color: "#3B82F6", delay: 0.1 },
-                  { color: "#2563EB", delay: 0.2 },
-                  { color: "#7C3AED", delay: 0.3 },
-                  { color: "#2563EB", delay: 0.4 },
-                  { color: "#3B82F6", delay: 0.5 },
-                  { color: "#06B6D4", delay: 0.6 },
-                ].map((bar, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scaleY: 0.2 }}
-                    animate={isRunning ? { scaleY: [0.2, 1, 0.4, 0.8, 0.2] } : { scaleY: 0.2 }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 1,
-                      delay: bar.delay,
-                      ease: "easeInOut",
-                    }}
-                    style={{
-                      backgroundColor: isRunning ? bar.color : "#E5E7EB",
-                      width: "3px",
-                      height: "100%", // Fixed height
-                      originY: 1, // Animates from bottom up
-                      borderRadius: "2px",
-                      willChange: "transform", // Performance optimization
-                    }}
-                  />
-                ))}
+                  <div className="flex flex-col items-center sm:items-start gap-3">
+                    <motion.span
+                      animate={{ color: isRunning ? "#2563EB" : "#94A3B8" }}
+                      className="text-[9px] font-black uppercase tracking-[0.25em] text-center sm:text-left"
+                    >
+                      {isRunning ? "Engine On • Drag to Rotate" : "Tap Hub to Ignite • Drag Wheel"}
+                    </motion.span>
+
+                    {/* Sound Equalizer bars — scaleY optimization */}
+                    <div className="flex gap-1 items-end h-5 w-28 justify-center sm:justify-start">
+                      {[
+                        { color: "#06B6D4", delay: 0.0 },
+                        { color: "#3B82F6", delay: 0.1 },
+                        { color: "#2563EB", delay: 0.2 },
+                        { color: "#7C3AED", delay: 0.3 },
+                        { color: "#2563EB", delay: 0.4 },
+                        { color: "#3B82F6", delay: 0.5 },
+                        { color: "#06B6D4", delay: 0.6 },
+                      ].map((bar, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ scaleY: 0.2 }}
+                          animate={isRunning ? { scaleY: [0.2, 1, 0.4, 0.8, 0.2] } : { scaleY: 0.2 }}
+                          transition={{
+                            repeat: Infinity,
+                            duration: 1,
+                            delay: bar.delay,
+                            ease: "easeInOut",
+                          }}
+                          style={{
+                            backgroundColor: isRunning ? bar.color : "#E5E7EB",
+                            width: "3px",
+                            height: "100%",
+                            originY: 1,
+                            borderRadius: "2px",
+                            willChange: "transform",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
+
             </div>
 
           </div>
         </div>
-      </div>
+
       </div>
     </section>
   );
