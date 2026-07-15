@@ -48,7 +48,7 @@ export default function ActionShowcase() {
   return (
     <section
       ref={containerRef}
-      className="relative h-[300vh] bg-white"
+      className="relative h-[300vh] bg-white mt-12 lg:mt-0"
       aria-label="Fleet in motion showcase"
     >
       <div className="sticky top-0 h-screen w-full flex items-center justify-center px-6 py-10">
