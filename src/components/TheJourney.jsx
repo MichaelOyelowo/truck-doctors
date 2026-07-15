@@ -2,9 +2,9 @@ import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { Pause, Play } from "lucide-react";
 
-const video1 = "https://res.cloudinary.com/dffuf2gwh/video/upload/f_auto,q_auto/v1784102335/kia_truck_epf3lx.mp4";
-const video2 = "https://res.cloudinary.com/dffuf2gwh/video/upload/f_auto,q_auto/v1784096569/Truck_Cinematic_Videography_MP4_fkmi09.mp4";
-const video3 = "https://res.cloudinary.com/dffuf2gwh/video/upload/f_auto,q_auto/v1784098524/Shanghai_Yangtze_River_Bridge___City_view_night__City_view_apartment__Shanghai_city_MP4_xzng4u.mp4";
+const video1 = "https://res.cloudinary.com/dffuf2gwh/video/upload/f_auto,q_auto/v1784096569/Truck_Cinematic_Videography_MP4_fkmi09.mp4";
+const video2 = "https://res.cloudinary.com/dffuf2gwh/video/upload/f_auto,q_auto/v1784102335/kia_truck_epf3lx.mp4";
+const video3 = "https://res.cloudinary.com/dffuf2gwh/video/upload/f_auto,q_auto/v1784106532/1784103997454_ynnkxi.mp4";
 
 export default function ActionShowcase() {
   const containerRef = useRef(null);
@@ -43,8 +43,29 @@ export default function ActionShowcase() {
       className="relative h-[300vh] bg-[#f4f4f4]"
       aria-label="Fleet in motion showcase"
     >
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center px-6 py-10">
-        <div className="relative w-full max-w-6xl h-[75vh] rounded-4xl overflow-hidden bg-[#171a20] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)]">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6 py-10">
+
+        {/* SECTION HEADER — fills the gap between this section and the one above it */}
+        <div className="w-full max-w-6xl mb-8">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">
+              On The Road
+            </span>
+          </div>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+            <h2 className="text-primary tracking-tighter leading-none">
+              Built for the
+              <br />
+              <span className="text-accent">Long Haul.</span>
+            </h2>
+            <p className="text-muted text-sm leading-relaxed max-w-sm">
+              Real footage from real routes. Every fleet vehicle earns its
+              place through miles logged, not marketing photos.
+            </p>
+          </div>
+        </div>
+
+        <div className="relative w-full max-w-6xl h-[65vh] rounded-4xl overflow-hidden bg-[#171a20] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)]">
 
           {/* Background video */}
           <video
