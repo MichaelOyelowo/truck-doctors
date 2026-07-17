@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Zap, Weight, Gauge, Users, Calendar, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Zap, Weight, Gauge, Users, Calendar } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import manFront from "../assets/homepage-images/man/man11.avif";
 import kiaFront from "../assets/homepage-images/kia/kia1.avif";
@@ -110,10 +111,10 @@ function VehicleCard({ vehicle, index }) {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 32 }}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 28 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-      className="group relative bg-white border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-black/8 hover:-translate-y-1 transition-all duration-300"
+      className="group relative bg-white border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-black/8 hover:-translate-y-0.5 transition-all duration-300"
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-surface">
@@ -122,26 +123,24 @@ function VehicleCard({ vehicle, index }) {
           alt={`${vehicle.year} ${vehicle.name}`}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
 
         {/* Condition badge */}
-        <span className={`absolute top-3 left-3 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${CONDITION_STYLES[vehicle.condition]}`}>
+        <span className={`absolute top-3 left-3 text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${CONDITION_STYLES[vehicle.condition]}`}>
           {vehicle.condition}
         </span>
 
-        {/* Price pinned to image bottom */}
+        {/* Price */}
         <div className="absolute bottom-3 left-3">
-          <p className="text-white font-black text-xl tracking-tighter leading-none drop-shadow">
+          <p className="text-white font-bold text-lg tracking-tight leading-none drop-shadow">
             {vehicle.price}
           </p>
-          <p className="text-white/60 text-[9px] font-bold uppercase tracking-widest mt-0.5">
+          <p className="text-white/60 text-[9px] font-semibold uppercase tracking-widest mt-0.5">
             FOB Busan
           </p>
         </div>
 
-        {/* Arrow button — appears on hover */}
+        {/* Arrow on hover */}
         <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
             <ArrowUpRight size={14} className="text-primary" />
@@ -151,25 +150,23 @@ function VehicleCard({ vehicle, index }) {
 
       {/* Card body */}
       <div className="p-4">
-
-        {/* Name + year */}
         <div className="mb-3">
-          <h3 className="text-primary font-black tracking-tight leading-snug text-base">
+          <h3 className="text-primary font-semibold tracking-tight leading-snug text-sm">
             {vehicle.name}
           </h3>
           <div className="flex items-center gap-1.5 mt-1">
             <Calendar size={10} className="text-muted" />
-            <span className="text-[11px] text-muted font-medium">{vehicle.year}</span>
+            <span className="text-[11px] text-muted">{vehicle.year}</span>
             {vehicle.mileage && (
               <>
                 <span className="text-muted text-[10px]">·</span>
-                <span className="text-[11px] text-muted font-medium">{vehicle.mileage}</span>
+                <span className="text-[11px] text-muted">{vehicle.mileage}</span>
               </>
             )}
           </div>
         </div>
 
-        {/* Specs row */}
+        {/* Specs */}
         <div className="flex gap-2 mb-4">
           {vehicle.specs.map((spec) => (
             <div
@@ -178,10 +175,10 @@ function VehicleCard({ vehicle, index }) {
             >
               <spec.icon size={11} className="text-accent shrink-0" />
               <div>
-                <p className="text-[8px] font-black uppercase tracking-widest text-muted leading-none">
+                <p className="text-[8px] font-semibold uppercase tracking-widest text-muted leading-none">
                   {spec.label}
                 </p>
-                <p className="text-[11px] font-black text-primary mt-0.5">
+                <p className="text-[11px] font-semibold text-primary mt-0.5">
                   {spec.value}
                 </p>
               </div>
@@ -190,7 +187,7 @@ function VehicleCard({ vehicle, index }) {
         </div>
 
         {/* CTA */}
-        <button className="w-full flex items-center justify-center gap-1.5 border border-border hover:border-accent hover:text-accent text-primary font-bold text-[11px] uppercase tracking-widest py-2.5 rounded-xl transition-all duration-200 group/btn">
+        <button className="w-full flex items-center justify-center gap-1.5 border border-border hover:border-accent hover:text-accent text-primary font-semibold text-[11px] uppercase tracking-widest py-2.5 rounded-xl transition-all duration-200 group/btn">
           View Details
           <ArrowUpRight size={12} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
         </button>
@@ -203,22 +200,18 @@ export default function InventoryGrid() {
   const [activeTab, setActiveTab] = useState("All");
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-60px" });
-  const prefersReducedMotion = useReducedMotion();
 
   const filtered = useMemo(
-    () =>
-      INVENTORY.filter(
-        (item) => activeTab === "All" || item.category === activeTab
-      ),
+    () => INVENTORY.filter((item) => activeTab === "All" || item.category === activeTab),
     [activeTab]
   );
 
   return (
-    <section className="w-full bg-white py-28 px-6" aria-labelledby="inventory-heading">
+    <section id="inventory" className="w-full bg-white py-16 px-6 scroll-mt-24" aria-labelledby="inventory-heading">
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
-        <div ref={headerRef} className="mb-14">
+        <div ref={headerRef} className="mb-10">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
@@ -226,12 +219,12 @@ export default function InventoryGrid() {
             className="flex items-center gap-3 mb-4"
           >
             <div className="w-8 h-px bg-accent" />
-            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">
+            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">
               Available Inventory
             </span>
           </motion.div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
             <motion.h2
               id="inventory-heading"
               initial={{ opacity: 0, y: 20 }}
@@ -244,35 +237,45 @@ export default function InventoryGrid() {
               <span className="text-accent">Ready for Ghana.</span>
             </motion.h2>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0 }}
               animate={headerInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-muted text-sm leading-relaxed max-w-sm"
+              className="flex flex-col gap-2"
             >
-              Every vehicle is physically inspected in Busan before it ships.
-              What you see here is what arrives at Tema Port.
-            </motion.p>
+              <p className="text-muted text-sm leading-relaxed max-w-sm">
+                Every vehicle is physically inspected in Busan before it ships.
+                What you see here is what arrives at Tema Port.
+              </p>
+              {/* Desktop view all link */}
+              <Link
+                to="/buy"
+                className="hidden lg:inline-flex items-center gap-1.5 text-accent font-semibold text-sm hover:gap-2.5 transition-all duration-200"
+              >
+                View full inventory <ArrowRight size={14} />
+              </Link>
+            </motion.div>
           </div>
         </div>
 
-        {/* FILTER TABS */}
+        {/* FILTER TABS — no scrollbar, smooth swipe on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.4, delay: 0.25 }}
-          className="flex gap-2 overflow-x-auto pb-2 mb-10 no-scrollbar"
+          className="flex gap-2 overflow-x-auto mb-8"
           role="group"
           aria-label="Filter by category"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveTab(cat)}
               aria-pressed={activeTab === cat}
-              className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer
+              className={`px-5 py-2 rounded-full text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-all duration-200 cursor-pointer flex-shrink-0
                 ${activeTab === cat
-                  ? "bg-primary text-white shadow-sm"
+                  ? "bg-primary text-white"
                   : "bg-surface text-muted hover:text-primary border border-border"
                 }`}
             >
@@ -288,7 +291,7 @@ export default function InventoryGrid() {
 
         <motion.ul
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 list-none p-0 m-0"
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((vehicle, i) => (
@@ -302,9 +305,9 @@ export default function InventoryGrid() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center py-24 gap-3"
+            className="flex flex-col items-center justify-center py-20 gap-3"
           >
-            <p className="text-primary font-black text-lg tracking-tight">
+            <p className="text-primary font-semibold text-lg tracking-tight">
               Nothing listed here yet
             </p>
             <p className="text-muted text-sm">
@@ -312,20 +315,53 @@ export default function InventoryGrid() {
             </p>
             <button
               onClick={() => setActiveTab("All")}
-              className="mt-4 px-6 py-2.5 bg-accent text-white text-[11px] font-black uppercase tracking-widest rounded-full hover:bg-accent-dark transition-colors"
+              className="mt-3 px-6 py-2.5 bg-accent text-white text-[11px] font-semibold uppercase tracking-widest rounded-full hover:bg-accent-dark transition-colors"
             >
               View All
             </button>
           </motion.div>
         )}
 
+        {/* BOTTOM CTA — view full inventory */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5 }}
+          className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 pt-10 border-t border-border"
+        >
+          <div>
+            <p className="text-primary font-semibold text-base">
+              Looking for something specific?
+            </p>
+            <p className="text-muted text-sm mt-1">
+              Browse our complete catalog — trucks, cars, reefers and more.
+            </p>
+          </div>
+          <div className="flex gap-3 shrink-0">
+            <Link
+              to="/buy"
+              className="group flex items-center gap-2 bg-accent hover:bg-accent-dark text-white font-semibold text-sm uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-accent/25"
+            >
+              View All Inventory
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              to="/quote"
+              className="flex items-center gap-2 border border-border hover:border-primary text-primary font-semibold text-sm uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all duration-200"
+            >
+              Get a Quote
+            </Link>
+          </div>
+        </motion.div>
+
         {/* TRUST STRIP */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-4"
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3"
         >
           {[
             { value: "500+", label: "Trucks Delivered" },
@@ -335,16 +371,16 @@ export default function InventoryGrid() {
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="flex flex-col items-center justify-center py-6 px-4 bg-surface rounded-2xl border border-border text-center"
+              transition={{ duration: 0.4, delay: i * 0.07 }}
+              className="flex flex-col items-center justify-center py-5 px-4 bg-surface rounded-2xl border border-border text-center"
             >
-              <p className="text-3xl font-black text-primary tracking-tighter leading-none">
+              <p className="text-2xl font-bold text-primary tracking-tighter leading-none">
                 {stat.value}
               </p>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-muted mt-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted mt-1.5">
                 {stat.label}
               </p>
             </motion.div>

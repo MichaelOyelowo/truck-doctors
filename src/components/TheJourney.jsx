@@ -79,10 +79,10 @@ export default function ActionShowcase() {
 
             {/* 1. TOP TITLE BLOCK (Mobile/Tablet) */}
             <div className="w-full lg:hidden mb-4 sm:mb-6">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2 block">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-2 block">
                 On The Road
               </span>
-              <h2 className="text-primary text-2xl sm:text-4xl font-black tracking-tighter leading-none">
+              <h2 className="text-primary text-2xl sm:text-4xl font-semibold tracking-tighter leading-none">
                 Built for the <br/>
                 <span className="text-accent italic font-serif lowercase tracking-normal">long haul.</span>
               </h2>
@@ -90,25 +90,25 @@ export default function ActionShowcase() {
 
             {/* DESKTOP LEFT COLUMN */}
             <div className="hidden lg:block p-8 lg:p-14">
-              <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-5 block">
+              <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent mb-5 block">
                 On The Road
               </span>
-              <h2 className="text-primary text-5xl font-black tracking-tighter leading-none mb-6">
+              <h2 className="text-primary text-5xl font-semibold tracking-tighter leading-none mb-6">
                 Built for the <br /> <span className="text-accent italic font-serif lowercase tracking-normal">long haul.</span>
               </h2>
-              <p className="text-muted text-sm leading-relaxed max-w-sm mb-8 font-medium">
+              <p className="text-muted text-sm leading-relaxed max-w-sm mb-8">
                 At Truck Doctors, we treat vehicle sourcing like a science. Our certified specialists run comprehensive diagnostic and structural assessments on every unit.
               </p>
               <div className="flex flex-row gap-3">
-                <button className="bg-primary text-white font-bold text-sm px-8 py-4 rounded-xl cursor-pointer">Schedule a Call</button>
-                <button className="bg-white text-primary font-bold text-sm px-8 py-4 rounded-xl border border-border flex items-center gap-2 cursor-pointer">
+                <button className="bg-primary text-white font-semibold text-sm px-8 py-4 rounded-xl cursor-pointer">Schedule a Call</button>
+                <button className="bg-white text-primary font-semibold text-sm px-8 py-4 rounded-xl border border-border flex items-center gap-2 cursor-pointer">
                   Learn More <ArrowRight size={15} />
                 </button>
               </div>
             </div>
 
             {/* 2. VIDEO CONTAINER */}
-            <div className="relative w-full h-[30vh] sm:h-[40vh] lg:h-[70vh] p-1 lg:p-4">
+            <div className="relative w-full h-[46vh] min-h-[320px] sm:h-[52vh] sm:min-h-[380px] lg:h-[70vh] p-1 lg:p-4">
               <div className="relative w-full h-full rounded-3xl lg:rounded-4xl overflow-hidden bg-[#171a20] shadow-2xl">
                 <video ref={(el) => (videoRefs.current[0] = el)} src={video1} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
                 
@@ -146,14 +146,14 @@ export default function ActionShowcase() {
 
             {/* 3. MOBILE BOTTOM BLOCK */}
             <div className="w-full lg:hidden mt-4 sm:mt-6 flex flex-col gap-4 sm:gap-6">
-              <p className="text-muted text-xs sm:text-sm leading-relaxed font-medium">
+              <p className="text-muted text-xs sm:text-sm leading-relaxed">
                 At Truck Doctors, we treat vehicle sourcing like a science. Our certified specialists run comprehensive assessments on every unit.
               </p>
               <div className="grid grid-cols-2 gap-3 w-full pb-2">
-                <button className="bg-primary text-white font-bold text-xs py-4 rounded-xl cursor-pointer shadow-lg">
+                <button className="bg-primary text-white font-semibold text-xs py-4 rounded-xl cursor-pointer shadow-lg">
                   Schedule Call
                 </button>
-                <button className="bg-white text-primary font-bold text-xs py-4 rounded-xl border border-border flex items-center justify-center gap-1.5 cursor-pointer">
+                <button className="bg-white text-primary font-semibold text-xs py-4 rounded-xl border border-border flex items-center justify-center gap-1.5 cursor-pointer">
                   Learn More <ArrowRight size={12} />
                 </button>
               </div>

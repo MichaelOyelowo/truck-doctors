@@ -312,15 +312,15 @@ export default function InteractiveInventory() {
 
             {/* 1. SECTION HEADER */}
             <div className="w-full col-span-2 flex flex-col mb-10">
-              <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-2 sm:mb-3 block">
+              <span className="text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.3em] text-accent mb-2 sm:mb-3 block">
                 Live Showroom
               </span>
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-                <h2 id="inventory-heading" className="text-primary text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-none">
+                <h2 id="inventory-heading" className="text-primary text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter leading-none">
                   Explore Our <br />
                   <span className="text-accent italic font-serif lowercase tracking-normal">Premium Fleet.</span>
                 </h2>
-                <p className="text-muted text-xs sm:text-sm leading-relaxed max-w-md font-medium">
+                <p className="text-muted text-xs sm:text-sm leading-relaxed max-w-md">
                   Every truck in our inventory undergoes structural assessments to ensure maximum reliability. Rotate the steering wheel below to explore each vehicle from every angle.
                 </p>
               </div>
@@ -339,7 +339,7 @@ export default function InteractiveInventory() {
                   role="tab"
                   aria-selected={activeTruck === i}
                   aria-controls="truck-detail-panel"
-                  className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
+                  className={`px-4 py-2.5 rounded-xl text-[10px] font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
                     ${activeTruck === i
                       ? "bg-primary text-white"
                       : "bg-white text-muted hover:text-primary border border-border"
@@ -367,16 +367,16 @@ export default function InteractiveInventory() {
                   className="flex flex-col gap-6"
                 >
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-2 block">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent mb-2 block">
                       {truck.type}
                     </span>
-                    <h3 className="text-primary text-2xl sm:text-3xl font-black tracking-tighter leading-none mb-3 flex items-center gap-3">
+                    <h3 className="text-primary text-2xl sm:text-3xl font-semibold tracking-tighter leading-none mb-3 flex items-center gap-3">
                       {truck.name}
-                      <span className="inline-flex px-3 py-1 rounded-full bg-accent/10 text-accent text-[9px] font-black uppercase tracking-widest">
+                      <span className="inline-flex px-3 py-1 rounded-full bg-accent/10 text-accent text-[9px] font-semibold uppercase tracking-widest">
                         {truck.badge}
                       </span>
                     </h3>
-                    <p className="text-muted text-xs sm:text-sm leading-relaxed font-medium">
+                    <p className="text-muted text-xs sm:text-sm leading-relaxed">
                       {truck.description}
                     </p>
                   </div>
@@ -393,10 +393,10 @@ export default function InteractiveInventory() {
                       >
                         <spec.icon size={14} aria-hidden="true" className="text-accent shrink-0" />
                         <div>
-                          <dt className="text-[9px] font-black uppercase tracking-widest text-muted leading-none">
+                          <dt className="text-[9px] font-semibold uppercase tracking-widest text-muted leading-none">
                             {spec.label}
                           </dt>
-                          <dd className="text-xs sm:text-sm font-black mt-0.5">
+                          <dd className="text-xs sm:text-sm font-semibold mt-0.5">
                             {truck[spec.key]}
                           </dd>
                         </div>
@@ -411,7 +411,7 @@ export default function InteractiveInventory() {
                         <p className="text-[9px] font-bold uppercase tracking-widest text-muted">
                           Starting from
                         </p>
-                        <p className="text-3xl sm:text-4xl font-black text-primary tracking-tighter leading-none">
+                        <p className="text-3xl sm:text-4xl font-semibold text-primary tracking-tighter leading-none">
                           <span className="sr-only">{truck.name}, starting from </span>
                           {truck.price}
                         </p>
@@ -423,7 +423,7 @@ export default function InteractiveInventory() {
                     <Link
                       to={`/trucks/${truck.id}`}
                       aria-label={`Explore the ${truck.name}, starting from ${truck.price}`}
-                      className="group flex items-center justify-center gap-2  bg-accent hover:bg-accent-dark text-white font-bold text-xs uppercase tracking-widest py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      className="group flex items-center justify-center gap-2  bg-accent hover:bg-accent-dark text-white font-semibold text-xs uppercase tracking-widest py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
                       Explore This Truck
                       <ArrowRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />

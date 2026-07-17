@@ -219,7 +219,7 @@ export default function Hero() {
           className="flex flex-row items-center justify-center gap-3 sm:gap-4 mb-12 w-full max-w-md mx-auto sm:max-w-none"
         >
           <Link
-            to="/quote"
+            to="#quote"
             aria-label="Learn more about how we source and ship trucks"
             className="group w-[calc(50%-6px)] sm:w-auto bg-accent hover:bg-accent-dark text-white px-3 py-3.5 sm:px-10 sm:py-4 rounded-sm font-bold flex items-center justify-center gap-1.5 sm:gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-[11px] sm:text-sm uppercase tracking-wider sm:tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
@@ -227,7 +227,7 @@ export default function Hero() {
             <ArrowRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-1 shrink-0" />
           </Link>
           <Link
-            to="/track"
+            to="#inventory"
             aria-label="Browse our truck inventory"
             className="w-[calc(50%-6px)] sm:w-auto bg-white/10 backdrop-blur-md border border-white/60 hover:bg-white hover:text-primary text-white px-3 py-3.5 sm:px-10 sm:py-4 rounded-sm font-bold flex items-center justify-center transition-all duration-200 text-[11px] sm:text-sm uppercase tracking-wider sm:tracking-widest truncate focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
