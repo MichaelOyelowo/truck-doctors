@@ -8,7 +8,7 @@ import kiaFront from "../assets/homepage-images/kia/kia1.avif";
 import daewooFront from "../assets/homepage-images/daewoo/daewoo1.avif";
 import rhinoFront from "../assets/homepage-images/rhino/rhino1.avif";
 
-const CATEGORIES = ["All", "Heavy Duty", "Medium Duty", "Reefers", "Tractor Units", "Cars"];
+const CATEGORIES = ["All", "Used Trucks", "Heavy Duty", "Medium Duty", "Reefers", "Tractor Units", "Cars"];
 
 const CONDITION_STYLES = {
   New: "bg-accent text-white",
@@ -114,32 +114,15 @@ function VehicleCard({ vehicle, index }) {
       initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 28 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-      className="group relative bg-white border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-black/8 hover:-translate-y-0.5 transition-all duration-300"
+      className="group relative bg-white border border-border rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-black/8 hover:-translate-y-0.5 transition-all duration-300"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-surface">
+      <div className="relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden bg-surface">
         <img
           src={vehicle.image}
           alt={`${vehicle.year} ${vehicle.name}`}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-
-        {/* Condition badge */}
-        <span className={`absolute top-3 left-3 text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${CONDITION_STYLES[vehicle.condition]}`}>
-          {vehicle.condition}
-        </span>
-
-        {/* Price */}
-        <div className="absolute bottom-3 left-3">
-          <p className="text-white font-bold text-lg tracking-tight leading-none drop-shadow">
-            {vehicle.price}
-          </p>
-          <p className="text-white/60 text-[9px] font-semibold uppercase tracking-widest mt-0.5">
-            FOB Busan
-          </p>
-        </div>
-
         {/* Arrow on hover */}
         <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
@@ -149,36 +132,36 @@ function VehicleCard({ vehicle, index }) {
       </div>
 
       {/* Card body */}
-      <div className="p-4">
+        <div className="p-3 sm:p-4">
         <div className="mb-3">
-          <h3 className="text-primary font-semibold tracking-tight leading-snug text-sm">
+          <h3 className="text-primary font-semibold tracking-tight leading-snug text-[13px] sm:text-sm">
             {vehicle.name}
           </h3>
-          <div className="flex items-center gap-1.5 mt-1">
+          <div className="flex items-center gap-1 mt-1">
             <Calendar size={10} className="text-muted" />
-            <span className="text-[11px] text-muted">{vehicle.year}</span>
+            <span className="text-[10px] sm:text-[11px] text-muted">{vehicle.year}</span>
             {vehicle.mileage && (
               <>
                 <span className="text-muted text-[10px]">·</span>
-                <span className="text-[11px] text-muted">{vehicle.mileage}</span>
+                <span className="text-[10px] sm:text-[11px] text-muted">{vehicle.mileage}</span>
               </>
             )}
           </div>
         </div>
 
         {/* Specs */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-1.5 sm:gap-2 mb-3 sm:mb-4">
           {vehicle.specs.map((spec) => (
             <div
               key={spec.label}
-              className="flex items-center gap-1.5 bg-surface rounded-lg px-2.5 py-1.5 flex-1"
+              className="flex items-center gap-1 bg-surface rounded-lg px-2 py-1.5 sm:px-2.5 flex-1"
             >
-              <spec.icon size={11} className="text-accent shrink-0" />
+              <spec.icon size={10} className="text-accent shrink-0" />
               <div>
-                <p className="text-[8px] font-semibold uppercase tracking-widest text-muted leading-none">
+                <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider sm:tracking-widest text-muted leading-none">
                   {spec.label}
                 </p>
-                <p className="text-[11px] font-semibold text-primary mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-primary mt-0.5">
                   {spec.value}
                 </p>
               </div>
@@ -186,8 +169,12 @@ function VehicleCard({ vehicle, index }) {
           ))}
         </div>
 
+        <p className="mb-3 text-base font-semibold tracking-tight text-primary sm:text-lg">
+          {vehicle.price}
+        </p>
+
         {/* CTA */}
-        <button className="w-full flex items-center justify-center gap-1.5 bg-accent hover:bg-accent-dark text-white font-semibold text-[11px] uppercase tracking-widest py-3 rounded-xl shadow-md shadow-accent/25 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/30 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group/btn">
+        <button className="w-full flex items-center justify-center gap-1.5 border border-accent bg-white hover:bg-accent-light text-accent font-semibold text-[10px] sm:text-[11px] uppercase tracking-wider sm:tracking-widest py-2.5 rounded-lg sm:rounded-xl active:scale-[0.98] transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group/btn">
           View Details
           <ArrowUpRight size={12} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
         </button>
@@ -202,7 +189,11 @@ export default function InventoryGrid() {
   const headerInView = useInView(headerRef, { once: true, margin: "-60px" });
 
   const filtered = useMemo(
-    () => INVENTORY.filter((item) => activeTab === "All" || item.category === activeTab),
+    () => INVENTORY.filter((item) => {
+      if (activeTab === "All") return true;
+      if (activeTab === "Used Trucks") return item.condition === "Used" && item.category !== "Cars";
+      return item.category === activeTab;
+    }),
     [activeTab]
   );
 
@@ -273,7 +264,7 @@ export default function InventoryGrid() {
               key={cat}
               onClick={() => setActiveTab(cat)}
               aria-pressed={activeTab === cat}
-              className={`px-5 py-2 rounded-full text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-all duration-200 cursor-pointer flex-shrink-0
+              className={`px-3.5 sm:px-5 py-2 rounded-full text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-all duration-200 cursor-pointer flex-shrink-0
                 ${activeTab === cat
                   ? "bg-primary text-white"
                   : "bg-surface text-muted hover:text-primary border border-border"
@@ -291,7 +282,7 @@ export default function InventoryGrid() {
 
         <motion.ul
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 list-none p-0 m-0"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 list-none p-0 m-0"
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((vehicle, i) => (
