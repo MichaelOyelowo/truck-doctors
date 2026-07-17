@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero";
 import Journey from "./components/TheJourney"
 import TruckShowroom from "./components/TruckShow";
-// import InventoryGrid from "./components/InventoryGrid"
+import InventoryGrid from "./components/InventoryGrid"
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
         <Hero/>
         <Journey/>
         <TruckShowroom/>
-        {/* <InventoryGrid/> */}
+        <InventoryGrid/>
 
       </>
     

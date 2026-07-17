@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useReducedMotion } from "framer-motion";
 import { Fuel, Calendar, Gauge, Zap, Settings, Truck, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -116,6 +116,7 @@ function SteeringWheel({ rotation, isRunning }) {
       style={{ rotate: rotation }}
       viewBox="0 0 200 200"
       className="w-full h-full pointer-events-none"
+      aria-hidden="true"
     >
       <defs>
         <radialGradient id="hubGradient" cx="35%" cy="30%" r="75%">
@@ -204,20 +205,21 @@ export default function InteractiveInventory() {
   const [activeView, setActiveView] = useState(0);
   const [activeTruck, setActiveTruck] = useState(0);
   const rotation = useMotionValue(0);
+  const prefersReducedMotion = useReducedMotion();
 
   const wheelRef = useRef(null);
   const dragState = useRef({ dragging: false, moved: false, lastAngle: 0 });
 
   const truck = TRUCKS[activeTruck];
+  const totalViews = truck.views.length;
 
   useEffect(() => {
     let interval;
-    if (isRunning) {
+    if (isRunning && !prefersReducedMotion) {
       interval = setInterval(() => {
         if (dragState.current.dragging) return;
         const next = rotation.get() + 1.4;
         rotation.set(next);
-        const totalViews = truck.views.length;
         const viewIndex =
           Math.floor(
             (((next % 360) + 360) % 360) /
@@ -228,7 +230,7 @@ export default function InteractiveInventory() {
       }, 1000 / 60);
     }
     return () => clearInterval(interval);
-  }, [isRunning, truck.views.length]);
+  }, [isRunning, totalViews, prefersReducedMotion]);
 
   const angleFromCenter = (clientX, clientY) => {
     const rect = wheelRef.current.getBoundingClientRect();
@@ -259,7 +261,6 @@ export default function InteractiveInventory() {
 
     const next = rotation.get() + delta;
     rotation.set(next);
-    const totalViews = truck.views.length;
     const viewIndex =
       Math.floor(
         (((next % 360) + 360) % 360) /
@@ -278,25 +279,44 @@ export default function InteractiveInventory() {
     window.removeEventListener("pointerup", handlePointerUp);
   };
 
+  // Keyboard equivalent for the drag-to-rotate wheel: Enter/Space toggles the
+  // engine (same as a tap), Left/Right arrows step through views one at a
+  // time (same visual result as a drag), matching what a mouse/touch user can do.
+  const handleWheelKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsRunning((prev) => !prev);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      const next = rotation.get() + 360 / totalViews;
+      rotation.set(next);
+      setActiveView((prev) => (prev + 1) % totalViews);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      const next = rotation.get() - 360 / totalViews;
+      rotation.set(next);
+      setActiveView((prev) => (prev - 1 + totalViews) % totalViews);
+    }
+  };
+
   return (
-    <section 
-      /* Clean spacing matching the Hero to Action Showcase transitions precisely */
+    <section
       className="relative h-auto bg-white mt-8 lg:mt-0"
+      aria-labelledby="inventory-heading"
     >
       <div className="relative h-auto w-full flex flex-col items-center justify-center px-4 sm:px-6 py-6 lg:py-10">
-        
-        {/* ONE UNIFIED CARD (Matches ActionShowcase exactly in styling & shadows) */}
+
         <div className="relative w-full max-w-6xl rounded-[2rem] lg:rounded-[2.5rem] bg-surface border border-border overflow-hidden shadow-xl">
-          
+
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 items-start p-5 sm:p-8 lg:p-14">
-            
+
             {/* 1. SECTION HEADER */}
             <div className="w-full col-span-2 flex flex-col mb-10">
               <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-2 sm:mb-3 block">
                 Live Showroom
               </span>
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-                <h2 className="text-primary text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-none">
+                <h2 id="inventory-heading" className="text-primary text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-none">
                   Explore Our <br />
                   <span className="text-accent italic font-serif lowercase tracking-normal">Premium Fleet.</span>
                 </h2>
@@ -307,12 +327,19 @@ export default function InteractiveInventory() {
             </div>
 
             {/* TRUCK SELECTOR TABS */}
-            <div className="w-full col-span-2 flex gap-2 flex-wrap mb-8">
+            <div
+              className="w-full col-span-2 flex gap-2 flex-wrap mb-8"
+              role="tablist"
+              aria-label="Select a truck to view"
+            >
               {TRUCKS.map((t, i) => (
                 <button
                   key={t.id}
-                  onClick={() => { setActiveTruck(i); setActiveView(0); }}
-                  className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer
+                  onClick={() => { setActiveTruck(i); setActiveView(0); rotation.set(0); }}
+                  role="tab"
+                  aria-selected={activeTruck === i}
+                  aria-controls="truck-detail-panel"
+                  className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
                     ${activeTruck === i
                       ? "bg-primary text-white"
                       : "bg-white text-muted hover:text-primary border border-border"
@@ -323,15 +350,20 @@ export default function InteractiveInventory() {
               ))}
             </div>
 
-            {/* ===== LEFT — Truck Details (Preserved layout separation) ===== */}
-            <div className="w-full lg:pr-8 flex flex-col gap-6 mb-8 lg:mb-0">
+            {/* ===== LEFT — Truck Details ===== */}
+            <div
+              id="truck-detail-panel"
+              role="tabpanel"
+              aria-live="polite"
+              className="w-full lg:pr-8 flex flex-col gap-6 mb-8 lg:mb-0"
+            >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={truck.id}
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 12 }}
-                  transition={{ duration: 0.3 }}
+                  exit={{ opacity: 0, x: prefersReducedMotion ? 0 : 12 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
                   className="flex flex-col gap-6"
                 >
                   <div>
@@ -349,25 +381,28 @@ export default function InteractiveInventory() {
                     </p>
                   </div>
 
-                  {/* Specs Grid */}
-                  <div className="grid grid-cols-2 gap-3">
+                  {/* Specs — a definition list is the semantically correct structure
+                      for label/value pairs, which helps both screen readers and
+                      search engines understand this as structured spec data rather
+                      than an arbitrary grid of boxes. */}
+                  <dl className="grid grid-cols-2 gap-3">
                     {SPECS.map((spec) => (
                       <div
                         key={spec.key}
                         className="flex items-center gap-3 bg-white border border-border rounded-xl px-4 py-3 shadow-sm"
                       >
-                        <spec.icon size={14} className="text-accent shrink-0" />
+                        <spec.icon size={14} aria-hidden="true" className="text-accent shrink-0" />
                         <div>
-                          <p className="text-[9px] font-black uppercase tracking-widest text-muted leading-none">
+                          <dt className="text-[9px] font-black uppercase tracking-widest text-muted leading-none">
                             {spec.label}
-                          </p>
-                          <p className="text-xs sm:text-sm font-black mt-0.5">
+                          </dt>
+                          <dd className="text-xs sm:text-sm font-black mt-0.5">
                             {truck[spec.key]}
-                          </p>
+                          </dd>
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </dl>
 
                   {/* Pricing & Call to Action */}
                   <div className="pt-5 border-t border-border flex flex-col gap-4">
@@ -377,6 +412,7 @@ export default function InteractiveInventory() {
                           Starting from
                         </p>
                         <p className="text-3xl sm:text-4xl font-black text-primary tracking-tighter leading-none">
+                          <span className="sr-only">{truck.name}, starting from </span>
                           {truck.price}
                         </p>
                         <p className="text-[9px] font-bold text-muted mt-1 uppercase tracking-widest">
@@ -386,10 +422,11 @@ export default function InteractiveInventory() {
                     </div>
                     <Link
                       to={`/trucks/${truck.id}`}
-                      className="group flex items-center justify-center gap-2  bg-accent hover:bg-accent-dark text-white font-bold text-xs uppercase tracking-widest py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-lg"
+                      aria-label={`Explore the ${truck.name}, starting from ${truck.price}`}
+                      className="group flex items-center justify-center gap-2  bg-accent hover:bg-accent-dark text-white font-bold text-xs uppercase tracking-widest py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
                       Explore This Truck
-                      <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                      <ArrowRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
                     </Link>
                   </div>
                 </motion.div>
@@ -398,35 +435,37 @@ export default function InteractiveInventory() {
 
             {/* ===== RIGHT — Truck Showcase & Steering Wheel Controls ===== */}
             <div className="w-full lg:pl-8 flex flex-col gap-6">
-              
-              {/* Truck image container with same layout styles */}
+
+              {/* Truck image container */}
               <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden bg-[#171a20] border border-border shadow-sm">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={`${truck.id}-${activeView}`}
                     src={truck.views[activeView]}
-                    alt={truck.name}
-                    initial={{ opacity: 0, scale: 1.02 }}
+                    alt={`${truck.name}, view ${activeView + 1} of ${totalViews}`}
+                    initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 1.02 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.3 }}
+                    exit={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.98 }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
                     className="w-full h-full object-cover"
                   />
                 </AnimatePresence>
 
-                {/* Scan line active when engine running */}
+                {/* Scan line — purely decorative visual effect */}
                 {isRunning && (
                   <motion.div
-                    animate={{ y: ["0%", "100%", "0%"] }}
+                    aria-hidden="true"
+                    animate={prefersReducedMotion ? {} : { y: ["0%", "100%", "0%"] }}
                     transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
                     className="absolute left-0 right-0 h-0.5 bg-accent/40 shadow-[0_0_12px_#2563EB] z-20 pointer-events-none"
                   />
                 )}
 
-                {/* 360 badge overlay */}
+                {/* 360 badge overlay — decorative, the live region above already announces state */}
                 <AnimatePresence>
                   {isRunning && (
                     <motion.div
+                      aria-hidden="true"
                       initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
@@ -440,8 +479,8 @@ export default function InteractiveInventory() {
                   )}
                 </AnimatePresence>
 
-                {/* View Dots indicator */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {/* View dots — decorative echo of activeView, already conveyed via the image's alt text */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" aria-hidden="true">
                   {truck.views.map((_, i) => (
                     <div
                       key={i}
@@ -455,13 +494,13 @@ export default function InteractiveInventory() {
                 </div>
               </div>
 
-              {/* Dynamic Steering Wheel Interface inside Content Frame */}
-              <div 
+              {/* Steering Wheel Interface — real interactive control with keyboard support */}
+              <div
                 className={`relative w-full rounded-2xl p-6 transition-all duration-700 border overflow-hidden
                   ${isRunning ? "border-accent/20 bg-surface shadow-lg" : "border-border bg-white shadow-sm"}`}
                 style={{
-                  background: isRunning 
-                    ? "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.02) 0%, #ffffff 100%)" 
+                  background: isRunning
+                    ? "radial-gradient(circle at 50% 50%, rgba(37,99,235,0.02) 0%, #ffffff 100%)"
                     : "#ffffff"
                 }}
               >
@@ -469,13 +508,19 @@ export default function InteractiveInventory() {
                   <div
                     ref={wheelRef}
                     onPointerDown={handlePointerDown}
-                    className="relative w-36 h-36 sm:w-44 sm:h-44 cursor-grab active:cursor-grabbing touch-none select-none"
+                    onKeyDown={handleWheelKeyDown}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isRunning}
+                    aria-label={`${isRunning ? "Pause" : "Start"} 360 degree view of the ${truck.name}. Press Enter to toggle, or use the left and right arrow keys to rotate.`}
+                    className="relative w-36 h-36 sm:w-44 sm:h-44 cursor-grab active:cursor-grabbing touch-none select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 rounded-full"
                     style={{ touchAction: "none" }}
                   >
                     <SteeringWheel rotation={rotation} isRunning={isRunning} />
                     <AnimatePresence>
                       {isRunning && (
                         <motion.div
+                          aria-hidden="true"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0 }}
@@ -493,8 +538,8 @@ export default function InteractiveInventory() {
                       {isRunning ? "Engine On • Drag to Rotate" : "Tap Hub to Ignite • Drag Wheel"}
                     </motion.span>
 
-                    {/* Sound Equalizer bars — scaleY optimization */}
-                    <div className="flex gap-1 items-end h-5 w-28 justify-center sm:justify-start">
+                    {/* Sound Equalizer bars — decorative visual only */}
+                    <div className="flex gap-1 items-end h-5 w-28 justify-center sm:justify-start" aria-hidden="true">
                       {[
                         { color: "#06B6D4", delay: 0.0 },
                         { color: "#3B82F6", delay: 0.1 },
@@ -507,7 +552,11 @@ export default function InteractiveInventory() {
                         <motion.div
                           key={i}
                           initial={{ scaleY: 0.2 }}
-                          animate={isRunning ? { scaleY: [0.2, 1, 0.4, 0.8, 0.2] } : { scaleY: 0.2 }}
+                          animate={
+                            isRunning && !prefersReducedMotion
+                              ? { scaleY: [0.2, 1, 0.4, 0.8, 0.2] }
+                              : { scaleY: 0.2 }
+                          }
                           transition={{
                             repeat: Infinity,
                             duration: 1,
