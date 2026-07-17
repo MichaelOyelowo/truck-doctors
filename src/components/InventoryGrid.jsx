@@ -1,45 +1,18 @@
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, ShieldCheck, Zap, Weight, Gauge, Users, Calendar } from "lucide-react";
+import { useState, useMemo, useRef } from "react";
+import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Zap, Weight, Gauge, Users, Calendar, ShieldCheck } from "lucide-react";
 
-// Swap these for your real inventory photos — same import pattern as your
-// other sections (Vite/Webpack resolves these to hashed asset URLs at build time).
 import manFront from "../assets/homepage-images/man/man11.avif";
 import kiaFront from "../assets/homepage-images/kia/kia1.avif";
 import daewooFront from "../assets/homepage-images/daewoo/daewoo1.avif";
 import rhinoFront from "../assets/homepage-images/rhino/rhino1.avif";
 
-// ---- FEATURED (Tesla-style hero cards) ----------------------------------
-// Keep this to 1–2 flagship units — the pattern is built for a short,
-// deliberately curated lineup, not for browsing full inventory.
-const FEATURED = [
-  {
-    id: "f1",
-    tag: "Long-Haul Tractor Unit",
-    name: "MAN TGX 18.440",
-    price: "$78,500",
-    condition: "New",
-    image: rhinoFront,
-    span: "lg:col-span-2",
-  },
-  {
-    id: "f2",
-    tag: "Heavy-Duty 6x4",
-    name: "Hyundai Xcient",
-    price: "$42,000",
-    condition: "Used",
-    image: manFront,
-    span: "lg:col-span-1",
-  },
-];
-
-// ---- FULL CATALOG (Cars.com-style filter + grid) -------------------------
-const CATEGORIES = ["All Inventory", "Heavy Duty", "Medium Duty", "Reefers", "Tractor Units", "Cars"];
+const CATEGORIES = ["All", "Heavy Duty", "Medium Duty", "Reefers", "Tractor Units", "Cars"];
 
 const CONDITION_STYLES = {
   New: "bg-accent text-white",
-  Used: "bg-white text-[#171a20] border border-slate-200",
-  Certified: "bg-emerald-500 text-white",
+  Used: "bg-primary text-white",
+  Certified: "bg-green-500 text-white",
 };
 
 const INVENTORY = [
@@ -95,7 +68,7 @@ const INVENTORY = [
     price: "$14,200",
     image: kiaFront,
     specs: [
-      { icon: Gauge, label: "Mileage", value: "12 km/L" },
+      { icon: Gauge, label: "Economy", value: "12 km/L" },
       { icon: Users, label: "Seats", value: "5" },
     ],
   },
@@ -123,225 +96,260 @@ const INVENTORY = [
     price: "$29,000",
     image: manFront,
     specs: [
-      { icon: Gauge, label: "Mileage", value: "14 km/L" },
+      { icon: Gauge, label: "Economy", value: "14 km/L" },
       { icon: Users, label: "Seats", value: "5" },
     ],
   },
 ];
 
-export default function InventoryGrid() {
-  const [activeTab, setActiveTab] = useState("All Inventory");
+function VehicleCard({ vehicle, index }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReducedMotion = useReducedMotion();
 
-  const filtered = useMemo(
-    () =>
-      INVENTORY.filter(
-        (item) => activeTab === "All Inventory" || item.category === activeTab
-      ),
-    [activeTab]
-  );
-
-  const listingSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: [...FEATURED, ...INVENTORY].map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
-        "@type": "Vehicle",
-        name: item.name,
-        itemCondition:
-          item.condition === "New"
-            ? "https://schema.org/NewCondition"
-            : "https://schema.org/UsedCondition",
-        offers: {
-          "@type": "Offer",
-          price: item.price.replace(/[^0-9.]/g, ""),
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      },
-    })),
-  };
-
   return (
-    <section className="bg-white py-32 px-6" aria-labelledby="inventory-heading">
-      {/* Structured data for search engines — invisible to visitors, read by crawlers */}
-      <script type="application/ld+json">{JSON.stringify(listingSchema)}</script>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 32 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+      className="group relative bg-white border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-black/8 hover:-translate-y-1 transition-all duration-300"
+    >
+      {/* Image */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-surface">
+        <img
+          src={vehicle.image}
+          alt={`${vehicle.year} ${vehicle.name}`}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
 
-      <div className="max-w-7xl mx-auto">
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-        {/* ============ HEADER ============ */}
-        <div className="flex flex-col items-center mb-16 text-center">
-          <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-4">
-            The Fleet
-          </span>
-          <h2 id="inventory-heading" className="text-[#171a20] text-4xl md:text-5xl font-black tracking-tighter uppercase">
-            Featured <span className="font-serif italic lowercase text-accent tracking-normal">right now.</span>
-          </h2>
+        {/* Condition badge */}
+        <span className={`absolute top-3 left-3 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${CONDITION_STYLES[vehicle.condition]}`}>
+          {vehicle.condition}
+        </span>
+
+        {/* Price pinned to image bottom */}
+        <div className="absolute bottom-3 left-3">
+          <p className="text-white font-black text-xl tracking-tighter leading-none drop-shadow">
+            {vehicle.price}
+          </p>
+          <p className="text-white/60 text-[9px] font-bold uppercase tracking-widest mt-0.5">
+            FOB Busan
+          </p>
         </div>
 
-        {/* ============ 1. FEATURED — Tesla-style hero cards ============ */}
-        <div className="grid lg:grid-cols-3 gap-6 mb-28">
-          {FEATURED.map((v) => (
-            <div
-              key={v.id}
-              className={`${v.span} group flex flex-col rounded-[2rem] overflow-hidden bg-[#f4f4f4] border border-slate-100`}
-            >
-              {/* Photo */}
-              <div className="relative aspect-4/3 overflow-hidden">
-                <span
-                  className={`absolute top-5 left-5 z-10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${CONDITION_STYLES[v.condition]}`}
-                >
-                  {v.condition}
-                </span>
-                <span className="absolute top-5 right-5 z-10 text-white text-xs font-bold uppercase tracking-widest drop-shadow-md">
-                  {v.tag}
-                </span>
-                <img
-                  src={v.image}
-                  alt={`${v.condition} ${v.name}, ${v.tag}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
+        {/* Arrow button — appears on hover */}
+        <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+            <ArrowUpRight size={14} className="text-primary" />
+          </div>
+        </div>
+      </div>
 
-              {/* Info panel */}
-              <div className="p-8 flex flex-col gap-5">
-                <div>
-                  <h3 className="text-[#171a20] text-2xl md:text-3xl font-black tracking-tight">
-                    {v.name}
-                  </h3>
-                  <p className="text-slate-500 text-sm font-medium mt-1">
-                    Starting at <span className="font-bold text-[#171a20]">{v.price}</span>
-                  </p>
-                </div>
-                <div className="flex gap-3">
-                  <button className="flex-1 bg-accent hover:bg-accent-dark text-white text-xs font-bold uppercase tracking-widest py-3.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
-                    Reserve Unit
-                  </button>
-                  <button className="flex-1 bg-white border border-slate-200 hover:border-[#171a20] text-[#171a20] text-xs font-bold uppercase tracking-widest py-3.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
-                    Learn More
-                  </button>
-                </div>
+      {/* Card body */}
+      <div className="p-4">
+
+        {/* Name + year */}
+        <div className="mb-3">
+          <h3 className="text-primary font-black tracking-tight leading-snug text-base">
+            {vehicle.name}
+          </h3>
+          <div className="flex items-center gap-1.5 mt-1">
+            <Calendar size={10} className="text-muted" />
+            <span className="text-[11px] text-muted font-medium">{vehicle.year}</span>
+            {vehicle.mileage && (
+              <>
+                <span className="text-muted text-[10px]">·</span>
+                <span className="text-[11px] text-muted font-medium">{vehicle.mileage}</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Specs row */}
+        <div className="flex gap-2 mb-4">
+          {vehicle.specs.map((spec) => (
+            <div
+              key={spec.label}
+              className="flex items-center gap-1.5 bg-surface rounded-lg px-2.5 py-1.5 flex-1"
+            >
+              <spec.icon size={11} className="text-accent shrink-0" />
+              <div>
+                <p className="text-[8px] font-black uppercase tracking-widest text-muted leading-none">
+                  {spec.label}
+                </p>
+                <p className="text-[11px] font-black text-primary mt-0.5">
+                  {spec.value}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* ============ 2. FULL CATALOG — Cars.com-style filter + grid ============ */}
-        <div className="flex flex-col items-center mb-12 text-center">
-          <h2 className="text-[#171a20] text-3xl md:text-4xl font-black tracking-tighter uppercase mb-8">
-            Browse the <span className="font-serif italic lowercase text-accent tracking-normal">full catalog.</span>
-          </h2>
+        {/* CTA */}
+        <button className="w-full flex items-center justify-center gap-1.5 border border-border hover:border-accent hover:text-accent text-primary font-bold text-[11px] uppercase tracking-widest py-2.5 rounded-xl transition-all duration-200 group/btn">
+          View Details
+          <ArrowUpRight size={12} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+        </button>
+      </div>
+    </motion.div>
+  );
+}
 
-          <div
-            className="flex gap-2 overflow-x-auto pb-2 no-scrollbar max-w-full"
-            role="group"
-            aria-label="Filter inventory by category"
+export default function InventoryGrid() {
+  const [activeTab, setActiveTab] = useState("All");
+  const headerRef = useRef(null);
+  const headerInView = useInView(headerRef, { once: true, margin: "-60px" });
+  const prefersReducedMotion = useReducedMotion();
+
+  const filtered = useMemo(
+    () =>
+      INVENTORY.filter(
+        (item) => activeTab === "All" || item.category === activeTab
+      ),
+    [activeTab]
+  );
+
+  return (
+    <section className="w-full bg-white py-28 px-6" aria-labelledby="inventory-heading">
+      <div className="max-w-7xl mx-auto">
+
+        {/* HEADER */}
+        <div ref={headerRef} className="mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-3 mb-4"
           >
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveTab(cat)}
-                aria-pressed={activeTab === cat}
-                className={`px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
-                  ${activeTab === cat
-                    ? "bg-[#171a20] text-white"
-                    : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}
-              >
-                {cat}
-              </button>
-            ))}
+            <div className="w-8 h-px bg-accent" />
+            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">
+              Available Inventory
+            </span>
+          </motion.div>
+
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <motion.h2
+              id="inventory-heading"
+              initial={{ opacity: 0, y: 20 }}
+              animate={headerInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.55, delay: 0.1 }}
+              className="text-primary tracking-tighter leading-none"
+            >
+              Korean Trucks,
+              <br />
+              <span className="text-accent">Ready for Ghana.</span>
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={headerInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-muted text-sm leading-relaxed max-w-sm"
+            >
+              Every vehicle is physically inspected in Busan before it ships.
+              What you see here is what arrives at Tema Port.
+            </motion.p>
           </div>
         </div>
 
+        {/* FILTER TABS */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={headerInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.4, delay: 0.25 }}
+          className="flex gap-2 overflow-x-auto pb-2 mb-10 no-scrollbar"
+          role="group"
+          aria-label="Filter by category"
+        >
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveTab(cat)}
+              aria-pressed={activeTab === cat}
+              className={`px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-200 cursor-pointer
+                ${activeTab === cat
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-surface text-muted hover:text-primary border border-border"
+                }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* GRID */}
         <p className="sr-only" aria-live="polite">
-          Showing {filtered.length} {filtered.length === 1 ? "vehicle" : "vehicles"} in {activeTab}
+          Showing {filtered.length} {filtered.length === 1 ? "vehicle" : "vehicles"}
         </p>
 
-        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 list-none p-0 m-0">
+        <motion.ul
+          layout
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0"
+        >
           <AnimatePresence mode="popLayout">
-            {filtered.map((vehicle) => (
-              <motion.li
-                layout={!prefersReducedMotion}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                key={vehicle.id}
-                className="group"
-              >
-                <div className="relative aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-3 border border-slate-100">
-                  <span
-                    className={`absolute top-2.5 left-2.5 z-10 px-2 py-1 rounded-full text-[8px] font-black uppercase tracking-wider ${CONDITION_STYLES[vehicle.condition]}`}
-                  >
-                    {vehicle.condition}
-                  </span>
-                  <img
-                    src={vehicle.image}
-                    alt={`${vehicle.year} ${vehicle.name}${vehicle.mileage ? `, ${vehicle.mileage}` : ", brand new"}`}
-                    className="w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-
-                <div className="px-1">
-                  <h3 className="text-[#171a20] text-sm font-bold tracking-tight leading-snug">
-                    {vehicle.name}
-                  </h3>
-                  <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-medium mt-1">
-                    <Calendar size={10} aria-hidden="true" />
-                    <span>{vehicle.year}</span>
-                    {vehicle.mileage && (
-                      <>
-                        <span aria-hidden="true">·</span>
-                        <span className="truncate">{vehicle.mileage}</span>
-                      </>
-                    )}
-                  </div>
-                  <p className="text-accent font-bold text-sm mt-1.5">{vehicle.price}</p>
-                  <button
-                    className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-[#171a20] underline underline-offset-2 decoration-slate-300 hover:decoration-accent hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
-                    aria-label={`View details for the ${vehicle.year} ${vehicle.name}`}
-                  >
-                    View details
-                    <ArrowUpRight size={12} aria-hidden="true" />
-                  </button>
-                </div>
-              </motion.li>
+            {filtered.map((vehicle, i) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} index={i} />
             ))}
           </AnimatePresence>
-        </ul>
+        </motion.ul>
 
+        {/* EMPTY STATE */}
         {filtered.length === 0 && (
-          <p className="text-center text-slate-400 text-sm font-medium py-20">
-            No vehicles currently listed in this category — check back soon or browse all inventory.
-          </p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center justify-center py-24 gap-3"
+          >
+            <p className="text-primary font-black text-lg tracking-tight">
+              Nothing listed here yet
+            </p>
+            <p className="text-muted text-sm">
+              Check back soon or browse all inventory.
+            </p>
+            <button
+              onClick={() => setActiveTab("All")}
+              className="mt-4 px-6 py-2.5 bg-accent text-white text-[11px] font-black uppercase tracking-widest rounded-full hover:bg-accent-dark transition-colors"
+            >
+              View All
+            </button>
+          </motion.div>
         )}
 
-        {/* ============ 3. TRUST BANNER ============ */}
-        <div className="mt-28 p-12 bg-[#171a20] rounded-[3rem] relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 blur-[100px] rounded-full" aria-hidden="true" />
-
-          <div className="relative z-10 max-w-md">
-            <div className="flex items-center gap-2 text-accent mb-4">
-              <ShieldCheck size={20} aria-hidden="true" />
-              <span className="text-[10px] font-black uppercase tracking-widest">Surgical Assurance</span>
-            </div>
-            <h3 className="text-white text-3xl font-bold tracking-tighter leading-tight">
-              Every unit is physically vetted by our <span className="text-accent">Korean Inspection Team.</span>
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-2 gap-8 relative z-10">
-            <div className="text-center md:text-left">
-              <p className="text-white text-4xl font-black tracking-tighter">120+</p>
-              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Checkpoints</p>
-            </div>
-            <div className="text-center md:text-left">
-              <p className="text-white text-4xl font-black tracking-tighter">100%</p>
-              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Ownership Verified</p>
-            </div>
-          </div>
-        </div>
+        {/* TRUST STRIP */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-4"
+        >
+          {[
+            { value: "500+", label: "Trucks Delivered" },
+            { value: "120pt", label: "Inspection Checklist" },
+            { value: "100%", label: "Ownership Verified" },
+            { value: "18–22", label: "Days to Ghana" },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className="flex flex-col items-center justify-center py-6 px-4 bg-surface rounded-2xl border border-border text-center"
+            >
+              <p className="text-3xl font-black text-primary tracking-tighter leading-none">
+                {stat.value}
+              </p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted mt-2">
+                {stat.label}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
 
       </div>
     </section>
