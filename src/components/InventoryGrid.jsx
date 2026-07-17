@@ -187,7 +187,7 @@ function VehicleCard({ vehicle, index }) {
         </div>
 
         {/* CTA */}
-        <button className="w-full flex items-center justify-center gap-1.5 border border-border hover:border-accent hover:text-accent text-primary font-semibold text-[11px] uppercase tracking-widest py-2.5 rounded-xl transition-all duration-200 group/btn">
+        <button className="w-full flex items-center justify-center gap-1.5 bg-accent hover:bg-accent-dark text-white font-semibold text-[11px] uppercase tracking-widest py-3 rounded-xl shadow-md shadow-accent/25 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/30 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group/btn">
           View Details
           <ArrowUpRight size={12} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
         </button>
@@ -328,9 +328,9 @@ export default function InventoryGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.5 }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 pt-10 border-t border-border"
+          className="mt-10"
         >
-          <div>
+          <div className="hidden">
             <p className="text-primary font-semibold text-base">
               Looking for something specific?
             </p>
@@ -338,7 +338,7 @@ export default function InventoryGrid() {
               Browse our complete catalog — trucks, cars, reefers and more.
             </p>
           </div>
-          <div className="flex gap-3 shrink-0">
+          <div className="hidden">
             <Link
               to="/buy"
               className="group flex items-center gap-2 bg-accent hover:bg-accent-dark text-white font-semibold text-sm uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-accent/25"
@@ -353,6 +353,12 @@ export default function InventoryGrid() {
               Get a Quote
             </Link>
           </div>
+          <Link
+            to="/buy"
+            className="inline-flex text-sm font-semibold text-primary underline underline-offset-4 decoration-primary/70 transition-colors hover:text-accent hover:decoration-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4"
+          >
+            View all inventory
+          </Link>
         </motion.div>
 
         {/* TRUST STRIP */}
@@ -361,7 +367,7 @@ export default function InventoryGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3"
+          className="hidden"
         >
           {[
             { value: "500+", label: "Trucks Delivered" },
