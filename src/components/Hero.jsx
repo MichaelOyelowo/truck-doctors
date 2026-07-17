@@ -12,16 +12,16 @@ const SLIDES = [
   {
     id: 1,
     image: slide1,
-    word: "Speed.",
-    headline: "We Ship Straight,",
-    sub: "From our yard in South Korea to Tema Port in 18 to 22 days. We handle export documentation, customs clearance, and port delivery — you just receive your truck.",
+    word: "Trucks.",
+    headline: "Buy Quality,",
+    sub: "We source and sell premium commercial trucks directly from South Korea — inspected, certified, and ready to work the moment they arrive in Ghana.",
   },
   {
     id: 2,
     image: slide2,
-    word: "Precision.",
-    headline: "Buy Quality Trucks,",
-    sub: "We source and sell premium commercial trucks directly from South Korea — inspected, certified, and ready to work the moment they arrive in Ghana.",
+    word: "Speed.",
+    headline: "We Ship Straight,",
+    sub: "From our yard in South Korea to Tema Port in 18 to 22 days. We handle export documentation, customs clearance, and port delivery — you just receive your truck.",
   },
   {
     id: 3,
@@ -350,23 +350,23 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
-        className="lg:hidden relative z-10 mt-12 flex gap-3 w-full max-w-md"
+        className="lg:hidden relative z-10 mt-12 flex gap-2 xs:gap-3 w-full max-w-md"
       >
-        <div className="flex-1 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col gap-1">
-          <span className="text-white font-black text-xl">
+        <div className="flex-1 min-w-0 bg-white/10 backdrop-blur-md p-2.5 xs:p-4 rounded-xl xs:rounded-2xl border border-white/10 flex flex-col gap-1">
+          <span className="text-white font-black text-[clamp(0.95rem,4.5vw,1.25rem)] leading-tight whitespace-nowrap">
             <AnimatedCounter target={10000} />
           </span>
-          <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest">Shipments</span>
+          <span className="text-white/50 text-[9px] xs:text-[10px] font-bold uppercase tracking-widest truncate">Shipments</span>
         </div>
-        <div className="flex-1 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col gap-1">
-          <span className="text-accent font-black text-xl">18–22</span>
-          <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest">Days Transit</span>
+        <div className="flex-1 min-w-0 bg-white/10 backdrop-blur-md p-2.5 xs:p-4 rounded-xl xs:rounded-2xl border border-white/10 flex flex-col gap-1">
+          <span className="text-accent font-black text-[clamp(0.95rem,4.5vw,1.25rem)] leading-tight whitespace-nowrap">18–22</span>
+          <span className="text-white/50 text-[9px] xs:text-[10px] font-bold uppercase tracking-widest truncate">Transits</span>
         </div>
-        <div className="flex-1 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col gap-1">
-          <span className="text-white font-black text-xl">
+        <div className="flex-1 min-w-0 bg-white/10 backdrop-blur-md p-2.5 xs:p-4 rounded-xl xs:rounded-2xl border border-white/10 flex flex-col gap-1">
+          <span className="text-white font-black text-[clamp(0.95rem,4.5vw,1.25rem)] leading-tight whitespace-nowrap">
             <AnimatedCounter target={500} />
           </span>
-          <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest">Clients</span>
+          <span className="text-white/50 text-[9px] xs:text-[10px] font-bold uppercase tracking-widest truncate">Clients</span>
         </div>
       </motion.div>
 
