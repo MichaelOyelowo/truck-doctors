@@ -1,7 +1,7 @@
 import { MapPin, ClipboardList, Headset } from "lucide-react";
 
 export const navLinks = [
-  { label: "Buy Trucks", path: "/buy" },
+  { label: "Vehicles", path: "/vehicles" },
   { label: "Shipping to Ghana", path: "/ghana", hot: true },
   { label: "Global Logistics", path: "/logistics" },
   { label: "Tracking", path: "/track" },

@@ -12,8 +12,8 @@ const SLIDES = [
   {
     id: 1,
     image: slide1,
-    word: "Trucks.",
-    headline: "Buy Quality,",
+    word: "Delivered.",
+    headline: "Premium Trucks,",
     sub: "We source and sell premium commercial trucks directly from South Korea — inspected, certified, and ready to work the moment they arrive in Ghana.",
   },
   {
@@ -220,10 +220,10 @@ export default function Hero() {
         >
           <Link
             to="#quote"
-            aria-label="Learn more about how we source and ship trucks"
+            aria-label="Check availability and order your truck"
             className="group w-[calc(50%-6px)] sm:w-auto bg-accent hover:bg-accent-dark text-white px-3 py-3.5 sm:px-10 sm:py-4 rounded-sm font-bold flex items-center justify-center gap-1.5 sm:gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-[11px] sm:text-sm uppercase tracking-wider sm:tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
-            <span className="truncate">Learn More</span>
+            <span className="truncate">Order now</span>
             <ArrowRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-1 shrink-0" />
           </Link>
           <Link
