@@ -102,7 +102,7 @@ export default function InventoryGrid() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="mb-5 flex items-center justify-between gap-4"
           >
-            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">Available inventory</span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">Available</span>
 
             <div className="flex gap-2" role="tablist" aria-label="Choose vehicle type">
               {VEHICLE_TYPES.map((type) => (

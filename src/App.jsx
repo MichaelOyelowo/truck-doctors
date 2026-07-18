@@ -5,7 +5,7 @@ import Hero from "./components/Hero";
 import Journey from "./components/TheJourney"
 import TruckShowroom from "./components/TruckShow";
 import InventoryGrid from "./components/InventoryGrid"
-import BuyerConfidence from "./components/BuyerConfidence";
+import BrandMark from "./components/BrandMark";
 
 
 function App() {
@@ -16,8 +16,8 @@ function App() {
         <Navbar/>
         <Hero/>
         <Journey/>
+        <BrandMark/>
         <TruckShowroom/>
-        <BuyerConfidence/>
         <InventoryGrid/>
       </>
   )
