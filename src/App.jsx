@@ -5,7 +5,7 @@ import Hero from "./components/Hero";
 import Journey from "./components/TheJourney"
 import TruckShowroom from "./components/TruckShow";
 import InventoryGrid from "./components/InventoryGrid"
-// import BuyerConfidence from "./components/BuyerConfidence";
+import BuyerConfidence from "./components/BuyerConfidence";
 
 
 function App() {
@@ -17,11 +17,9 @@ function App() {
         <Hero/>
         <Journey/>
         <TruckShowroom/>
+        <BuyerConfidence/>
         <InventoryGrid/>
-        {/* <BuyerConfidence/> */}
-
       </>
-    
   )
 }
 

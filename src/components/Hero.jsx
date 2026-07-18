@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-mot
 import { ArrowRight, MapPin, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import slide1 from "../assets/homepage-images/hero-truck11.avif";
+import slide1 from "../assets/homepage-images/hero-truck1.avif";
 import slide2 from "../assets/homepage-images/hero-truck2.avif";
 import slide3 from "../assets/homepage-images/hero-truck3.avif";
 import mini1 from "../assets/homepage-images/hero-truck11.avif";
@@ -224,7 +224,6 @@ export default function Hero() {
             className="group w-[calc(50%-6px)] sm:w-auto bg-accent hover:bg-accent-dark text-white px-3 py-3.5 sm:px-10 sm:py-4 rounded-sm font-bold flex items-center justify-center gap-1.5 sm:gap-3 transition-all duration-200 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-px text-[11px] sm:text-sm uppercase tracking-wider sm:tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             <span className="truncate">Order now</span>
-            <ArrowRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-1 shrink-0" />
           </Link>
           <Link
             to="#inventory"

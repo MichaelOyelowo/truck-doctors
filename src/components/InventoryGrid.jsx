@@ -37,8 +37,15 @@ function VehicleCard({ vehicle, index }) {
             return <div key={spec.label} className="min-w-0 rounded-lg bg-surface px-1.5 py-1.5 sm:px-2.5"><Icon size={10} aria-hidden="true" className="text-accent" /><p className="mt-1 truncate text-[7px] font-semibold uppercase tracking-wider text-muted sm:text-[8px]">{spec.label}</p><p className="truncate text-[9px] font-semibold text-primary sm:text-[11px]">{spec.value}</p></div>;
           })}
         </div>
-        <div className="mb-3 flex items-center justify-between gap-2"><p className="text-base font-semibold tracking-tight text-primary sm:text-lg">{vehicle.price}</p>{vehicle.type === "Cars" && <span className="hidden text-[10px] font-medium text-muted sm:inline">{vehicle.seats}</span>}</div>
-        <button type="button" className="group/btn flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white py-2.5 text-[10px] font-semibold uppercase tracking-wider text-accent transition-all duration-200 hover:bg-accent-light active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:rounded-xl sm:text-[11px] sm:tracking-widest">View details <ArrowUpRight size={12} aria-hidden="true" className="transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" /></button>
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <p className="text-base font-semibold tracking-tight text-primary sm:text-lg">{vehicle.price}</p>
+          {vehicle.type === "Cars" &&
+          <span className="hidden text-[10px] font-medium text-muted sm:inline">{vehicle.seats}</span>}
+        </div>
+        <button type="button" className="group/btn flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white py-2.5 text-[10px] font-semibold uppercase tracking-wider text-accent transition-all duration-200 hover:bg-accent-light active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:rounded-xl sm:text-[11px] sm:tracking-widest">
+          View details
+          <ArrowUpRight size={12} aria-hidden="true" className="transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+        </button>
       </div>
     </motion.li>
   );
@@ -68,23 +75,27 @@ export default function InventoryGrid() {
       <div className="mx-auto max-w-7xl">
         <div ref={headerRef} className="mb-8 lg:mb-10">
 
-          {/* Heading + copy — centered, at the top */}
+          {/* Heading + copy — left-aligned, same weight/spacing rhythm as
+              TheJourney's left column (font-semibold, text-5xl, tracking-tighter,
+              leading-none, text-sm/leading-relaxed/max-w-sm paragraph). */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.55 }}
-            className="mx-auto mb-8 max-w-2xl text-center lg:mb-10"
+            className="mb-8 lg:mb-10"
           >
-            <h2 id="inventory-heading" className="tracking-tighter leading-none text-primary">
-              Every Vehicle,<br /><span className="text-accent">Inspected in Busan.</span>
+            <h2 id="inventory-heading" className="text-4xl font-semibold tracking-tighter leading-none text-primary lg:text-5xl">
+              Every Vehicle,<br />
+              <span className="bg-gradient-to-r from-accent via-[#6D5DFC] to-[#00C2FF] bg-clip-text text-transparent">
+                Inspected in Busan.
+              </span>
             </h2>
-            <p className="mt-4 text-sm leading-relaxed">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
               From heavy-duty trucks to daily-drive cars, each unit is sourced and physically inspected in South Korea before making the journey to Ghana.
             </p>
           </motion.div>
 
-          {/* Eyebrow label (left) + Trucks/Cars toggle (right) sit below the
-              centered heading, on their own row. */}
+          {/* Eyebrow label (left) + Trucks/Cars toggle (right) */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
