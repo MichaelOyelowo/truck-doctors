@@ -304,6 +304,8 @@ export default function InteractiveInventory() {
       className="relative h-auto bg-white mt-8 lg:mt-0"
       aria-labelledby="inventory-heading"
     >
+      {/* Divider from the section above */}
+      <div className="w-full col-span-2 border-t border-border mb-10" />
       <div className="relative h-auto w-full flex flex-col items-center justify-center px-4 sm:px-6 py-6 lg:py-10">
 
         <div className="relative w-full max-w-6xl rounded-[2rem] lg:rounded-[2.5rem] bg-surface border border-border overflow-hidden shadow-xl">

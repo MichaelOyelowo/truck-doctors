@@ -72,6 +72,8 @@ export default function InventoryGrid() {
 
   return (
     <section id="inventory" className="w-full scroll-mt-24 bg-white px-6 py-16" aria-labelledby="inventory-heading">
+      {/* Divider from the section above */}
+      <div className="w-full col-span-2 border-t border-border mb-10" />
       <div className="mx-auto max-w-7xl">
         <div ref={headerRef} className="mb-8 lg:mb-10">
 
@@ -86,13 +88,20 @@ export default function InventoryGrid() {
           >
             <h2 id="inventory-heading" className="text-4xl font-semibold tracking-tighter leading-none text-primary lg:text-5xl">
               Every Vehicle,<br />
-              <span className="bg-gradient-to-r from-accent via-[#6D5DFC] to-[#00C2FF] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-accent via-[#6D5DFC] to-[#00C2FF] bg-clip-text text-transparent italic font-serif lowercase">
                 Inspected in Busan.
               </span>
             </h2>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
               From heavy-duty trucks to daily-drive cars, each unit is sourced and physically inspected in South Korea before making the journey to Ghana.
             </p>
+            {/* <h2 id="inventory-heading" className="text-primary text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter leading-none">
+                  Every Vehicle, <br />
+                  <span className="text-accent italic font-serif lowercase tracking-normal">Inspected in Busan.</span>
+                </h2>
+                <p className="text-muted text-xs sm:text-sm leading-relaxed max-w-md">
+                  From heavy-duty trucks to daily-drive cars, each unit is sourced and physically inspected in South Korea before making the journey to Ghana.
+                </p> */}
           </motion.div>
 
           {/* Eyebrow label (left) + Trucks/Cars toggle (right) */}
