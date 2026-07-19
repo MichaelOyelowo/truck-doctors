@@ -24,7 +24,7 @@ function BrandMark({ name, logo }) {
   // safe to leave in even after every brand has a real file.
   if (!logo) {
     return (
-      <span className="text-base font-bold uppercase tracking-wide text-muted">
+      <span className="text-lg font-bold uppercase tracking-wide text-muted">
         {name}
       </span>
     );
@@ -34,7 +34,7 @@ function BrandMark({ name, logo }) {
     <img
       src={logo}
       alt={name}
-      className="h-7 w-auto mx-auto opacity-70 sm:h-8"
+      className="h-11 w-auto opacity-80 sm:h-14 [filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.15))]"
     />
   );
 }
@@ -62,21 +62,31 @@ export default function BrandStrip() {
   })).sort((a, b) => a.slot - b.slot);
 
   return (
-    <section className="w-full bg-white py-6" aria-label="Brands we carry">
+    <section className="w-full bg-white py-3" aria-label="Brands we carry">
       <div className="mx-auto max-w-7xl px-6">
-        <p className="mb-4 text-center text-[11px] font-bold uppercase tracking-[0.3em] text-muted">
+        {/* The label itself gets the "premium printed" treatment — a layered
+            emboss shadow (soft white highlight above, soft dark shadow
+            below) so the text has real depth instead of the logos. */}
+        <p
+          className="mb-3 text-center text-sm font-black uppercase tracking-[0.35em] text-primary [text-shadow:0_1px_0_rgba(255,255,255,0.9),0_2px_1px_rgba(0,0,0,0.1),0_4px_10px_rgba(37,99,235,0.15)]"
+        >
           We Proudly Carry Top Brands
         </p>
 
-        {/* Top/bottom lines bracket just the logo row, matching the sketch */}
-        <div className="border-t border-b border-border py-5">
-          <div className="grid grid-cols-3 items-center gap-x-6 gap-y-6 lg:flex lg:flex-nowrap lg:justify-between lg:gap-x-12 lg:gap-y-0">
+        {/* Full table-style grid lines: the container is painted the border
+            color, a 1px gap between cells lets that color show through as
+            dividing lines, and each cell is painted white on top — this
+            gives correct borders on every side of every cell regardless of
+            row/column position, which plain divide-x/divide-y utilities
+            can't do cleanly once there's more than one row. */}
+        <div className="border border-border bg-border">
+          <div className="grid grid-cols-3 gap-px lg:grid-cols-6">
             {ordered.map((brand) => (
               <motion.div
                 key={brand.name}
                 layout
                 transition={{ type: "spring", stiffness: 260, damping: 26 }}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center bg-white py-6"
               >
                 <BrandMark name={brand.name} logo={brand.logo} />
               </motion.div>
