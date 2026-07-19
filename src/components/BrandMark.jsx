@@ -1,34 +1,27 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-// Swap these for real logo files once you've downloaded them from each
-// brand's official media/press kit — same import pattern as your vehicle
-// photos. SVG is strongly preferred over PNG here.
-//
-//   import kiaLogo from "../assets/brand-logos/kia.svg";
-//   import hyundaiLogo from "../assets/brand-logos/hyundai.svg";
-//   import bydLogo from "../assets/brand-logos/byd.svg";
-//
-// Then replace the BRANDS array below with:
-//   const BRANDS = [
-//     { name: "Kia", logo: kiaLogo },
-//     { name: "Hyundai", logo: hyundaiLogo },
-//     { name: "BYD", logo: bydLogo },
-//   ];
+import bydLogo from "../assets/homepage-images/byd_logo.webp";
+import hyundaiLogo from "../assets/homepage-images/hyundai_logo.png";
+import daewooLogo from "../assets/homepage-images/daewoo_logo.png";
+import manLogo from "../assets/homepage-images/man_logo.png";
+import rhinoLogo from "../assets/homepage-images/rhino_logo.png";
+import kiaLogo from "../assets/homepage-images/kia_logo.png";
 
 const BRANDS = [
-  { name: "Kia", logo: null },
-  { name: "Hyundai", logo: null },
-  { name: "BYD", logo: null },
-  { name: "MAN", logo: null },
-  { name: "Daewoo", logo: null },
+  { name: "Kia", logo: kiaLogo },
+  { name: "Hyundai", logo: hyundaiLogo },
+  { name: "BYD", logo: bydLogo },
+  { name: "Daewoo", logo: daewooLogo },
+  { name: "MAN", logo: manLogo },
+  { name: "Rhino", logo: rhinoLogo },
 ];
 
 const ROTATE_EVERY_MS = 3500;
 
 function BrandMark({ name, logo }) {
-  // Falls back to a plain wordmark until real logo files are dropped in —
-  // remove this whole fallback block once every brand has a real `logo`.
+  // Falls back to a plain wordmark if a logo import is ever missing —
+  // safe to leave in even after every brand has a real file.
   if (!logo) {
     return (
       <span className="text-base font-bold uppercase tracking-wide text-muted">
@@ -37,7 +30,13 @@ function BrandMark({ name, logo }) {
     );
   }
 
-  return <img src={logo} alt={name} className="h-8 w-auto opacity-70" />;
+  return (
+    <img
+      src={logo}
+      alt={name}
+      className="h-7 w-auto mx-auto opacity-70 sm:h-8"
+    />
+  );
 }
 
 export default function BrandStrip() {
@@ -63,22 +62,26 @@ export default function BrandStrip() {
   })).sort((a, b) => a.slot - b.slot);
 
   return (
-    <section className="w-full bg-white py-10" aria-label="Brands we carry">
+    <section className="w-full bg-white py-6" aria-label="Brands we carry">
       <div className="mx-auto max-w-7xl px-6">
-        <p className="mb-6 text-center text-[11px] font-bold uppercase tracking-[0.3em] text-muted">
+        <p className="mb-4 text-center text-[11px] font-bold uppercase tracking-[0.3em] text-muted">
           We Proudly Carry Top Brands
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-          {ordered.map((brand) => (
-            <motion.div
-              key={brand.name}
-              layout
-              transition={{ type: "spring", stiffness: 260, damping: 26 }}
-            >
-              <BrandMark name={brand.name} logo={brand.logo} />
-            </motion.div>
-          ))}
+        {/* Top/bottom lines bracket just the logo row, matching the sketch */}
+        <div className="border-t border-b border-border py-5">
+          <div className="grid grid-cols-3 items-center gap-x-6 gap-y-6 lg:flex lg:flex-nowrap lg:justify-between lg:gap-x-12 lg:gap-y-0">
+            {ordered.map((brand) => (
+              <motion.div
+                key={brand.name}
+                layout
+                transition={{ type: "spring", stiffness: 260, damping: 26 }}
+                className="flex items-center justify-center"
+              >
+                <BrandMark name={brand.name} logo={brand.logo} />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
