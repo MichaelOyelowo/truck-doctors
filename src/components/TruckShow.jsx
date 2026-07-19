@@ -308,7 +308,7 @@ export default function InteractiveInventory() {
       <div className="w-full col-span-2 border-t border-border mb-10" />
       <div className="relative h-auto w-full flex flex-col items-center justify-center px-4 sm:px-6 py-6 lg:py-10">
 
-        <div className="relative w-full max-w-6xl rounded-[2rem] lg:rounded-[2.5rem] bg-surface border border-border overflow-hidden shadow-xl">
+        <div className="relative w-full max-w-6xl rounded-[2rem] lg:rounded-[2.5rem] bg-gradient-to-br from-white via-[#F7F8FA] to-[#EEF1F5] border border-border overflow-hidden shadow-xl">
 
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 items-start p-5 sm:p-8 lg:p-14">
 
